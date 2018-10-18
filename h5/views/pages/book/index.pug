@@ -1,0 +1,47 @@
+extends ../../common/layout
+
+block links
+    link(rel='stylesheet', href='/css/pages/book/index.css')
+block header
+    header 浏览记录
+        a(href="/home/" class="fl")
+            icon(class="iconfont icon-shouye")
+        if(list && list.length > 0)
+            a(href="javascript:void(0);" class="fr fz08" id="edit") 编辑
+    header(class="edit-header" id="editHeader")
+        a(href="javascript:void(0)" class="fl" id="cancel") 取消
+        div(class="edit-header-center")
+            span 书籍管理
+            i 已选择<span id="bookCount">0</span>本书籍
+        a(href="javascript:void(0);" class="fr fz08" id="allSelect") 全选
+block content
+    - let i = 0;
+    - let length = list ? list.length : 0;
+    if(length > 0)
+        div(class="book-list clearfix" id="bookList")
+            - for (i; i < length; i++)
+                //if(i%3==0)
+                //    div(class="clear")
+                a(class="book-info" href="javascript:void(0);" book-id=`${list[i].id}`)
+                    div(class="img-box")
+                        img(src=`http://106.12.37.138:3000/images/${list[i].id}`)
+                    span= list[i].name
+                    div(class="book-select")
+                        icon(class="iconfont icon-xuanze")
+        div(class="no-book" style="display:none")
+            i(class="iconfont icon-wodeshujia")
+            span 空空如也，去书城看看吧
+            a(class="go-book-btn" href="/home") 逛逛书城
+    else
+        div(class="no-book")
+            i(class="iconfont icon-wodeshujia")
+            span 空空如也，去书城看看吧
+            a(class="go-book-btn" href="/home") 逛逛书城
+
+block footer
+    include ../../common/footer
+    +footer(myUrl)
+    footer(class="edit-footer" id="editFooter") 删除
+
+block scripts
+    script(type="text/javascript" src="/js/pages/book/index.js")

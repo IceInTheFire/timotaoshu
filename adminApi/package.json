@@ -1,0 +1,13 @@
+{
+  "name": "adminapi",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node ./bin/www"
+  },
+  "dependencies": {
+    "express": "~4.16.0",
+    "node-schedule": "^1.3.0",
+    "ws": "^5.2.0"
+  }
+}

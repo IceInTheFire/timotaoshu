@@ -1,0 +1,119 @@
+@import "../../common/config";
+
+.edit-header{
+    display: none;
+}
+.edit-header-center{
+    position: absolute;
+    left: 50%;
+    width: 5rem;
+    margin-left:-2.5rem;
+    text-align: center;
+    &>span{
+        font-size: 0.75rem;
+        display: block;
+        line-height: 1rem;
+        color:#000;
+    }
+    &>i{
+        font-size: 0.6rem;
+        display: block;
+        line-height: 1rem;
+        color:#999;
+    }
+}
+
+.book-list{
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.book-info{
+    display: block;
+    width: 5.8rem;
+    text-align: center;
+    padding-bottom:0.5rem;
+    position: relative;
+    &>.img-box{
+        display: table-cell;
+        width: 5.8rem;
+        height: 6rem;
+        vertical-align: middle;
+        &>img{
+            max-width: 100%;
+            max-height: 100%;
+            vertical-align: middle;
+        }
+    }
+    &>span{
+        line-height: 1.5rem;
+        display: block;
+    }
+    .book-select{
+        display: none;
+    }
+    &.act{
+        .book-select>icon{
+            color:#2d8cf0;
+        }
+    }
+}
+
+.select .book-select{
+    display: block;
+    position: absolute;
+    right: 0.2rem;
+    top: -0.3rem;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0px 0px 0px 1px #fff;
+    background: #fff;
+    &>icon{
+        color:#7a7a7a;
+        font-size:0.75rem;
+    }
+}
+
+
+
+
+
+.no-book{
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color:#CCCCCC;
+    padding:6rem 0 0;
+    &>i{
+        font-size:4rem;
+    }
+    &>span{
+        margin-top:0.5rem;
+    }
+    .go-book-btn{
+        display: block;
+        margin-top: 0.5rem;
+        background: #44B2A5;
+        border-radius: 0.2rem;
+        width: 4.5rem;
+        text-align: center;
+        line-height: 1.5rem;
+        color: #F8F4FE;
+    }
+}
+
+
+
+.edit-footer{
+    position: fixed;
+    z-index:100;
+    bottom:0;
+    line-height:2.5rem;
+    text-align:center;
+    background:@footer-background-color;
+    width:100%;
+    display: none;
+}

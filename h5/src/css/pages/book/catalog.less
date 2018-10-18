@@ -1,0 +1,81 @@
+@import "../../common/config";
+body{
+    padding-bottom:0;
+}
+.catalog-header{
+    margin: 0.5rem;
+    line-height: 2rem;
+    border-bottom:1px solid #ccc;
+    font-size:0.7rem;
+    &>a{
+
+    }
+    .catalog-sort{
+        text-align: right;
+        &>.catalog-sort-btn{
+            border:1px solid #ccc;
+            display: inline-block;
+            line-height: 1;
+            padding: .2rem .3rem;
+            border-radius:.1rem;
+            &.act{
+                border:1px solid @timo-color;
+                background:@timo-color;
+                color:#fff;
+            }
+            &:first-child{
+                margin-right:0.5rem;
+            }
+        }
+    }
+}
+
+.catalog-list{
+    line-height:1.75rem;
+    padding:0 0.5rem;
+    &>li{
+        border-bottom: 1px dashed #E9CBCB;
+        &>a{
+            display: block;
+        }
+    }
+    //&>li:last-child{
+    //    border:none;
+    //}
+}
+
+.catalog-footer{
+    margin-top: 1rem;
+    font-size: .7rem;
+    &>div{
+        text-align: center;
+        margin-bottom:.5rem;
+    }
+    .catalog-footer-btn{
+        display: inline-block;
+        line-height: 1;
+        padding: .2rem .3rem;
+        border-radius:.2rem;
+        border:1px solid @timo-color;
+        background:@timo-color;
+        color:#fff;
+        margin-right: .5rem;
+        vertical-align: middle;
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+    .page-input{
+        //line-height:1rem;
+        background: #FFF;
+        color: #000;
+        padding: .2rem .3rem;
+        margin: 0 .5rem;
+        border: 1px solid @timo-color;
+        width: 6rem;
+        border-radius:.2rem;
+        &:focus{
+            box-shadow:0 0 5px @timo-color;
+        }
+    }
+}

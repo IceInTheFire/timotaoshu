@@ -1,0 +1,208 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<title>无标题文档</title>
+<link rel="stylesheet" href="/css/common.css">
+<link rel='stylesheet', href='/css/pages/home/index.css'>
+</head>
+<br>
+<!--<a class="search-list clearfix" href="/book/info?bookId=1337&amp;toBack=1">-->
+    <!--<div class="search-img-box">-->
+        <!--11-1<img src="http://106.12.37.138:3000/images/大主宰">-->
+    <!--</div>-->
+    <!--<div class="search-info-box">-->
+        <!--<span>书名：大主宰 11-1</span>-->
+        <!--<span>作者：天蚕土豆</span>-->
+        <!--<span class="fl">描述：</span>-->
+        <!--<div class="description">其实接下来的新书，在斗破完结时便已经是有了构想，只不过却并未立即开始写，因为那个世界太过的宏伟浩大，所以，我再写了一本武动，来作为其基石。斗破大结局时，萧炎所去的新世界，与林动最终去往的神秘世界，是相同的，因为那个神秘的大世界，便是我们新书开始的地方。当初并不太认为自己有驾驭那个世界的能力，而现在，终归是可以开始了。</div>-->
+    <!--</div>-->
+<!--</a>-->
+<!--<a class="search-list clearfix" href="/book/info?bookId=1439&amp;toBack=1">-->
+    <!--<div class="search-img-box">-->
+        <!--11-2<img src="http://106.12.37.138:3000/images/恶魔法则">-->
+    <!--</div>-->
+<!--</a>-->
+
+<!--<div class="search-info-box">-->
+    <!--<a class="search-list clearfix" href="/book/info?bookId=1439&amp;toBack=1">-->
+        <!--<span>书名：恶魔法则 11-2</span>-->
+        <!--<span>作者：跳舞</span>-->
+        <!--<span class="fl">描述：</span>-->
+    <!--</a>-->
+    <!--<div class="description">-->
+        <!--<a class="search-list clearfix" href="/book/info?bookId=1439&amp;toBack=1">一个一无是处的，被认为是废物和白痴家伙，把灵魂卖给了恶魔，能换取到什么？美色？力量？财富？权力？<br>颠覆这世界的所有规则吧，让我们遵寻着恶魔的轨迹……<br>“我知道，终有一天，这个世界将被我踩在脚下！！”<br>——杜维<br><atarget="_11ank"href=" ploy="" vip7years="" l#five"="">抢购实体书，尽享五重惊喜好礼</atarget="_11ank"href="></a></div></div>-->
+<div>你好，我的是世界</div>
+<script>
+    var str = '一个一无是处的，被认为是废物和白痴家伙，把灵魂卖给了恶魔，能换取到什么？美色？力量？财富？权力？<br>颠覆这世界的所有规则吧，让我们遵寻着恶魔的轨迹……<br>“我知道，终有一天，这个世界将被我踩在脚下！！”<br>——杜维<br><a target="_11ank"href=" ploy="" vip7years="" l#five"="">抢购实体书，尽享五重惊喜好礼</atarget="_11ank"href="></a>';
+
+
+    // str.replace(/<[^<>]+>/g,'');    //去掉所有的html标签，但不包括标签内的内容
+    str.replace(/<[^>]+>/g,'');    //去掉所有的html标签，但不包括标签内的内容
+    // console.log(str.replace(/<[^<>]+>/g,''));
+</script>
+<Br>
+<bR>
+<br>asdasdasdasd</br>
+<div>
+    1
+    <div>
+        2
+    </div>
+</div>
+<a href="asdasd">
+
+</a>
+</body>
+</html>
+<script>
+    //    .     查找单个字符，除了换行和行结束符。
+    //    \n   	查找换行符。
+    //    \r    查找回车符。
+    //    \s    查找空白符
+    //    \S    查找非空白字符。
+
+
+
+</script>
+
+<script>
+    var reg = /<[^>]+>/g;                   //匹配所有的html标签。但不包括html标签内的内容
+
+    var reg2 = /<div>[\\s\\S]*<\/div>/g;           //匹配所有的div标签。遵循这个结构的
+
+    var reg10 = /<div[^>]*>.*<\/div>/g;
+
+    var reg3 = /<(div|DIV)[^\<\>]*>[\\s\\S]*<(\/)?(div|DIV)[^\<\>]*>/    //匹配所有的div标签
+
+    var reg4 = /<(img|IMG)[^\<\>]*>/g;       //匹配所有的img标签
+
+    var reg5 = /<[^\<\>]*>[\\s\\S]*<[^\<\>]*>/;    //匹配所有的双标签，比如<div></div>等等的   不匹配单标签  比如<img>  有bug。单标签会有不可控的问题，比如 <br> <img>等等      还有嵌套闭合标签没法玩 比如<div>1<div>2</div></div>
+
+    var reg6 = /<[^(\<\>|img|IMG|iMG|iMg|imG|Img|IMg|ImG|br|BR|bR|Br)]*>[\\s\\S]*<[^\<\>]*>/;
+
+    var reg7 = /<[^(\<|\>|img|IMG|iMG|iMg|imG|Img|IMg|ImG|br|BR|bR|Br)]*>[\\s\\S]*<[^\<\>]*>/;  //除了img br等单标签的，其他都匹配
+
+    var reg8 = /<(img|script|a)[^>]*\/?>([^<>]*)(<\\1>)?/gi;
+
+    var reg9 = /<(div)[^>]*>[\\s\\S^\<\>]*(<\\1>)?/gi;
+</script>
+
+<script>
+    /*
+    * 匹配html标签，但不匹配html标签里的内容
+    * */
+    var reg =  /<[^>]+>/gi;              //匹配所有的html标签。但不包括html标签内的内容
+    var reg2 = /<(?!img).*?>/gi;             //匹配除img标签外的html标签  不包括html标签内的内容
+    var reg3 = /<(?!img|p|\/p).*?>/gi;             //匹配除img、p标签外的html标签  不包括html标签内的内容
+    var reg4 = /<(img|br|hr|input)[^>]*>/gi;            //只匹配img、br、hr、input标签
+
+    /*
+    * 写匹配html内容的正则，有几大难点
+    * 1、单标签和双标签的区别       例如 <br><img>    和   <div></div>   的区别
+    * 2、嵌套标签(超难，基本无解，若需要过滤的话，则可以通过分组匹配一直重复匹配来解决)     例如  <div>外面的div<div>里面的div</div></div>
+    * */
+
+    /*
+    * 下面两个可以匹配
+    * 但是有个bug  下面的结构就不会被匹配到 比如 <div>你好，我的世界<div>你好，里面的世界</div></div>
+    * 也就是上面所说的嵌套标签的难点
+    * */
+    var reg = /<div[^>]*>[^<]*<\/div>/gi;  //匹配所有的div标签。包括div标签内的内容
+    var reg2 = /<[^>]*>[^<]*(<[^>]*>)?/gi;   //匹配所有的html标签，包括html标签内的内容
+
+
+    /*
+    * 使用分组匹配
+    * 但是有个bug  下面的结构就不会被匹配到 比如 <div>你好，我的世界<div>你好，里面的世界</div></div>
+    * 但是过滤的话，可以重复过滤。分组匹配比上面的匹配靠谱多了
+    * 双标签对应匹配
+    * */
+    var reg = /<(div)[^>]*>[^<]*<\/(\1)>/gi;  //分组匹配   匹配所有的div标签，包括div标签内的内容
+    var reg2 = /<(\S*)[^>]*>[^<]*<\/(\1)>/gi; //分组匹配   匹配所有的html双标签，包括div标签内的内容
+
+
+    var str = "<div>\n" +
+        "    你好，我的世界\n" +
+        "    <div>\n" +
+        "        你好，里面的世界\n" +
+        "    </div>\n" +
+        "</div>";
+    str.replace(reg2,'');
+
+
+</script>
+
+<script>
+    /*
+    * 正常匹配
+    * 下面两个可以匹配
+    * 但是有个bug  嵌套标签的结构就不会被匹配到      例如这样的结构： <div>外面的div<div>里面的div</div></div>
+    * 这也就是上面所说的嵌套标签的难点
+    * */
+    var reg = /<div[^>]*>[^<]*<\/div>/gi;    //匹配所有的div标签。包括div标签内的内容
+    var reg2 = /<[^>]*>[^<]*(<[^>]*>)?/gi;   //匹配所有的html标签，包括html标签内的内容
+
+
+    /*
+    * 使用分组匹配
+    * bug跟上面的一样     嵌套标签的结构就不会被匹配到      例如这样的结构： <div>外面的div<div>里面的div</div></div>
+    * 如果用在过滤上的话，可以重复过滤（不会少过滤掉一些本就在标签内的内容，也不会多过滤标签外的内容）。在过滤上看，分组匹配比上面的匹配靠谱多了。
+    * 但是，有个小问题，下面的分组匹配正则匹配不到单标签的，所以还需要用到上面的一般匹配。
+    * 双标签对应匹配  不匹配单标签
+    * */
+    var reg3 = /<(div)[^>]*>[^<]*<\/(\1)>/gi;  //分组匹配   匹配所有的div标签，包括div标签内的内容
+    var reg4 = /<(\S*)[^>]*>[^<]*<\/(\1)>/gi;   //分组匹配   匹配所有的html双标签，包括div标签内的内容
+    var reg4 = /<(\S*)[^>]*>[^(?!<\/)]*<\/(\1)>/gi;   //分组匹配   匹配所有的html双标签，包括div标签内的内容
+    var reg4 = /<(\S*)[^>]*>(?!<\/)[^>]*<\/(\1)>/gi;   //分组匹配   匹配所有的html双标签，包括div标签内的内容
+</script>
+
+<script>
+
+    var str = "<div>\n" +
+        "    你好，我的朋友\n" +
+        "</div>\n" +
+        "asdasdasdad\n" +
+        "\n" +
+        "asdasda\n" +
+        "\n" +
+        "<div class=\"000\">你好</div>\n" +
+        "a\n" +
+        "<div>\n" +
+        "asdasd\n" +
+        "\n" +
+        "</div>\n" +
+        "\n" +
+        "hello\n" +
+        "\n" +
+        "<span>\n" +
+        "    hello\n" +
+        "</span>\n" +
+        "\n" +
+        "\n" +
+        "<div>\n" +
+        "    你好，我的世界\n" +
+        "    <div>\n" +
+        "        你好，里面的世界\n" +
+        "    </div>\n" +
+        "</div>\n" +
+        "\n" +
+        "<p>asdasd</p>\n" +
+        "<img src=\"asdasda \" alt=\"\">\n" +
+        "<br>\n" +
+        "\n" +
+        "<div>\n" +
+        "    你好吗\n" +
+        "    <img\n" +
+        "            src=\"asdasda \"\n" +
+        "            alt=\"\">\n" +
+        "</div>\n" +
+        "\n" +
+        "\n" +
+        "<div>\n" +
+        "    asdasd\n" +
+        "</div>\n" +
+        "\n" +
+        "\n" +
+        "\n" +
+        "iojoijoijoijabciojoijoijoijoi\n" +
+        "iojoijoijoijiojoijoijoijoi";
+</script>

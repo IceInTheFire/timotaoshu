@@ -1,0 +1,125 @@
+/*
+    初始化页面布局
+*/
+html, body {
+    width: 100%;
+    //height: 100%;
+    overflow-x: hidden;
+}
+
+html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, legend, img {
+    //margin: 0;
+    //padding: 0;
+    -webkit-text-siz-adjust: none;
+}
+
+html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, legend, img, div, a, input, textarea, select, button, span,header,footer {
+    outline: none;
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    box-sizing: border-box;
+}
+body{
+    background: #f3f3f3;
+}
+
+p {
+    word-break: break-all;
+}
+
+fieldset, img, input, button {
+    border: none;
+    padding: 0;
+    margin: 0;
+    //outline-style: none; /*去掉input 获取焦点后的外框环绕*/
+}
+
+select, input {
+    vertical-align: middle;
+}
+
+select, input, textarea {
+    font-size: 12px;
+    margin: 0;
+}
+
+textarea {
+    resize: none;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: @color-light-gray;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: @color-light-gray;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: @color-light-gray;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: @color-light-gray;
+}
+
+ul, ol, li, dl, dd, dt{
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: @color-black;
+}
+//
+//a:hover, a:focus, a:link {
+//    text-decoration: none;
+//    background: none;
+//    color: @color-black;
+//}
+
+//a:-webkit-any-link {
+//    color: @color-black;
+//    cursor: auto;
+//}
+
+img {
+    border: none;
+    vertical-align: middle;
+}
+
+h, h1, h2, h3, h4, h5, h6 {
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 100%;
+    margin: 0;
+}
+
+//s, i, em {   //i标签特殊不能去
+i, s, em {
+    font-style: normal; /*将原有的样式去掉*/
+    text-decoration: none; /*去掉下划线，但也可以去掉中划线(贯穿线)*/
+}
+
+*::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+    display: none;
+    background-color: transparent;
+}
+html{
+    background:@html-background-color;
+    height:100%;
+}
+body {
+    max-width: 750px;
+    min-height:100%;
+    margin: auto;
+    -webkit-tap-highlight-color: transparent;
+    background:@body-background-color;
+    font-size:@font-size-normal;
+    font-family: @font-family;
+    line-height:1;
+    color:@color-black;
+}

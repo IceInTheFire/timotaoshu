@@ -1,0 +1,24 @@
+html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, legend, img {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+fieldset, img, input, button {
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline-style: none; /*去掉input 获取焦点后的外框环绕*/
+}
+
+
+body{
+    background:#f6f4ec;
+    padding:20px;
+}
+p{
+    line-height:40px;
+    margin-bottom:15px;
+    font-size:25px;
+    text-indent: 50px;
+    vertical-align: middle;
+}

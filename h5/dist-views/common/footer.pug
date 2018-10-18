@@ -1,0 +1,14 @@
+mixin footer(myUrl)
+    footer(class="footMenu clearfix")
+        a(href="/book/" class=myUrl=="/book/index" ? "act" : "" style="width:50%;")
+            div(class="footMenu-top")
+                icon(class="iconfont icon-books")
+            div(class="footMenu-bottom") 书架
+        a(href="/home/" class=myUrl=="/home/index" ? "act" : "" style="width:50%;")
+            div(class="footMenu-top")
+                icon(class="iconfont icon-shouye")
+            div(class="footMenu-bottom") 书城
+        //-a(href="/users/" class=myUrl=="/users/index" ? "act" : "")
+        //-    div(class="footMenu-top")
+        //-        icon(class="iconfont icon-geren")
+        //-    div(class="footMenu-bottom") 个人

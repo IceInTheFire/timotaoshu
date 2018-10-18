@@ -1,0 +1,31 @@
+/*搜索框样式*/
+
+.book-search{
+    text-align: center;
+    padding: 0.4rem 0;
+    color:#333;
+    background: @catalog-background-color;
+    &>input.book-search-input{
+        background: #FFF;
+        color: #000;
+        padding: .2rem .3rem;
+        margin: 0 .5rem;
+        border: 1px solid @timo-color;
+        width: 6rem;
+        border-radius:.2rem;
+        &:focus{
+            box-shadow:0 0 5px @timo-color;
+        }
+    }
+    &>a.book-searct-a{
+        display: inline-block;
+        line-height: 1;
+        padding: .2rem .3rem;
+        border-radius: .2rem;
+        border: 1px solid @timo-color;
+        background: @timo-color;
+        color: #fff;
+        margin-right: .5rem;
+        vertical-align: middle;
+    }
+}

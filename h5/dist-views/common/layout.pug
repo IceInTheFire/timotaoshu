@@ -1,0 +1,62 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        title= `${site?(site.title?site.title +'？提莫淘书,猜你喜欢':'提莫淘书'):'提莫淘书'}`
+        meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+        meta(name="viewport" content="initial-scale=1, width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1, user-scalable=no" media="(device-height: 568px)" )
+        meta(name="renderer" content="webkit")
+        meta(name="apple-mobile-web-app-capable" content="yes")
+        //-meta(name="apple-touch-fullscreen" content="yes")
+        meta(name="mobile-web-app-capable" content="yes")
+        //-meta(name="full-screen" content="yes")
+        meta(name="apple-mobile-web-app-status-bar-style" content="black")
+        meta(name="format-detection" content="telephone=no")
+        meta(name="format-detection" content="address=no")
+        link(rel="icon" href="/images/favicon.ico" type="image/x-icon")
+        meta(name="keywords" content=`${site?(site.keywords?site.keywords:"提莫淘,提莫淘书,提莫淘小说"):'提莫淘,提莫淘书,提莫淘小说'}`)
+        meta(name="description" content=`${site?(site.description?site.description:'完本小说，尽在提莫淘书'):'完本小说，尽在提莫淘书'}`)
+        //- QQ、QQ浏览器分享显示的标题
+        meta(itemprop="name" content=`${site?(site.title?site.title +'？提莫淘书,猜你喜欢':'提莫淘书'):'提莫淘书'}`)
+        //-QQ、QQ浏览器分享显示的缩略图
+        meta(itemprop="image" content=`${site?(site.title?'http://106.12.37.138:3000/images/'+site.id:'/images/favicon.ico'):'/images/favicon.ico'}`)
+        //-QQ、QQ浏览器分享显示的简介
+        meta(name="description" itemprop="description" content=`${site?(site.description?site.description:'完本小说，尽在提莫淘书'):'完本小说，尽在提莫淘书'}`)
+
+        link(rel="prerender" href="/css/common.css?v=17dfa4b13a")
+        link(rel="prerender" href="/js/common.js?v=a4ce421523")
+        //-<link rel="prerender" href="http://huodong.kugou.com/2014" />
+        //-<link>标签中rel=’prerender’ 表示浏览器会帮我们渲染但隐藏指定的页面，一旦我们访问这个页面，则秒开了！
+        //-link(rel="prerender" href="")
+
+        //-link(rel="start" type="text/html" href="http://www.baidu.com")
+        //-link(rel="prev" type="text/html" href="http://www.baidu.com")
+        //-link(rel="next" type="text/html" href="http://www.dreamdu.com/xhtml/attribute_rel/")
+        //-<link rel="start" type="text/html" href="http://www.dreamdu.com/xhtml/" />
+        //
+        //-<link rel="prev" type="text/html" href="http://www.dreamdu.com/xhtml/alternate/" />
+        //
+        //-<link rel="next" type="text/html" href="http://www.dreamdu.com/xhtml/attribute_rel/" />
+        //
+        //-next -- 记录文档的下一页.(浏览器可以提前加载此页)
+        //
+        //-prev -- 记录文档的上一页.(定义浏览器的后退键)
+        //
+        //-start -- 通知搜索引擎,文档的开始
+        //-script(src="/lib/vconsole/vconsole.min.js?v=bac6b63f32")
+        link(rel='stylesheet', href='/css/common.css?v=17dfa4b13a')
+        script(type="text/javascript" src="/js/common.js?v=a4ce421523")
+
+        block links
+    body(style=`${bookConfig && bookConfig.huyan && 'color:#333;background-color:rgb(220, 236, 210);'}${bookConfig && bookConfig.light && 'color:rgb(153, 153, 153);background-color:rgb(50, 55, 59);'}`)
+        block header
+        block content
+
+        block footer
+
+
+
+
+        block scripts
+
+

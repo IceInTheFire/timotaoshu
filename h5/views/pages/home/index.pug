@@ -1,0 +1,33 @@
+extends ../../common/layout
+
+block links
+    //link(rel='stylesheet', href='/lib/swiper/dist/css/swiper.min.css')
+    link(rel='stylesheet', href='/css/pages/home/index.css')
+
+block header
+    div(class="book-search") 搜索书名：
+        input(class="book-search-input")
+        a(class="book-searct-a") 点击搜索
+
+block content
+
+    a( href="/home" style="display:block;line-height:2rem;font-size:1rem;text-align:center;") 随机十本推荐--点击刷新
+    - let i = 0;
+    - let length = bookList ? bookList.length : 0;
+    if(length > 0)
+        - for (i; i < length; i++)
+            a(class="search-list clearfix" href=`/book/info?bookId=${bookList[i].id}&toBack=1`)
+                div(class="search-img-box")
+                    img(src=`http://106.12.37.138:3000/images/${bookList[i].id}`)
+                div(class="search-info-box")
+                    span= `书名：${bookList[i].name}`
+                    span= `作者：${bookList[i].author}`
+                    span(class="fl") 描述：
+                    div(class="description")!=`${bookList[i].description}`
+block footer
+    include ../../common/footer
+    +footer(myUrl)
+
+block scripts
+    //script(type="text/javascript" src="/lib/swiper/dist/js/swiper.min.js")
+    script(type="text/javascript" src="/js/pages/home/index.js")

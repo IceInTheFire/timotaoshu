@@ -1,0 +1,39 @@
+extends ../../common/layout
+
+block links
+    link(rel='stylesheet', href='/css/pages/book/catalog.css')
+    if(params.page < params.allPage)
+        link(rel="prerender" href=`/book/catalog?bookId=${book.id}&page=${parseInt(params.page) + 1}&limit=${params.limit}&isSort=${params.isSort}`)
+block header
+    header= book.name
+        a(href=`/book/info?bookId=${book.id}` class="fl")
+            icon(class="iconfont icon-Toright")
+        a(href="/book" class="fr")
+            icon(class="iconfont icon-books")
+block content
+    div(class="catalog-header")
+        a(href=`/book/info?bookId=${book.id}` class="fl")= book.name + " 章节"
+        div(class="catalog-sort")
+            a(href=`/book/catalog?bookId=${book.id}&page=1&limit=${params.limit}&isSort=1` class=`catalog-sort-btn ${params.isSort == 1 ? 'act':''}`) 正序
+            a(href=`/book/catalog?bookId=${book.id}&page=1&limit=${params.limit}&isSort=2` class=`catalog-sort-btn ${params.isSort == 2 ? 'act':''}`) 倒序
+    - let i = 0, length = catalog.length;
+    ul(class="catalog-list")
+        - for(i; i<length; i++)
+            li
+                a(href=`/book/catalogInfo?bookId=${book.id}&catalogId=${catalog[i].id}&num=${catalog[i].num}`)= catalog[i].name
+    div(class="catalog-footer")
+        div
+            if(params.page > 1)
+                a(href=`/book/catalog?bookId=${book.id}&page=1&limit=${params.limit}&isSort=${params.isSort}` class="catalog-footer-btn") 首页
+                a(href=`/book/catalog?bookId=${book.id}&page=${parseInt(params.page) - 1}&limit=${params.limit}&isSort=${params.isSort}` class="catalog-footer-btn") 上一页
+            if(params.page < params.allPage)
+                a(href=`/book/catalog?bookId=${book.id}&page=${parseInt(params.page) + 1}&limit=${params.limit}&isSort=${params.isSort}` class="catalog-footer-btn") 下一页
+                a(href=`/book/catalog?bookId=${book.id}&page=${params.allPage}&limit=${params.limit}&isSort=${params.isSort}`  class="catalog-footer-btn") 尾页
+        div 输入页数：
+            input(class="page-input" value=`${params.page}` type="number")
+            a(href="javascript:void(0);" class="catalog-footer-btn" id="catalogJump") 跳转
+        div= `（第${params.page}/${params.allPage}页）当前${params.limit}条/页`
+
+block footer
+block scripts
+    script(type="text/javascript" src="/js/pages/book/catalog.js")

@@ -1,0 +1,31 @@
+extends ../../common/layout
+
+block links
+    link(rel='stylesheet', href='/css/pages/book/search.css?v=d633f70329')
+block header
+    header= bookName
+        a(href="javascript:history.back();" class="fl")
+            icon(class="iconfont icon-Toright")
+        a(href="/book" class="fr")
+            icon(class="iconfont icon-books")
+
+block content
+    - let i = 0;
+    - let length = bookList ? bookList.length : 0;
+    if(length > 0)
+        - for (i; i < length; i++)
+            a(class="search-list clearfix" href=`/book/info?bookId=${bookList[i].id}&toBack=1`)
+                div(class="search-img-box")
+                    img(src=`http://106.12.37.138:3000/images/${bookList[i].id}`)
+                div(class="search-info-box")
+                    span= `书名：${bookList[i].name}`
+                    span= `作者：${bookList[i].author}`
+                    span(class="fl") 描述：
+                    div(class="description")!=`${bookList[i].description}`
+        div(class="no-more") 没有更多了
+    else
+        div(class="no-more") 没有哦
+
+block footer
+block scripts
+    script(type="text/javascript" src="/js/pages/book/search.js?v=8971778a9c")

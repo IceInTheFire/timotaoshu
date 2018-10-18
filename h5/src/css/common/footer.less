@@ -1,0 +1,27 @@
+body{
+    padding-bottom:2.5rem;
+}
+.footMenu{
+    height:2.5rem;
+    position: fixed;
+    width:100%;
+    max-width:750px;
+    background: @footer-background-color;
+    z-index: 99;
+    bottom: 0;
+}
+.footMenu>a{
+    width: 33.3333%;
+    float: left;
+    text-align: center;
+    padding: .4rem 0 .2rem 0;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 2.5rem;
+}
+
+.footMenu>a.act{
+    color:@timo-color;
+}

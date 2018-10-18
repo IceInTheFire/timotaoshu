@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[0] %>">
+    <link rel="stylesheet" name="theme" href="">
+    <link rel="icon" href="<%= htmlWebpackPlugin.options.favicon %>" type="image/x-icon" />
+    <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.favicon %>" type="image/x-icon"/>
+    <!-- QQ、QQ浏览器分享显示的标题-->
+    <meta itemprop="name" content="<%= htmlWebpackPlugin.options.title %>" >
+    <!-- QQ、QQ浏览器分享显示的缩略图-->
+    <meta itemprop="image" content="<%= htmlWebpackPlugin.options.favicon %>" >
+    <!-- QQ、QQ浏览器分享显示的简介-->
+    <meta name="description" itemprop="description" content="灬安俱乐部内部人员操作的提莫淘书后台管理系统" >
+</head>
+
+    <body>
+        <div id="app" v-cloak>您的浏览器本版本过低</div>
+        <div id="nativeShare"></div>
+        <div class="lock-screen-back" id="lock_screen_back"></div>
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[1] %>"></script>
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[2] %>"></script>
+    </body>
+    <script>window.onload = function(){var set = setTimeout(function() {var app = document.getElementById("app");if(app) {app.style.display = "block";}clearTimeout(set);set = null;}, 2000);}</script>
+</html>

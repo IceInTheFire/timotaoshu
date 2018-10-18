@@ -1,0 +1,9 @@
+extends ./common/layout
+
+block content
+    if(h5Error && h5Error.message)
+        h1(class="tc")= h5Error.message
+    else
+        h1= message
+        h2= error.status
+        pre #{error.stack}

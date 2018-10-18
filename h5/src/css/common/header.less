@@ -1,0 +1,39 @@
+body{
+    //height:100%;
+    padding-top:2rem;
+}
+header{
+    width:100%;
+    max-width:750px;
+    line-height: 2rem;
+    padding:0 0.5rem;
+    background:@footer-background-color;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    text-align: center;
+    zoom:1;
+    font-size:0.7rem;
+    .iconfont{
+        font-size:0.9rem;
+    }
+}
+header:after{  //清除浮动
+    content:"";
+    line-height:0;
+    width:0;
+    height: 0;
+    display:block;
+    visibility:hidden;
+    clear:both;
+}
+
+header>div.header-center{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    padding: 0 1rem;
+}
+header span{
+    vertical-align: middle;
+}

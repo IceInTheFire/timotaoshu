@@ -1,0 +1,49 @@
+extends ../../common/layout
+block links
+    link(rel='stylesheet' href='/css/pages/book/catalogInfo.css?v=2004de8bcc')
+    link(rel="prerender" href="/css/pages/book/catalogInfo.css?v=2004de8bcc")
+    link(rel="prerender" href="/js/pages/book/catalogInfo.js?v=6d7e7fadeb")
+    if(catalogInfo.nextCatalog)
+        link(rel="prerender" href=`/book/catalogInfo?bookId=${catalogInfo.nextCatalog.bookId}&catalogId=${catalogInfo.nextCatalog.id}&num=${catalogInfo.nextCatalog.num}`)
+    if(catalogInfo.prevCatalog)
+        link(rel="prerender" href=`/book/catalogInfo?bookId=${catalogInfo.prevCatalog.bookId}&catalogId=${catalogInfo.prevCatalog.id}&num=${catalogInfo.prevCatalog.num}`)
+
+    //style body{color:rgb(153, 153, 153);background:rgb(50, 55, 59);}
+
+block header
+    header
+        if(catalogInfo.prevCatalog)
+            a(href=`/book/catalogInfo?bookId=${catalogInfo.prevCatalog.bookId}&catalogId=${catalogInfo.prevCatalog.id}&num=${catalogInfo.prevCatalog.num}` class="fl")
+                icon(class="iconfont icon-Toright")
+                span 上章
+        if(catalogInfo.nextCatalog)
+            a(href=`/book/catalogInfo?bookId=${catalogInfo.nextCatalog.bookId}&catalogId=${catalogInfo.nextCatalog.id}&num=${catalogInfo.nextCatalog.num}` class="fr")
+                span 下章
+                icon(class="iconfont icon-Toleft")
+        a(class="header-center" href=`/book/catalog?bookId=${catalogInfo.book.id}`) 返回目录
+block content
+    div(class="content" id="content")
+        div(class="catalog-name" style=`${bookConfig.fontSize=='small' ? 'font-size:0.8rem;' :(bookConfig.fontSize=='middle' ? 'font-size:1rem;':'')}`)= catalogInfo.catalog.name
+        div(class="catalog-tool clearfix")
+            span(data-id="huyan" class=`catalog-tool-btn ${bookConfig.huyan? 'act' :''} fl`) 护眼
+            span(data-id="light" class=`catalog-tool-btn ${bookConfig.light? 'act' :''} fl`) 关灯
+
+            span(data-id="fontSizebig" class=`catalog-tool-btn ${bookConfig.fontSize=='big' ? 'act' :''} fr`) 大
+            span(data-id="fontSizemiddle" class=`catalog-tool-btn ${bookConfig.fontSize == 'middle' ? 'act' : ''} fr`) 中
+            span(data-id="fontSizesmall" class=`catalog-tool-btn ${bookConfig.fontSize=='small' ? 'act' :''} fr`) 小
+        div(class="catalog-container" style=`${bookConfig.fontSize=='small' ? 'font-size:0.8rem;' :(bookConfig.fontSize=='middle' ? 'font-size:1rem;':'')}`)
+            != catalogInfo.container
+
+    div(class="catalog-page")
+        if(catalogInfo.prevCatalog)
+            a(class="catalog-page-btn" href=`/book/catalogInfo?bookId=${catalogInfo.prevCatalog.bookId}&catalogId=${catalogInfo.prevCatalog.id}&num=${catalogInfo.prevCatalog.num}`) 上一章
+        a(class="catalog-page-btn" href=`/book/catalog?bookId=${catalogInfo.book.id}`) 目录
+        if(catalogInfo.nextCatalog)
+            a(class="catalog-page-btn" href=`/book/catalogInfo?bookId=${catalogInfo.nextCatalog.bookId}&catalogId=${catalogInfo.nextCatalog.id}&num=${catalogInfo.nextCatalog.num}`) 下一章
+    div(class="book-search") 搜索书名：
+        input(class="book-search-input")
+        a(class="book-searct-a") 点击搜索
+
+block footer
+block scripts
+    script(type="text/javascript" src="/js/pages/book/catalogInfo.js?v=6d7e7fadeb")
