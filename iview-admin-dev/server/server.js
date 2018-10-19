@@ -42,6 +42,7 @@ app.all('*', function(req, res, next) {
 
 // app.use(express.static("dist"))
 app.use('/dist', express.static('../dist/dist'));
+app.use('/lib', express.static('../dist/lib'));
 
 app.get('*',function(req, res) {
   const url = req.originalUrl.split('?')[0];
