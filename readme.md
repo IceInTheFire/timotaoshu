@@ -9,7 +9,7 @@
 ```
 1、作为一名多年的网路小说爱好者和网站开发人员，怎么能忍受别人网站里的广告？还特么的是一些乱七八糟的广告。
 2、因为手痒，用node做后台接口，搭建web服务器，用node做爬虫，主要是因为兴趣，所以想玩玩。
-3、更是因为之前有大把大把的空闲时间，所以就有时间了。
+3、更是因为之前有大把大把的空闲时间，所以就有时间做了。
 ```
 
 #### 服务器：
@@ -28,7 +28,7 @@ node用到的库：
 	iview-admin脚手架（vue2）
 	
 h5用到的技术栈：
-	node、pug、less、gulp、markdown
+	node、pug、less、gulp
 	
 注：为了避免版本错误，node_modules建议用yarn来下载
 ```
@@ -108,9 +108,18 @@ yarn install
 
 #### 3、导入数据库
 
+```
+把sql文件夹内的timotaoshu.sql导入mysql里
+```
+
 #### 4、更改mysql和redis的config文件
 
-#### 5、跑项目
+```
+在目录的config文件夹
+里面有mysql的连接配置和redis的连接配置
+```
+
+#### 5、跑项目（开发模式）
 
 ```
 cd timotaoNew/adminApi
@@ -125,10 +134,49 @@ cd timotaoNew/h5
 npm run dev
 
 
-访问
+访问 localhost:8080
+访问 localhost:1111
+
+
+
+操作，建议先爬30个以上的ip代理数量后，再爬书，不然没有足够的代理ip，则会导致不能爬书
+```
+
+#### 6、部署项目
+
+```
+cd timotaoNew/adminApi/bin
+pm2 start www
+
+另开一个窗口
+cd timotaoNew/iview-admin/server
+pm2 start server
+
+另开一个窗口
+cd timotaoNew/h5/bin
+pm2 start h5
+
+
+访问 localhost:9092
+访问 localhost:1111
+
+
+操作，建议先爬30个以上的ip代理数量后，再爬书，不然没有足够的代理ip，则会导致不能爬书
 ```
 
 
+
+###7、加入我们
+
+```
+1、现实过于骨感，项目过于庞大，个人力量过于弱小，所以，我们需要志同道合的人一起努力、切磋、交流。
+努力改造提莫淘书，切磋交流前端、node、安卓、IOS、服务器等互联网技术。
+
+2、这里代码我上传了，个人觉得这个代码对于那些想学node的人来说，是一个很好的学习机会，代码拉下来后，兴许会遇到很多开发、部署、服务器等问题，欢迎加入我们，共同参讨学习。
+
+
+QQ群号：831613487    申请时注明：github提莫淘书
+```
 
 
 
