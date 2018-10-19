@@ -11,8 +11,8 @@ const upload = require('./core/upload-mutter');     //文件上传
 const {fs, path, tool, log} = require('./tool/require');
 const hostArr = require('../common/host');      //允许访问的域名
 // const bodyParser = require('body-parser');
-global.server = true;       //如果是服务器，改为true
-global.serverProxy = 'http://127.0.0.1:8118';  //服务器的代理
+global.server = false;       //如果是服务器，改为true    前提是服务器有配置privoxy代理，如果没有配置，建议还是false
+global.serverProxy = 'http://127.0.0.1:8118';  //服务器的代理配置
 global.reptileCatalog = 0;//爬虫正在爬的数量
 
 app.all('*', function (req, res, next) {
