@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-10-18 16:14:04
+Date: 2018-10-19 11:17:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -135,23 +135,4 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', '冰中焱', '7c4a8d09ca3762af61e59520943dc26494f8941b', '17858834166', '1');
-
--- ----------------------------
--- Table structure for visit
--- ----------------------------
-DROP TABLE IF EXISTS `visit`;
-CREATE TABLE `visit` (
-  `id` int(11) NOT NULL,
-  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '访问时间   timestamp格式',
-  `createTimeStr` varchar(200) NOT NULL COMMENT '访问时间   字符串形式',
-  `status` int(11) DEFAULT NULL COMMENT '访问状态',
-  `path` varchar(200) DEFAULT NULL COMMENT '访问地址的地址，包括参数',
-  `reponseTime` varchar(100) DEFAULT NULL COMMENT '响应时间',
-  `who` varchar(100) NOT NULL COMMENT '客户端访问了谁\r\n\r\nh5\r\n\r\napi\r\n\r\nadmin\r\n',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of visit
--- ----------------------------
+INSERT INTO `users` VALUES ('1', '冰中焱', '7c4a8d09ca3762af61e59520943dc26494f8941b', '16666666666', '1');
