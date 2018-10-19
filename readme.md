@@ -22,7 +22,11 @@ linux系统、nginx、mysql、redis、pm2、privoxy配合shadowsocks搭建的htt
 
 ```
 node用到的库：
-	redis、mysql、express、compression(支持gzip压缩)、morgan（中间件记录日志，在本项目的作用相当于服务器访问日志）、jwt-simple（登录加密）、scheduleObj(定时任务)、request、request-promise、cheerio（爬来的页面，用$去获取自己想要的数据，相当于jquery库）、multer（文件上传）、node-xlsx(解析xls文件的插件)
+	redis、mysql、express、compression(支持gzip压缩)、
+	morgan（中间件记录日志，在本项目的作用相当于服务器访问日志）、
+	jwt-simple（登录加密）、scheduleObj(定时任务)、request、
+	request-promise、cheerio（爬来的页面，用$去获取自己想要的数据，相当于jquery库）、
+	multer（文件上传）、node-xlsx(解析xls文件的插件)
 
 前端用到的框架：
 	iview-admin脚手架（vue2）
@@ -166,13 +170,14 @@ pm2 start h5
 
 
 
-###7、加入我们
+### 7、加入我们
 
 ```
 1、现实过于骨感，项目过于庞大，个人力量过于弱小，所以，我们需要志同道合的人一起努力、切磋、交流。
 努力改造提莫淘书，切磋交流前端、node、安卓、IOS、服务器等互联网技术。
 
-2、这里代码我上传了，个人觉得这个代码对于那些想学node的人来说，是一个很好的学习机会，代码拉下来后，兴许会遇到很多开发、部署、服务器等问题，欢迎加入我们，共同参讨学习。
+2、这里代码我上传了，个人觉得这个代码对于那些想学node的人来说，是一个很好的学习机会，
+    代码拉下来后，兴许会遇到很多开发、部署、服务器等问题，欢迎加入我们，共同参讨学习。
 
 
 QQ群号：831613487    申请时注明：github提莫淘书
