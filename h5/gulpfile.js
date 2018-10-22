@@ -73,7 +73,8 @@ gulp.task('imagemin', function() {
 gulp.task('watch', function () {
     var cssWatcher = gulp.watch([
         'src/css/**.less',
-        'src/css/**/**.less'], ['less']);
+        'src/css/**/**.less',
+        '!src/css/common/**.less'], ['less']);
     cssWatcher.on('change', function (event) {
         console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
     });
