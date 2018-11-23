@@ -1,4 +1,4 @@
-const {rp, cheerio, iconv, tool,log} = require("../tool/require");
+const {rp,timoRp, cheerio, iconv, tool,log} = require("../tool/require");
 const reptileCommon = require("./common/reptileCommon");
 
 /*
@@ -24,7 +24,7 @@ async function getBookUrl_common(reptileType, bookName, callback, errorCallback,
         global.server && (option.proxy = global.serverProxy);
     }
 
-    rp(option).then(function(data){
+    timoRp(option).then(function(data){
         let $ = data[0];
         let url = data[1];
         let list = reptileCommon[reptileType].getBookList($, url);

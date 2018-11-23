@@ -1,10 +1,11 @@
-let fs, rp, request, cheerio, iconv, morgan, path, db, tool, oauth, log, async,xlsx;
+let fs, rp, request, timoRp, cheerio, iconv, morgan, path, db, tool, oauth, log, async,xlsx;
 // ,wss;
 
 if(global.timotaoApi){
     fs = global.timotaoApi.fs;
     rp = global.timotaoApi.rp;
     request = global.timotaoApi.request;
+    timoRp = global.timotaoApi.timoRp
     cheerio = global.timotaoApi.cheerio;
     iconv = global.timotaoApi.iconv;
     morgan = global.timotaoApi.morgan;
@@ -20,6 +21,7 @@ if(global.timotaoApi){
     fs = require("fs");
     rp = require("request-promise");
     request = require("request");
+    timoRp = require("./timoRp.js");
     cheerio = require("cheerio");
     iconv = require("iconv-lite");
     morgan = require("morgan");
@@ -36,6 +38,7 @@ if(global.timotaoApi){
         fs,
         rp,
         request,
+        timoRp,
         cheerio,
         iconv,
         morgan,
@@ -59,6 +62,7 @@ module.exports = {
     fs,
     rp,
     request,
+    timoRp,
     cheerio,
     iconv,
     morgan,

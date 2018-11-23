@@ -1,4 +1,4 @@
-const {fs, rp, path, tool, log} = require("../tool/require");
+const {fs, rp,timoRp, path, tool, log} = require("../tool/require");
 
 module.exports = getImg;
 
@@ -25,7 +25,7 @@ async function getImg(bookId, imgUrl){
         // let ip = await tool.redisData.ipList.getRandomIpList();
         // if(ip) option.proxy = ip;
         global.server && (option.proxy = global.serverProxy);
-        rp(option).then(function(imgData){
+        timoRp(option).then(function(imgData){
             let filePath = tool.isRepeat(fs, path.join(__dirname, '../../books/' + bookId + '/logo.png'));
             fs.writeFileSync(filePath, imgData, "binary");
         }).catch(function(err){

@@ -1,4 +1,4 @@
-const {fs, rp, cheerio, iconv, path, tool, db, log} = require("../tool/require");
+const {fs, rp, timoRp, cheerio, iconv, path, tool, db, log} = require("../tool/require");
 const reptileCommon = require("./common/reptileCommon");
 
 // module.exports = getBookCatalogJson2;
@@ -12,27 +12,28 @@ module.exports = async (reptileType, url, callback, errorback) => {
 * 获取书的目录
 * 并生成json格式
 * */
-async function getBookCatalogJson_common(reptileType, url, callback, errorback){
+async function getBookCatalogJson_common(reptileType, url, callback, errorback) {
     let start = 0;
     startRp();
+
     async function startRp() {
-        start++ ;
+        start++;
         let option = {
-            uri:url,
-            encoding : null,
-            transform: function(body) {
+            uri: url,
+            encoding: null,
+            transform: function (body) {
                 // let body2 = iconv.decode(body, 'gbk');  //用来查看页面
-                return cheerio.load(iconv.decode(body, reptileCommon[reptileType].code),{decodeEntities: false});
+                return cheerio.load(iconv.decode(body, reptileCommon[reptileType].code), {decodeEntities: false});
             },
-            headers:{
+            headers: {
                 //模拟谷歌浏览器
-                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
+                "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
             }
         }
         // let ip = await tool.redisData.ipList.getRandomIpList();
         // if(ip) option.proxy = ip;
         global.server && (option.proxy = global.serverProxy);
-        rp(option).then(async function($){
+        timoRp(option).then(async function ($) {
             let title = reptileCommon[reptileType].bookTitle($);
             let author = reptileCommon[reptileType].bookAuthor($);
             let updateTime = reptileCommon[reptileType].getUpdateTime($);
@@ -41,38 +42,38 @@ async function getBookCatalogJson_common(reptileType, url, callback, errorback){
             let bookStatus = 1;   //1表示连载 2表示完本
             //获取三天之前的时间
             let date = reptileCommon[reptileType].beforeThreeDay();
-            if(new Date(updateTime) <= date) {
+            if (new Date(updateTime) <= date) {
                 bookStatus = 2;
             }
             let count;
-            try{
+            try {
                 count = (await db.query(`select count(*) from book where name='${title}' and author='${author}'`))[0]["count(*)"];
-            }catch(err) {
-                if(errorback) errorback(err);
+            } catch (err) {
+                if (errorback) errorback(err);
                 return;
             }
-            if(count > 0){
-                if(errorback) errorback('本书已存在');
+            if (count > 0) {
+                if (errorback) errorback('本书已存在');
                 return;
             }
 
             let catalogStr = reptileCommon[reptileType].getCatalogList($);
             let catalogArr = [];
             let i = reptileCommon[reptileType].getCatalogFirstNum($), length = catalogStr.length;
-            for(i; i<length; i++) {
+            for (i; i < length; i++) {
                 catalogArr.push(reptileCommon[reptileType].getCatalog($, catalogStr, i));
             }
             let book = {
-                title:title,
-                author:author,
+                title: title,
+                author: author,
                 description: reptileCommon[reptileType].getDescription($),
-                imgUrl:reptileCommon[reptileType].getBookImgUrl($),
-                baseUrl:tool.getHost(url),
-                originUrl:url,
+                imgUrl: reptileCommon[reptileType].getBookImgUrl($),
+                baseUrl: tool.getHost(url),
+                originUrl: url,
                 // catalog:catalogArr,
-                updateTime:updateTime,
-                bookType:bookType,
-                bookStatus:bookStatus,
+                updateTime: updateTime,
+                bookType: bookType,
+                bookStatus: bookStatus,
                 reptileType: reptileType
             };
 
@@ -95,12 +96,13 @@ async function getBookCatalogJson_common(reptileType, url, callback, errorback){
             await db.query(catalogSql);
 
             // saveJson(book)
-            if(callback) callback();
+            if (callback) callback();
 
-        }).catch(function(err){
-            if(start >= 10) {
-                if(errorback) errorback(err);
+        }).catch(function (err) {
+            if (start >= 10) {
+                if (errorback) errorback(err);
             } else {
+                console.log("爬取失败：" + err);
                 startRp();
             }
         });

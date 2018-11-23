@@ -1,4 +1,4 @@
-const {fs, rp, path, tool, log,cheerio,iconv, db} = require("../tool/require");
+const {fs, rp,timoRp, path, tool, log,cheerio,iconv, db} = require("../tool/require");
 const getImg = require("./getImg");
 let reptileCommon = require("./common/reptileCommon");
 // module.exports = updateBookInfo2;
@@ -38,7 +38,7 @@ async function updateBookInfo_common(reptileType, book, bookId, callback, errorb
         // let ip = await tool.redisData.ipList.getRandomIpList();
         // if(ip) option.proxy = ip;
         global.server && (option.proxy = global.serverProxy);
-        rp(option).then(async function($){
+        timoRp(option).then(async function($){
             let updateTime = reptileCommon[reptileType].getUpdateTime($);
             let bookType = reptileCommon[reptileType].getBookType($);
             let bookStatus = 1;   //1表示连载 2表示完本

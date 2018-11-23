@@ -1,6 +1,6 @@
 
 
-const { oauth, tool, db, log, rp, request, cheerio, iconv } = require("../../tool/require");
+const { oauth, tool, db, log, rp,timoRp, request, cheerio, iconv } = require("../../tool/require");
 
 /*
 * 西刺
@@ -25,7 +25,7 @@ async function getIpList(page) {
         // let ip = await tool.redisData.ipList.getRandomIpList();
         // if(ip) option.proxy = ip;
 
-        rp(option).then(function(data){
+        timoRp(option).then(function(data){
             let $ = data[0];
             let ipList = $("#ip_list tr");
             let i = 1, length = ipList.length;

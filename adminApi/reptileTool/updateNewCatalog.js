@@ -1,4 +1,4 @@
-const {fs, rp, path, tool, db, cheerio, iconv, log} = require("../tool/require");
+const {fs, rp,timoRp, path, tool, db, cheerio, iconv, log} = require("../tool/require");
 
 const getCatalog = require("./getCatalog");
 let reptileCommon = require("./common/reptileCommon");
@@ -40,7 +40,7 @@ async function updateBookNewCatalog_common(sqlBook, reptileType) {
             // let ip = await tool.redisData.ipList.getRandomIpList();
             // if (ip) option.proxy = ip;
             global.server && (option.proxy = global.serverProxy);   //启用代理
-            rp(option).then(async ($) => {
+            timoRp(option).then(async ($) => {
                 let firstNum = reptileCommon[reptileType].getCatalogFirstNum($);
                 let nowCatalog = reptileCommon[reptileType].getCatalogList($);
                 nowCatalog.splice(0, firstNum);    //截去前面几个
