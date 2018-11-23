@@ -7,8 +7,8 @@ let reptileCommon = require("../../reptileTool/common/reptileCommon");
 let lastTime = 0;
 router.use('', oauth(),  async function(req, res, next) {
     let startTime = new Date().getTime();
-    if(startTime - lastTime <= 1000*60*60 * 12){  //距离上次爬取超过一个小时
-        res.send(tool.toJson(null, '爬取全部书本图片功能，12个小时只能爬取一次', 1002));
+    if(startTime - lastTime <= 1000*60*60 * 1){  //距离上次爬取超过1个小时
+        res.send(tool.toJson(null, '爬取全部书本图片功能，1个小时只能爬取一次', 1002));
         return;
     }
     lastTime = startTime;
