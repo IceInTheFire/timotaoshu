@@ -14,7 +14,7 @@ let ipQueue = async.queue(function (obj, cb) {
         obj.error && obj.error(err);
         cb(err);
     });
-}, 100);
+}, 500);
 
 ipQueue.empty = function() {
     // console.log("当最后一个任务交给worker执行时，会调用empty函数");

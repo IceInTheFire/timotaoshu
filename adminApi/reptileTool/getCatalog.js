@@ -1,12 +1,11 @@
 const {fs, rp, cheerio, iconv, path, tool, wss, log, db} = require("../tool/require");
 let reptileCommon = require("./common/reptileCommon")
 
-module.exports = async (bookId, reptileType, baseUrl, bookName, catalog, noIsRepeat) => {
-    var reptileType = parseInt(reptileType);
-    return getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat, reptileType);
+module.exports = async (bookId, reptileType, baseUrl, bookName, catalog, noIsRepeat, timeout) => {
+    return getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat, parseInt(reptileType), parseInt(timeout) || 10000);
 }
 
-async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat, reptileType) {
+async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat, reptileType, timeout) {
     return new Promise(async (resolove, reject) => {
         let start = 0;
         startRp();
@@ -27,7 +26,7 @@ async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat,
                     // return [cheerio.load(iconv.decode(body, 'utf-8'), {decodeEntities: false}),iconv.decode(body, 'utf-8')];
                     return [cheerio.load(iconv.decode(body, reptileCommon[reptileType].code), {decodeEntities: false}),iconv.decode(body, reptileCommon[reptileType].code)];
                 },
-                timeout: 5000
+                timeout: timeout
             };
             let ip = await tool.redisData.ipList.getRandomIpList();
             if(ip) option.proxy = ip;

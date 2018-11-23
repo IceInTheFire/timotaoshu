@@ -95,7 +95,7 @@ router.use('', oauth(4008), async function (req, res, next) {
         let bookId = errorObj.bookId;
         let result = "";
         tool.catalogQueue.push({
-            params: [bookId, errorObj.reptileType, errorObj.originUrl, errorObj.bookName, catalog, true],
+            params: [bookId, errorObj.reptileType, errorObj.originUrl, errorObj.bookName, catalog, true, 20000],
             pro: getCatalog,
             result: (data) => {
                 result = data;

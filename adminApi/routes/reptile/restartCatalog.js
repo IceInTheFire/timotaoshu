@@ -48,7 +48,7 @@ router.use('', oauth(4007),  async function(req, res, next) {
     * 只爬取一章
     * */
     tool.catalogQueue.push({
-        params:[errorObj.bookId, errorObj.reptileType, errorObj.originUrl, errorObj.bookName ,catalog, true],
+        params:[errorObj.bookId, errorObj.reptileType, errorObj.originUrl, errorObj.bookName ,catalog, true, 20000],
         pro:getCatalog,
         result:() => {
             // global.isReptile = false;

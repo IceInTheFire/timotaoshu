@@ -29,7 +29,7 @@ let catalogQueue = async.queue(function (obj, cb) {
         console.log(err);
         cb(err);
     });
-}, 100);
+}, 500);
 
 
 catalogQueue.empty = function() {
