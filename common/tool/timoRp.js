@@ -18,7 +18,7 @@ const timoRp = function(options) {
                 }
             } else {
                 if(!error) {
-                    reject(error + "状态:" + response.statusCode)
+                    reject("状态:" + response.statusCode)
                 } else {
                     reject(error);
                 }

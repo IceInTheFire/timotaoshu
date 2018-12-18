@@ -22,14 +22,11 @@ async function getBookUrl_common(reptileType, bookName, isProxy){
         }
     };
 
-    if(isProxy) {
-        // global.server && (option.proxy = global.serverProxy);
-        if(global.server) {
-            option.proxy = global.serverProxy
-        }  else {
-            let ip = await tool.redisData.ipList.getRandomIpList();
-            if(ip) option.proxy = ip;
-        }
+    if(isProxy && global.server) {
+        option.proxy = global.serverProxy
+    } else {
+        let ip = await tool.redisData.ipList.getRandomIpList();
+        if(ip) option.proxy = ip;
     }
 
     return new Promise((resolve,reject) => {
