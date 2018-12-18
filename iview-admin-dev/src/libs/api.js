@@ -41,7 +41,11 @@ export default {
         getProgressList:'/reptile/getProgressList',
         deleteError:'/reptile/deleteError',
         restartCatalog:'/reptile/restartCatalog',
-        oneKeyRestartCatalog:'/reptile/oneKeyRestartCatalog'
+        oneKeyRestartCatalog:'/reptile/oneKeyRestartCatalog',
+        addChannel:'/reptile/addChannel',
+        editChannel:'/reptile/editChannel',
+        updateChannelSearch:'/reptile/updateChannelSearch',
+        deleteChannel:'/reptile/deleteChannel',
     },
     ip:{
         list:"/ip",

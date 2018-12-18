@@ -18,7 +18,7 @@ router.use('', oauth(1301),  async function(req, res, next) {
         res.send(tool.toJson(null, 'bookName不可为空', 1002));
         return;
     }
-    let bookList = await db.query(`select * from book where id=${bookId} and name='${bookName}'`);
+    let bookList = await db.query(`select * from book where id=${bookId} and name="${bookName}"`);
 
     if(bookList.length <= 0){
         res.send(tool.toJson(null, '没有这本书', 1002));
@@ -27,7 +27,7 @@ router.use('', oauth(1301),  async function(req, res, next) {
     await db.execTrans([
         `delete from catalog where bookId = ${bookId}`,
         `delete from book where id = ${bookId}`,
-        `delete from progresserror where bookName='${bookName}'`
+        `delete from progresserror where bookName="${bookName}"`
     ]);
 
     tool.deleteAll(fs, path.join(__dirname, '../../../books/' + bookId));

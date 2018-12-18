@@ -2,13 +2,9 @@ const redisData = require('./redisData.js');
 const md5 = require('./md5.js');
 const ipQueue = require("./ipQueue.js");
 const catalogQueue = require("./catalogQueue.js");
+const queue = require("./queue.js");
 const permissionList = require("./permissionList.js");
-let iconv;
-if(global.timotaoApi) {
-    iconv = global.timotaoApi.iconv;
-} else {
-    iconv = require("iconv-lite");
-}
+let iconv = require("iconv-lite");
 
 const toJson = function(data, msg, code) {
     return JSON.stringify({
@@ -206,7 +202,7 @@ function sleep(millisecond) {
     });
 }
 
-//数组去重  去掉false "" undefined
+//数组去重  去掉false "" undefined null
 function distinct(arr){
     var i, j, len = arr.length;
     for(i = 0; i<len; i++) {
@@ -323,11 +319,26 @@ function filterHtmlOrContainer(str,isbool) {
 *
 * 同时也为了防止sql注入   把英文双引号改成了英文单引号
 *
-* sql语法尽量用单引号
+* sql语法尽量用双引号
 * */
 function getParams(req, name){
-    return (req.query[name] || req.body[name] || '').replace('"',"'");
+    return (req.query[name] || req.body[name] || '').replace(/"/g,"'");
 }
+
+/*
+* 存储到sql的时候，将双引号转义了
+* 用三个转义的原因是:在字符串会生成转义的，但mysql里也需要被转义
+* 例子：
+* 传入:  `你好，"双双"`
+* 经toSql转换，生成的字符串是，`你好，\"双双\"`
+* mysql里需要的就是：`你好，\"双双\"`
+*
+* */
+function toSql(param){
+    param = param || '';
+    return param.replace(/"/g,"\\\"");
+}
+
 
 /*
 * 允许访问
@@ -372,6 +383,8 @@ module.exports = {
     allPermissionList:permissionList.allPermissionList,
     ipQueue,
     catalogQueue,
+    queue,
     allowVisit,
-    getParams
+    getParams,
+    toSql
 }

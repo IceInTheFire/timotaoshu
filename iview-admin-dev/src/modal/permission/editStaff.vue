@@ -1,29 +1,27 @@
 <template>
-    <div>
-        <Modal v-model="modal.showModal" :closable='false' :mask-closable=false :width="500">
-            <h3 slot="header" class="modal-header-color">{{isAdd?"新增":"编辑"}}职员</h3>
-            <Form ref="staffFrom" :model="staff" :label-width="100" label-position="right" :rules="rules">
-                <Form-item label="职员花名" prop="staffName">
-                    <Input v-model="staff.staffName" placeholder="请输入职员花名"></Input>
-                </Form-item>
-                <Form-item label="职员手机" prop="staffMobile">
-                    <Input v-model="staff.staffMobile" placeholder="请输入职员号码"></Input>
-                </Form-item>
-                <Form-item label="职员密码" prop="staffPwd">
-                    <Input v-model="staff.staffPwd" placeholder="请输入职员密码，如若不填，默认密码为123456"></Input>
-                </Form-item>
-                <Form-item label="职员权限" prop="roleId" >
-                    <Select v-model="staff.roleId" placeholder="请选择职员权限">
-                        <Option v-for="item in roleList" :value="item.id" :key="item.id">{{ item.roleName }}</Option>
-                    </Select>
-                </Form-item>
-            </Form>
-            <div slot="footer">
-                <Button type="text"  @click="onClickCancel">取消</Button>
-                <Button type="primary" :loading="loading" @click="onClickSave">{{isAdd?"新增":"保存"}}</Button>
-            </div>
-        </Modal>
-    </div>
+    <Modal v-model="modal.showModal" :closable='false' :mask-closable='true' :width="500" @on-cancel="onClickCancel">
+        <h3 slot="header" class="modal-header-color">{{isAdd?"新增":"编辑"}}职员</h3>
+        <Form ref="staffFrom" :model="staff" :label-width="100" label-position="right" :rules="rules">
+            <Form-item label="职员花名" prop="staffName">
+                <Input v-model="staff.staffName" placeholder="请输入职员花名"></Input>
+            </Form-item>
+            <Form-item label="职员手机" prop="staffMobile">
+                <Input v-model="staff.staffMobile" placeholder="请输入职员号码"></Input>
+            </Form-item>
+            <Form-item label="职员密码" prop="staffPwd">
+                <Input v-model="staff.staffPwd" placeholder="请输入职员密码，如若不填，默认密码为123456"></Input>
+            </Form-item>
+            <Form-item label="职员权限" prop="roleId" >
+                <Select v-model="staff.roleId" placeholder="请选择职员权限">
+                    <Option v-for="item in roleList" :value="item.id" :key="item.id">{{ item.roleName }}</Option>
+                </Select>
+            </Form-item>
+        </Form>
+        <div slot="footer">
+            <Button type="text"  @click="onClickCancel">取消</Button>
+            <Button type="primary" :loading="loading" @click="onClickSave">{{isAdd?"新增":"保存"}}</Button>
+        </div>
+    </Modal>
 </template>
 
 <style scoped rel="stylesheet/less" type="text/less" lang="less">

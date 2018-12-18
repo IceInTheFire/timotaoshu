@@ -1,6 +1,8 @@
 <template>
     <div>
-        <Modal v-model="modal.showModal" :closable='false' :mask-closable=false :width="500">
+        <!--:closable  启用右上角关闭（含Esc键）-->
+        <!--mask-closable  启用遮罩层关闭-->
+        <Modal v-model="modal.showModal" :closable='false' :mask-closable='true' :width="500" @on-cancel="onClickCancel">
             <h3 slot="header" class="modal-header-color">模板</h3>
             <div slot="footer">
                 <Button type="text" @click="onClickCancel">取消</Button>
@@ -15,7 +17,7 @@
 </style>
 <script type="text/ecmascript-6">
     export default {
-        name: "edit-role",
+        name: "edit-template",
         props:{
             modal: {
                 type: Object,
@@ -41,6 +43,10 @@
 
         },
         mounted() {
+            this.$on('reset', (data) => {
+                console.log(data);
+                console.log("初始化");
+            });
         },
         beforeDestroy() {
 

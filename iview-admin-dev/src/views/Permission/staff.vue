@@ -1,6 +1,6 @@
 <template>
     <layout>
-        <edit-staff :modal="modal" v-on:getStaffList="getStaffList"></edit-staff>
+        <edit-staff :modal="modal" v-on:getStaffList="getStaffList" ref="editStaff"></edit-staff>
         <Card>
             <Row>
                 <Col span="12" class="tl">
@@ -61,7 +61,7 @@
                                     },
                                     on:{
                                         click: () => {
-                                            this.$children[0].$children[0].$emit('reset',params.row);
+                                            this.$refs.editStaff.$emit('reset', params.row);
                                             this.modal.showModal = true;
                                         }
                                     }
@@ -114,7 +114,7 @@
                 });
             },
             onClickAddStaff(){
-                this.$children[0].$children[0].$emit('reset');
+                this.$refs.editStaff.$emit('reset');
                 this.modal.showModal = true;
             },
             onClickDel(ids){

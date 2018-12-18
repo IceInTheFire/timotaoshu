@@ -26,7 +26,7 @@
         data() {
             return {
                 loading:false,
-                reptileList:util.reptileList,
+                reptileList:{length:0},
                 columns:[
                     {
                         title: 'id',
@@ -36,7 +36,7 @@
                         title: '备注',
                         key: 'reptileType',
                         render: (h, params) => {
-                            return  h('span', {}, `${this.reptileList[params.row.reptileType].remark}`);
+                            return  h('span', {}, `${this.reptileList[params.row.reptileType].name}`);
                         }
                     },
                     {
@@ -130,7 +130,8 @@
                 },
                 total:0,
                 bookName:'',
-                showSimpleReptile:""
+                showSimpleReptile:"",
+                first:true,//第一次
             }
         },
         computed: {},
@@ -245,30 +246,53 @@
                     console.error(err);
                     this.loading = false;
                 });
+            },
+            getReptileList() {  //获取配置列表
+                let obj = {
+                    params:{
+                    }
+                };
+                util.post.reptile.list(obj).then((data) => {
+                    // this.reptileList = this.reptileList.concat(data.reptileList);
+                    this.reptileList = {};
+                    data.reptileList.forEach((value,index) => {
+                        this.reptileList[value.reptileTypeId] = value;
+                    })
+                    this.reptileList.length = data.reptileList.length;
+                }).catch((error) => {});
+            },
+            activatedStart(){
+                let bookName = this.$route.query.bookName || "";
+                if(bookName != this.bookName || this.first) {
+                    this.bookName = bookName;
+                    this.onClickSearch();
+                    this.first = false;
+                }
+            },
+            start(){
+                if(this.reptileList.length > 0) {
+                    this.activatedStart();
+                } else {
+                    let set = setTimeout(() => {
+                        this.start();
+                        clearTimeout(set);
+                        set = null;
+                    },300);
+                }
             }
         },
         components: {},
         created() {
-
+            this.getReptileList();
         },
         mounted() {
-            let bookName = this.$route.query.bookName || "";
-            if(bookName != this.bookName) {
-                this.bookName = bookName;
-            }
-            this.onClickSearch();
         },
         beforeDestroy() {
-
         },
         destroyed() {
         },
         activated() {
-            let bookName = this.$route.query.bookName || "";
-            if(bookName != this.bookName) {
-                this.bookName = bookName;
-                this.onClickSearch();
-            }
+            this.start();
         },
         deactivated() {
 

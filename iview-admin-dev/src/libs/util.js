@@ -265,38 +265,6 @@ util.checkUpdate = function (vm) {
     });
 };
 
-util.reptileList = [
-    {
-        "id":0,
-        "codeType":"gbk",
-        "originUrl":"http://www.biquge.com.tw/",
-        "remark":"笔趣阁1",
-        "placeholder":'请输入您想爬取的小说名'
-    },
-    {
-        "id":1,
-        "codeType":"gbk",
-        "originUrl":"http://www.biqugexsw.com/",
-        "remark":"笔趣阁小说网",
-        "placeholder":'请输入您想爬取的小说或作者名'
-    },
-    {
-        "id":2,
-        "codeType":"gbk",
-        "originUrl":"https://www.biquge5200.cc/",
-        "remark":"笔趣阁5200",
-        "placeholder":'请输入您想爬取的小说或作者名'
-    },
-    {
-        "id": 3,
-        "codeType": "utf-8",
-        "originUrl": "https://www.biquge.cc/",
-        "remark": "笔趣阁备用站",
-        "placeholder":'请输入您想爬取的小说或作者名'
-    }
-];
-
-
 
 var post = {};
 var get = {};

@@ -17,7 +17,11 @@ const timoRp = function(options) {
                     resolve(body);
                 }
             } else {
-                reject(error);
+                if(!error) {
+                    reject(error + "状态:" + response.statusCode)
+                } else {
+                    reject(error);
+                }
             }
         }, time(options.timeout));
         /*

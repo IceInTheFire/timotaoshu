@@ -1,21 +1,19 @@
 <template>
-    <div>
-        <Modal v-model="modal.showModal" :closable='false' :mask-closable=false :width="500">
-            <h3 slot="header" class="modal-header-color">{{isAdd?"新增角色":"编辑角色"}}</h3>
-            <Form ref="roleForm" :model="role" :label-width="100" label-position="right" :rules="rules">
-                <Form-item label="角色名称" prop="roleName" >
-                    <Input v-model="role.roleName" placeholder="请输入角色名称" ></Input>
-                </Form-item>
-                <Form-item label="选择菜单" >
-                    <Tree :data="role.permission" show-checkbox @on-check-change="onCheckChange" ></Tree>
-                </Form-item>
-            </Form>
-            <div slot="footer">
-                <Button type="text"  @click="onClickCancel">取消</Button>
-                <Button type="primary" :loading="loading" @click="onClickSave">{{isAdd?"新增":"保存"}}</Button>
-            </div>
-        </Modal>
-    </div>
+    <Modal v-model="modal.showModal" :closable='false' :mask-closable='true' :width="500" @on-cancel="onClickCancel">
+        <h3 slot="header" class="modal-header-color">{{isAdd?"新增角色":"编辑角色"}}</h3>
+        <Form ref="roleForm" :model="role" :label-width="100" label-position="right" :rules="rules">
+            <Form-item label="角色名称" prop="roleName" >
+                <Input v-model="role.roleName" placeholder="请输入角色名称" ></Input>
+            </Form-item>
+            <Form-item label="选择菜单" >
+                <Tree :data="role.permission" show-checkbox @on-check-change="onCheckChange" ></Tree>
+            </Form-item>
+        </Form>
+        <div slot="footer">
+            <Button type="text"  @click="onClickCancel">取消</Button>
+            <Button type="primary" :loading="loading" @click="onClickSave">{{isAdd?"新增":"保存"}}</Button>
+        </div>
+    </Modal>
 </template>
 
 <style scoped rel="stylesheet/less" type="text/less" lang="less">

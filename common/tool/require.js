@@ -1,62 +1,17 @@
-let fs, rp, request, timoRp, cheerio, iconv, morgan, path, db, tool, oauth, log, async,xlsx;
-// ,wss;
-
-if(global.timotaoApi){
-    fs = global.timotaoApi.fs;
-    rp = global.timotaoApi.rp;
-    request = global.timotaoApi.request;
-    timoRp = global.timotaoApi.timoRp
-    cheerio = global.timotaoApi.cheerio;
-    iconv = global.timotaoApi.iconv;
-    morgan = global.timotaoApi.morgan;
-    path = global.timotaoApi.path;
-    db = global.timotaoApi.db;
-    tool = global.timotaoApi.tool;
-    oauth = global.timotaoApi.oauth;
-    log = global.timotaoApi.log;
-    async = global.timotaoApi.async;
-    xlsx = global.timotaoApi.xlsx;
-    // wss = global.timotaoApi.wss;
-} else {
-    fs = require("fs");
-    rp = require("request-promise");
-    request = require("request");
-    timoRp = require("./timoRp.js");
-    cheerio = require("cheerio");
-    iconv = require("iconv-lite");
-    morgan = require("morgan");
-    path = require("path");
-    db = require('./mysql.js');
-    tool = require('./tool.js');
-    oauth = require('./oauth.js');
-    log = require('tracer').colorConsole();
-    // async = require('../../node_modules/async');
-    async = require("async");
-    xlsx = require('node-xlsx');
-    // wss = require('./wss.js');
-    global.timotao = {
-        fs,
-        rp,
-        request,
-        timoRp,
-        cheerio,
-        iconv,
-        morgan,
-        path,
-        db,
-        tool,
-        oauth,
-        log,
-        async,
-        xlsx
-        // wss
-    }
-}
-
-
-
-
-
+let fs = require("fs");
+let rp = require("request-promise");
+let request = require("request");
+let timoRp = require("./timoRp.js");
+let cheerio = require("cheerio");
+let iconv = require("iconv-lite");
+let morgan = require("morgan");
+let path = require("path");
+let db = require("./mysql.js");
+let tool = require("./tool.js");
+let oauth = require("./oauth.js");
+let log = require('tracer').colorConsole();
+let async = require("async");
+let xlsx = require('node-xlsx');
 
 module.exports = {
     fs,

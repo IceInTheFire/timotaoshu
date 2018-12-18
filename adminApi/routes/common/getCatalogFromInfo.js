@@ -26,20 +26,20 @@ router.use('', oauth(),  async function(req, res, next) {
     let fromSql = `catalog inner join book on book.id = catalog.bookId`;
     let whereSqlArr = [];
     if(bookId) {
-        whereSqlArr.push(`catalog.bookId='${bookId}'`);
+        whereSqlArr.push(`catalog.bookId="${bookId}"`);
     }
     if(bookName) {
-        whereSqlArr.push(`book.name='${bookName}'`);
+        whereSqlArr.push(`book.name="${bookName}"`);
     }
     if(catalogName) {
-        whereSqlArr.push(`catalog.name='${catalogName}'`);
+        whereSqlArr.push(`catalog.name="${catalogName}"`);
     }
     if(catalogId) {
-        whereSqlArr.push(`catalog.id='${catalogId}'`);
+        whereSqlArr.push(`catalog.id="${catalogId}"`);
     }
     let whereSql = ``;
     if(whereSqlArr.length > 0) {
-        whereSql = `where ${whereSqlArr.join(' and ')}`;
+        whereSql = `where ${whereSqlArr.join(" and ")}`;
     }
 
     let list = await db.query(`select ${selectSql} from ${fromSql} ${whereSql} ORDER BY id ASC limit ${(page-1) * limit},${limit}` );

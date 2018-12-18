@@ -19,6 +19,9 @@ router.use('', oauth(6104),  async function(req, res, next) {
         } else if(id == "1") {
             res.send(tool.toJson(null, `职员Id为1不允许更改删除`, 1002));
             return;
+        } else if(id =="48") {
+            res.send(tool.toJson(null, `公开用户不允许更改删除`, 1002));
+            return;
         } else if(id == req.user.id) {
             res.send(tool.toJson(null, `自己不能删除自己`, 1002));
             return;

@@ -38,11 +38,6 @@ export const page500 = {
 };
 
 
-export const preview = {
-    path: '/preview',
-    name: 'preview',
-    component: () => import('@/views/form/article-publish/preview.vue')
-};
 
 //锁页面的  页面
 export const locking = {
@@ -77,7 +72,7 @@ export const appRouter = [
         access:["2000","4000"],
         children: [
             { path: 'ipList', title: '代理IP', access:["2000"], name: 'reptile-tool_ipList', component: () => import('@/views/reptile-tool/ipList.vue') },
-            { path: 'index', title: '爬取配置', access:["4000"], name: 'reptile-tool_index', component: () => import('@/views/reptile-tool/index.vue') },
+            { path: 'channel', title: '来源渠道', access:["4000"], name: 'reptile-tool_index', component: () => import('@/views/reptile-tool/channel.vue') },
             { path: 'progress-error', title: '爬取错误/遗漏', access:["4000"], name: 'reptile-tool-error', component: () => import('@/views/reptile-tool/progress-error.vue') },
             { path: 'progress', title: '爬书进度', access:["4000"], name: 'reptile-tool_progress', component: () => import('@/views/reptile-tool/progress.vue') },
             { path: 'book', title: '搜书爬取', access:["4000"], name: 'reptile-tool_book', component: () => import('@/views/reptile-tool/book.vue') }
@@ -130,14 +125,13 @@ export const appRouter = [
         children: [
             { path: 'index', title: '图片上传', access:["7000"], name: 'img-list', component: () => import('@/views/img/index.vue') },
          ]
-    }
+    },
 ];
 
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [
     loginRouter,
     otherRouter,
-    preview,
     locking,
     ...appRouter,
     page500,

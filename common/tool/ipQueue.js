@@ -1,15 +1,11 @@
-let async;
-if(global.timotaoApi) {
-    async = global.timotaoApi.async;
-} else {
-    async = require("async");
-}
+let async = require("async");
+
 let ipQueue = async.queue(function (obj, cb) {
     obj.pro.apply(this, obj.params).then((data) => {
         obj.result && obj.result.apply(this, data);
         cb();
     }).catch((err) => {
-        console.log("报错啦");
+        console.log("ipQueue报错啦");
         console.log(err);
         obj.error && obj.error(err);
         cb(err);

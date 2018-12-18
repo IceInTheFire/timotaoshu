@@ -1,15 +1,9 @@
 const common = require("../../common/tool/require");
 
-let wss;
-if(global.timotaoApi) {
-    wss = global.timotaoApi.wss;
-} else {
-    wss = require("./wss");
-    global.timotaoApi = {
-        wss:wss
-    };
-}
+let wss = require("./wss");
+let reptileConfig = require('../../common/reptileConfig');
 
 common.wss = wss;
+common.reptileConfig = reptileConfig;
 
 module.exports = common;

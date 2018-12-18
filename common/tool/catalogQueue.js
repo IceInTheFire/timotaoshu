@@ -1,19 +1,8 @@
-let async;
-if(global.timotaoApi) {
-    async = global.timotaoApi.async;
-} else {
-    async = require("async");
-}
-// let count = 0;
-// let response = 0;
-let catalogQueue = async.queue(function (obj, cb) {
-    // count++;
+let async = require("async");
 
-    // console.log(count);
+let catalogQueue = async.queue((obj, cb) => {
+
     obj.pro.apply(this, obj.params).then((data) => {
-        // obj.result && obj.result.apply(this, data);
-        // response++;
-        // console.log(response);
         if(typeof data == "string" && data.indexOf('连接10次都是失败') == 0) {
             obj.error && obj.error();
             cb();
@@ -22,14 +11,12 @@ let catalogQueue = async.queue(function (obj, cb) {
             cb();
         }
     }).catch((err) => {
-        // response++;
-        // console.log(response);
-        obj.error && obj.error(err);
-        console.log("报错");
+        console.log("catalogQueue报错");
         console.log(err);
+        obj.error && obj.error(err);
         cb(err);
     });
-}, 500);
+}, 300);
 
 
 catalogQueue.empty = function() {

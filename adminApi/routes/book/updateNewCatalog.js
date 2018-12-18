@@ -17,7 +17,7 @@ router.use('', oauth(1204),  async function(req, res, next) {
         return;
     }
 
-    let bookList = await db.query(`select * from book where id=${bookId} and name='${bookName}'`);
+    let bookList = await db.query(`select * from book where id=${bookId} and name="${bookName}"`);
 
     let arr = [];
     let i = 0, length = bookList.length;

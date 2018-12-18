@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { log,db,oauth, tool } = require("../../tool/require");
+const { log,db,oauth, tool,reptileConfig } = require("../../tool/require");
 
 /*
 *   page 页数
@@ -9,15 +9,13 @@ const { log,db,oauth, tool } = require("../../tool/require");
 * */
 router.use('', oauth(4005),  async function(req, res, next) {
 
-    let limit = tool.getParams(req, 'limit') || 20;
-    let page = tool.getParams(req, 'page') || 1;
+    // let limit = tool.getParams(req, 'limit') || 20;
+    // let page = tool.getParams(req, 'page') || 1;
 
     try{
-        let allData = await db.query(`select id,codeType,originUrl,remark from reptiletool` );
-        await tool.redisData.reptileList.updateReptileList(allData);
+        let reptileList = await reptileConfig.refreshReptileList();
+        let count = reptileList.length;
 
-        let count = await tool.redisData.reptileList.getReptileCount();
-        let reptileList = await tool.redisData.reptileList.getReptileList((page-1)*limit, page*limit-1);
         reptileList.forEach((value, index) => {
             reptileList[index] = JSON.parse(value);
         });

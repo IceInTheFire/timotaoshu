@@ -27,19 +27,19 @@ router.use('', oauth(6102),  async function(req, res, next) {
         res.send(tool.toJson(null, "手机号格式不对", 1002));
         return
     }
-    let nameCount = (await db.query(`select count(*) from users where name='${name}'`))[0]["count(*)"];
+    let nameCount = (await db.query(`select count(*) from users where name="${name}"`))[0]["count(*)"];
     if(nameCount > 0) {
         res.send(tool.toJson(null, "已有该职员花名存在", 1002));
         return
     }
-    let mobileCount = (await db.query(`select count(*) from users where mobile='${mobile}'`))[0]["count(*)"];
+    let mobileCount = (await db.query(`select count(*) from users where mobile="${mobile}"`))[0]["count(*)"];
     if(mobileCount > 0) {
         res.send(tool.toJson(null, "已有该手机存在", 1002));
         return
     }
 
     try{
-        await db.query(`insert into users (name, pwd, mobile, roleId)Values('${name}','${pwd}','${mobile}', ${roleId})`);
+        await db.query(`insert into users (name, pwd, mobile, roleId)Values("${name}","${pwd}","${mobile}", ${roleId})`);
         res.send(tool.toJson({successMsg:"添加成功"}, '', 1000));
     }catch(err) {
         res.send(tool.toJson(null, `添加失败，失败原因：${err}`, 1002));

@@ -114,10 +114,10 @@ export default {
                             },
                             on:{
                                 click: (e) =>{
-                                    this.$router.push("/reptile-tool/index");
+                                    this.$router.push("/reptile-tool/channel");
                                 }
                             },
-                        }, this.reptileList[params.row.reptileType].remark)
+                        }, this.reptileList[params.row.reptileType].name)
                     }
                 },
                 {
@@ -354,7 +354,7 @@ export default {
             },
             bookTypeList:[],
             bookType:'',
-            reptileList:util.reptileList
+            reptileList:{length:0}
         };
     },
     computed: {},
@@ -568,7 +568,92 @@ export default {
                     this.$router.push("/reptile-tool/progress-error?bookName=" + bookName);
                 }
             });
+        },
+        getReptileList() {  //获取配置列表
+            let obj = {
+                params:{
+                }
+            };
+            util.post.reptile.list(obj).then((data) => {
+                // data.reptileList.forEach((value, index) => {
+                //     value.reptileTypeId = value.reptileTypeId + '';     //转成字符串，因为checkbox    int和string不相等
+                //     this.remarkList[value.reptileTypeId] = value.name;
+                // });
+                this.reptileList = {};
+                data.reptileList.forEach((value,index) => {
+                    this.reptileList[value.reptileTypeId] = value;
+                })
+                this.reptileList.length = data.reptileList.length;
+                // this.reptileList = this.reptileList.concat(data.reptileList);
+                // this.reptileType = (this.$route.query.reptileType && this.$route.query.reptileType.split(',')) || (localStorage.reptileType && localStorage.reptileType.split(',')) || [];
+            }).catch((error) => {});
+        },
+        activatedStart() {
+            let page = parseInt(this.$route.query.page) || 1;
+            let limit = parseInt(this.$route.query.limit) || 10;
+            // let selectName = this.$route.query.selectName;
+            // let selectName = this.$route.query.selectName;
+            let type = parseInt(this.$route.query.type) || "";
+            let bookType = this.$route.query.bookType || "";
+            let bookStatus = this.$route.query.bookStatus || "";
+            let isJin = this.$route.query.isJin || "";
+
+            let selectName = "";
+            let inputValue = "";
+            if(this.bookTypeList.length <= 0) {
+                this.getBookTypeList();
+            }
+
+            this.selectList.forEach((value, index) =>{
+                if(this.$route.query[value.value]) {
+                    selectName = value.value;
+                    inputValue = this.$route.query[value.value]
+                }
+            });
+
+            if(page !== this.params.page || limit !== this.params.limit || type !== this.type || selectName !== this.selectName || inputValue !== this.inputValue || bookType !== this.bookType || this.bookStatus !== bookStatus || this.isJin !== isJin) {
+
+                if(this.type !== type) this.type = type;
+                if(this.selectName !== selectName) this.selectName = selectName;
+                if(this.inputValue !== inputValue) this.inputValue = inputValue;
+                if(this.bookStatus !== bookStatus) this.bookStatus = bookStatus;
+                if(this.isJin !== isJin) this.isJin = isJin;
+                if(this.bookType !== bookType) {
+                    if(this.bookTypeList.length <= 0) {
+                        this.bookTypeList = [
+                            {
+                                bookType:"全部"
+                            },
+                            {
+                                bookType:bookType
+                            }
+                        ];
+                    }
+                    this.bookType = bookType;
+                }
+                if(page !== this.params.page) this.params.page = page;
+                if(limit !== this.params.limit) this.params.limit = limit;
+
+                this.getBooks();
+            }
+            this.$nextTick(() =>{
+                this.isme = true;
+            })
+        },
+        start(){
+            if(this.reptileList.length > 0) {
+                this.activatedStart();
+            } else {
+                let set = setTimeout(() => {
+                    this.start();
+                    clearTimeout(set);
+                    set = null;
+                },300);
+            }
         }
+    },
+    created() {
+        this.getReptileList();
     },
     mounted () {
         // 设置表格高度
@@ -576,57 +661,7 @@ export default {
         // this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 240;
     },
     activated() {
-        let page = parseInt(this.$route.query.page) || 1;
-        let limit = parseInt(this.$route.query.limit) || 10;
-        // let selectName = this.$route.query.selectName;
-        // let selectName = this.$route.query.selectName;
-        let type = parseInt(this.$route.query.type) || "";
-        let bookType = this.$route.query.bookType || "";
-        let bookStatus = this.$route.query.bookStatus || "";
-        let isJin = this.$route.query.isJin || "";
-
-        let selectName = "";
-        let inputValue = "";
-        if(this.bookTypeList.length <= 0) {
-            this.getBookTypeList();
-        }
-
-        this.selectList.forEach((value, index) =>{
-            if(this.$route.query[value.value]) {
-                selectName = value.value;
-                inputValue = this.$route.query[value.value]
-            }
-        });
-
-        if(page !== this.params.page || limit !== this.params.limit || type !== this.type || selectName !== this.selectName || inputValue !== this.inputValue || bookType !== this.bookType || this.bookStatus !== bookStatus || this.isJin !== isJin) {
-
-            if(this.type !== type) this.type = type;
-            if(this.selectName !== selectName) this.selectName = selectName;
-            if(this.inputValue !== inputValue) this.inputValue = inputValue;
-            if(this.bookStatus !== bookStatus) this.bookStatus = bookStatus;
-            if(this.isJin !== isJin) this.isJin = isJin;
-            if(this.bookType !== bookType) {
-                if(this.bookTypeList.length <= 0) {
-                    this.bookTypeList = [
-                        {
-                           bookType:"全部"
-                        },
-                        {
-                            bookType:bookType
-                        }
-                    ];
-                }
-                this.bookType = bookType;
-            }
-            if(page !== this.params.page) this.params.page = page;
-            if(limit !== this.params.limit) this.params.limit = limit;
-
-            this.getBooks();
-        }
-        this.$nextTick(() =>{
-            this.isme = true;
-        })
-
+        this.start();
     },
     deactivated() {
         this.isme = false;

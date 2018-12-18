@@ -1,11 +1,13 @@
-const {fs, rp, cheerio, iconv, path, tool, wss, log, db} = require("../tool/require");
-let reptileCommon = require("./common/reptileCommon")
+const {fs, rp,timoRp, cheerio, iconv, path, tool, wss, log, db} = require("../tool/require");
+// let reptileCommon = require("./common/reptileCommon")
+let reptileCommon2 = require("./common/reptileCommon2")
 
 module.exports = async (bookId, reptileType, baseUrl, bookName, catalog, noIsRepeat, timeout) => {
-    return getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat, parseInt(reptileType), parseInt(timeout) || 10000);
+    return getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat, parseInt(reptileType), parseInt(timeout));
 }
 
 async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat, reptileType, timeout) {
+    let reptileCommon = await reptileCommon2(reptileType);
     return new Promise(async (resolove, reject) => {
         let start = 0;
         startRp();
@@ -14,8 +16,14 @@ async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat,
         let startTime = new Date().getTime();
         async function startRp() {
             start++;
+            let uri = "";
+            if(catalog.reptileAddress && catalog.reptileAddress.indexOf("http") == 0) {
+                uri = catalog.reptileAddress;
+            } else {
+                uri = baseUrl + catalog.reptileAddress;
+            }
             let option = {
-                uri:baseUrl + catalog.reptileAddress,
+                uri:uri,
                 encoding : null,
                 headers:{
                     //模拟谷歌浏览器
@@ -24,22 +32,23 @@ async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat,
                 transform: function(body, response, resolveWithFullResponse) {
                     // return cheerio.load(iconv.decode(body, 'gbk'), {decodeEntities: false});
                     // return [cheerio.load(iconv.decode(body, 'utf-8'), {decodeEntities: false}),iconv.decode(body, 'utf-8')];
-                    return [cheerio.load(iconv.decode(body, reptileCommon[reptileType].code), {decodeEntities: false}),iconv.decode(body, reptileCommon[reptileType].code)];
+                    return [cheerio.load(iconv.decode(body, reptileCommon.code), {decodeEntities: false}),iconv.decode(body, reptileCommon.code)];
                 },
-                timeout: timeout
+                timeout: timeout || 10000
             };
             let ip = await tool.redisData.ipList.getRandomIpList();
             if(ip) option.proxy = ip;
-            rp(option).then(function(data) {
+            timoRp(option).then(function(data) {
                 let $ = data[0];
                 // let body = data[1];
                 let content = "";
                 try{
-                    content = reptileCommon[reptileType].getCatalogContent($);
+                    content = reptileCommon.getCatalogContent($);
                     // bookName = hasDir(bookName);
                 }catch(err) {
                     // log.error("我只是看个问题" + bookName + "_" + book.title);
                     log.error(err);
+                    log.error(" 错误地址： " + baseUrl + catalog.reptileAddress);
                     db.query(`INSERT INTO progresserror (reptileType, originUrl, bookId, catalogId, reptileAddress, bookName, catalogName) VALUES (${reptileType}, '${baseUrl}', '${bookId}', '${catalog.id}', '${catalog.reptileAddress}', '${bookName}', '${catalog.name}')`);
                 }
 

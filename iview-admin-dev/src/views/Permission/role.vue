@@ -1,6 +1,6 @@
 <template>
     <layout>
-        <edit-role :modal="modal" v-on:getRoleList="getRoleList"></edit-role>
+        <edit-role :modal="modal" v-on:getRoleList="getRoleList" ref="editRole"></edit-role>
         <Card>
             <Row>
                 <Col span="12" class="tl">
@@ -56,7 +56,7 @@
                                     },
                                     on:{
                                         click: () => {
-                                            this.$children[0].$children[0].$emit('reset',params.row);
+                                            this.$refs.editRole.$emit('reset',params.row);
                                             this.modal.showModal = true;
                                         }
                                     }
@@ -110,7 +110,7 @@
                 });
             },
             onClickAddRole() {
-                this.$children[0].$children[0].$emit('reset',null);
+                this.$refs.editRole.$emit('reset',null);
                 this.modal.showModal = true;
             },
             onClickDel(ids) {

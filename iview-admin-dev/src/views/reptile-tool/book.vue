@@ -1,15 +1,28 @@
 <template>
     <Layout>
-        <Card>
+        <Card shadow>
             <Row>
                 <Col span="20">
-                    <Select v-model="reptileType" class="w150" placeholder=""  @on-change="selectChange">
-                        <Option v-for="item in reptileList" :value="item.id" :key="item.id">{{ item.remark }}</Option>
-                    </Select>
-                    <Input @keyup.native.13="onClickSearch"
-                           v-model="bookName" :placeholder="placeholder" clearable class="w200"></Input>
+                    <span class="span-title">搜索配置：</span>
+                    <Checkbox :indeterminate="indeterminate" :value="checkAll" @click.prevent.native="handleCheckAll()">全选</Checkbox>
+                    <CheckboxGroup v-model="reptileType" @on-change="checkAllGroupChange" style="display: inline-block;">
+                        <Checkbox v-for="item in reptileList" :label="item.reptileTypeId" :key="item.reptileTypeId">{{ item.name }}</Checkbox>
+                    </CheckboxGroup>
                 </Col>
-                <Col span="4" class="tr">
+            </Row>
+        </Card>
+        <Card>
+            <Row>
+                <Col span="18">
+                    <span class="span-title">搜索小说名或作者名：</span>
+                    <Input @keyup.native.13="onClickSearch"
+                           v-model="bookName"
+                           placeholder="请输入您想爬取的小说名或者作者名"
+                           clearable
+                           class="w300"
+                    ></Input>
+                </Col>
+                <Col span="6" class="tr">
                     <span>启用代理搜索：</span>
                     <i-switch v-model="isProxy" class="mr20" :disabled="loading"></i-switch>
                     <Button type="primary" @click="onClickSearch">搜索</Button>
@@ -21,6 +34,11 @@
         </Card>
     </Layout>
 </template>
+<style scoped rel="stylesheet/less" type="text/less" lang="less">
+    .span-title{
+        vertical-align: middle;
+    }
+</style>
 
 <script>
 import util from 'util';
@@ -30,12 +48,16 @@ export default {
     },
     data () {
         return {
+            indeterminate: false,             //如果有勾选，则为true    true
+            checkAll: true,            //如果全部勾选了，为true   true
+
             bookName:'',
             loading: false,
             columns:[
                 {
                     title: '标题',
                     key: 'title',
+                    width:400,
                     render: (h, params) => {
                         return h("div", [
                             h("span", params.row.title),
@@ -50,6 +72,16 @@ export default {
                 {
                     title: '作者',
                     key: 'author'
+                },
+                {
+                    title:'来源',
+                    key:'reptileType',
+                    render: (h, params) => {
+                        return h("span", {
+                            attrs:{
+                            }
+                        }, this.remarkList[params.row.reptileType]);
+                    }
                 },
                 {
                     title:'爬取地址',
@@ -83,16 +115,57 @@ export default {
                 }
             ],
             list:[],
-            reptileType: 0,
-            placeholder:'请输入您想爬取的小说名',
-            reptileList:util.reptileList,
-            flag: false,    //下拉框
+            reptileType: [],
+            reptileList:[],
+            remarkList:{},
             isProxy:true
         };
     },
     computed: {
     },
     methods: {
+        handleCheckAll (init) {
+            if(init) { //初始化
+                if(this.reptileType.length == this.reptileList.length) {
+                    this.indeterminate = false;
+                    this.checkAll = true;
+                } else if(this.reptileType.length >0) {
+                    this.indeterminate = true;
+                    this.checkAll = false;
+                } else {
+                    this.indeterminate = false;
+                    this.checkAll = false;
+                }
+                return ;
+            }
+
+            if (this.indeterminate) {       //如果有勾选
+                this.checkAll = false;
+            } else {
+                this.checkAll = !this.checkAll;
+            }
+            if (this.checkAll) {
+                this.reptileType = [];
+                this.reptileList.forEach((value, index) => {
+                    this.reptileType.push(value.reptileTypeId);
+                });
+            } else {
+                this.reptileType = [];
+            }
+        },
+        checkAllGroupChange (data) {
+            if (data.length === this.reptileList.length) {
+                this.indeterminate = false;
+                this.checkAll = true;
+            } else if (data.length > 0) {
+                this.indeterminate = true;
+                this.checkAll = false;
+            } else {
+                this.indeterminate = false;
+                this.checkAll = false;
+            }
+        },
+
         onClickSearch(){
             if(!this.bookName) {
                 return;
@@ -102,19 +175,23 @@ export default {
             }
             if(this.loading) return;
             localStorage.bookName = this.bookName;
-            localStorage.reptileType = this.reptileType;
+            let reptileType = this.reptileType.join(',');
+            localStorage.reptileType = reptileType;
             localStorage.isProxy = this.isProxy;
-            this.$router.replace('/reptile-tool/book?bookName=' + this.bookName + '&reptileType=' + this.reptileType + '&isProxy=' + this.isProxy);
+            this.$router.replace('/reptile-tool/book?bookName=' + this.bookName + '&reptileType=' + reptileType + '&isProxy=' + this.isProxy);
             let obj = {
                 params:{
                     bookName: this.bookName,
-                    reptileType: this.reptileType,
+                    reptileType: reptileType,
                     isProxy:this.isProxy
                 }
             };
             this.loading = true;
             util.post.reptile.getUrl(obj,{timeout:10000}).then((data) => {
-                this.list = data;
+                this.list = data.urlList;
+                data.errorArr.forEach((value, index) => {
+                    this.$Message.error(value);
+                })
                 this.loading = false;
             }).catch((err) => {
                 this.loading = false;
@@ -132,7 +209,7 @@ export default {
                     bookName:params.row.title,
                     bookUrl:params.row.url,
                     author:params.row.author,
-                    reptileType:this.reptileType
+                    reptileType:params.row.reptileType
                 }
             }
             util.post.reptile.getBookJson(obj).then((data) => {
@@ -167,57 +244,74 @@ export default {
             //     }
             // });
         },
-        selectChange(reptileType) {
-            if(!this.flag){
-                // this.bookName = "";
-            }
-            this.flag = false;
-            this.list = [];
-            this.changePlaceHolder(reptileType);
-        },
-        changePlaceHolder(reptileType) {
-            let i = 0, length = this.reptileList.length;
-            for(i; i<length; i++) {
-                let value = this.reptileList[i];
-                if(reptileType == value.id) {
-                    this.placeholder = value.placeholder;
-                    break;
+        getReptileList() {  //获取配置列表
+            let obj = {
+                params:{
                 }
+            };
+            let reptileList = [];
+            util.post.reptile.list(obj).then((data) => {
+                data.reptileList.forEach((value, index) => {
+                    if(value.isSearch == 1) {   //启用
+                        value.reptileTypeId = value.reptileTypeId + '';     //转成字符串，因为checkbox    int和string不相等
+                        this.remarkList[value.reptileTypeId] = value.name;
+                        reptileList.push(value);
+                    } else {
+                       value = null;
+                    }
+                });
+                this.reptileList = this.reptileList.concat(reptileList);
+                this.reptileType = (this.$route.query.reptileType && this.$route.query.reptileType.split(',')) || (localStorage.reptileType && localStorage.reptileType.split(',')) || [];
+            }).catch((error) => {});
+        },
+        activatedStart(){
+            this.handleCheckAll(true);
+            let bookName2 = "";
+            if(this.$route.query.bookName) {
+                bookName2 = this.$route.query.bookName;
+            } else if(localStorage.bookName) {
+                bookName2 = localStorage.bookName;
+            }
+            let reptileType2 = this.reptileType.join(',');
+            if(this.$route.query.reptileType) {
+                reptileType2 = this.$route.query.reptileType;
+            } else if(localStorage.reptileType) {
+                reptileType2 = localStorage.reptileType;
+            }
+            let isProxy2 = this.isProxy;
+            if(this.$route.query.isProxy) {
+                isProxy2 = this.$route.query.isProxy == "true" ? true : false;
+            } else if(localStorage.isProxy) {
+                isProxy2 = localStorage.isProxy == "true" ? true : false;
+            }
+
+            if(this.bookName != bookName2 || this.reptileType != reptileType2 || this.isProxy != isProxy2) {
+                this.reptileType = reptileType2.split(',');
+                this.bookName = bookName2;
+                this.isProxy = isProxy2;
+                // this.changePlaceHolder(this.reptileType);
+                this.onClickSearch();
+            }
+        },
+        start(){
+            if(this.reptileList.length > 0) {
+                this.activatedStart();
+            } else {
+                let set = setTimeout(() => {
+                    this.start();
+                    clearTimeout(set);
+                    set = null;
+                },300);
             }
         }
     },
     created() {
-        this.reptileType = parseInt(this.$route.query.reptileType || localStorage.reptileType) || 0
+        this.getReptileList();      //获取配置列表
     },
-    mounted () {},
+    mounted () {
+    },
     activated() {
-        this.bookName2 = "";
-        if(this.$route.query.bookName) {
-            this.bookName2 = this.$route.query.bookName;
-        } else if(localStorage.bookName) {
-            this.bookName2 = localStorage.bookName;
-        }
-        this.reptileType2 = this.reptileType;
-        if(this.$route.query.reptileType) {
-            this.reptileType2 = parseInt(this.$route.query.reptileType)
-        } else if(localStorage.reptileType) {
-            this.reptileType2 = parseInt(localStorage.reptileType);
-        }
-        this.isProxy2 = this.isProxy;
-        if(this.$route.query.isProxy) {
-            this.isProxy2 = this.$route.query.isProxy == "true" ? true : false;
-        } else if(localStorage.isProxy) {
-            this.isProxy2 = localStorage.isProxy == "true" ? true : false;
-        }
-
-        if(this.bookName != this.bookName2 || this.reptileType != this.reptileType2) {
-            this.flag = true;       //初始化，不触发select下拉框
-            this.reptileType = this.reptileType2;
-            this.bookName = this.bookName2;
-            this.isProxy = this.isProxy2;
-            // this.changePlaceHolder(this.reptileType);
-            this.onClickSearch();
-        }
+        this.start();
     },
     deactivated() {
     }

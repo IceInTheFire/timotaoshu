@@ -25,7 +25,7 @@ router.use('', oauth(1102),  async function(req, res, next) {
         let book = await db.query(`select * from book where id=${bookId}`);
         if(book.length > 0){
             let bookName = book[0].name;
-            let count = (await db.query(`select count(*) from progresserror where bookName='${bookName}'`))[0]["count(*)"];
+            let count = (await db.query(`select count(*) from progresserror where bookName="${bookName}"`))[0]["count(*)"];
             if(count > 0) {
                 res.send(tool.toJson(null, '爬取错误/遗漏列表里有该书的存在', 1002));
                 return;

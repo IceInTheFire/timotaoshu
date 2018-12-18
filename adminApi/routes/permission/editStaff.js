@@ -14,6 +14,9 @@ router.use('', oauth(6103),  async function(req, res, next) {
     } else if(id == "1") {
         res.send(tool.toJson(null, `职员Id为1不允许更改删除`, 1002));
         return;
+    } else if(id == "48"){
+        res.send(tool.toJson(null, `公开用户不允许更改删除`, 1002));
+        return;
     }
     if(!name) {
         res.send(tool.toJson(null, "职员花名不可为空", 1002));
@@ -38,12 +41,12 @@ router.use('', oauth(6103),  async function(req, res, next) {
 
     let staff = (await db.query(`select * from users where id=${id}`))[0];
 
-    let nameCount = (await db.query(`select count(*) from users where name='${name}'`))[0]["count(*)"];
+    let nameCount = (await db.query(`select count(*) from users where name="${name}"`))[0]["count(*)"];
     if(staff.name != name && nameCount > 0) {
         res.send(tool.toJson(null, "已有该职员花名存在", 1002));
         return
     }
-    let mobileCount = (await db.query(`select count(*) from users where mobile='${mobile}'`))[0]["count(*)"];
+    let mobileCount = (await db.query(`select count(*) from users where mobile="${mobile}"`))[0]["count(*)"];
     if(staff.mobile != mobile && mobileCount > 0) {
         res.send(tool.toJson(null, "已有该手机存在", 1002));
         return
@@ -64,7 +67,7 @@ router.use('', oauth(6103),  async function(req, res, next) {
                 role.roleName,
                 role.permission,
                 users.roleId 
-                from users INNER JOIN role on users.roleId = role.id where users.id=${id} and users.pwd='${pwd}' limit 0,1`);
+                from users INNER JOIN role on users.roleId = role.id where users.id=${id} and users.pwd="${pwd}" limit 0,1`);
         } catch(err) {
             res.send(tool.toJson(null, `数据出错,出错原因：${err}`, 1002));
             return;

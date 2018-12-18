@@ -10,7 +10,7 @@ router.use('', oauth(6002),  async function(req, res, next) {
         return
     }
 
-    let roleNameCount = (await db.query(`select count(*) from role where roleName='${roleName}'`))[0]["count(*)"];
+    let roleNameCount = (await db.query(`select count(*) from role where roleName="${roleName}"`))[0]["count(*)"];
     if(roleNameCount > 0) {
         res.send(tool.toJson(null, "已有该角色名存在", 1002));
         return
@@ -28,7 +28,7 @@ router.use('', oauth(6002),  async function(req, res, next) {
     }
 
     try{
-        await db.query(`insert into role (roleName, permission)Values('${roleName}','${permission}')`);
+        await db.query(`insert into role (roleName, permission)Values("${roleName}","${permission}")`);
         res.send(tool.toJson({successMsg:"添加成功"}, '', 1000));
     }catch(err) {
         res.send(tool.toJson(null, `添加失败，失败原因：${err}`, 1002));

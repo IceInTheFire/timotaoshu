@@ -7,7 +7,7 @@ router.use('', async function(req, res, next) {
     let pwd = tool.getParams(req, 'pwd');
     let data = "";
     try{
-        data = await db.query(`select id from users where name='${userName}' limit 0,1`);
+        data = await db.query(`select id from users where name="${userName}" limit 0,1`);
     }catch(err){
         res.send(tool.toJson(null, '数据出错', 1002));
         return;

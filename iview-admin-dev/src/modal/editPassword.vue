@@ -1,24 +1,22 @@
 <template>
-    <div>
-        <Modal v-model="editPasswordModal.editPasswordModal" :closable='false' :mask-closable=false :width="500">
-            <h3 slot="header" class="modal-header-color">修改密码</h3>
-            <Form ref="editPasswordForm" :model="editPasswordForm" :label-width="100" label-position="right" :rules="passwordValidate">
-                <FormItem label="原密码" prop="oldPass" :error="oldPassError">
-                    <Input v-model="editPasswordForm.oldPass" placeholder="请输入现在使用的密码"  type="password" @keyup.native.13="saveEditPass"></Input>
-                </FormItem>
-                <FormItem label="新密码" prop="newPass">
-                    <Input v-model="editPasswordForm.newPass" placeholder="请输入新密码，至少6位字符" type="password" @keyup.native.13="saveEditPass"></Input>
-                </FormItem>
-                <FormItem label="确认新密码" prop="rePass">
-                    <Input v-model="editPasswordForm.rePass" placeholder="请再次输入新密码" type="password" @keyup.native.13="saveEditPass"></Input>
-                </FormItem>
-            </Form>
-            <div slot="footer">
-                <Button type="text" @click="cancelEditPass">取消</Button>
-                <Button type="primary" :loading="loading" @click="saveEditPass">保存</Button>
-            </div>
-        </Modal>
-    </div>
+    <Modal v-model="editPasswordModal.editPasswordModal" :closable='false' :mask-closable='false' :width="500">
+        <h3 slot="header" class="modal-header-color">修改密码</h3>
+        <Form ref="editPasswordForm" :model="editPasswordForm" :label-width="100" label-position="right" :rules="passwordValidate">
+            <FormItem label="原密码" prop="oldPass" :error="oldPassError">
+                <Input v-model="editPasswordForm.oldPass" placeholder="请输入现在使用的密码"  type="password" @keyup.native.13="saveEditPass"></Input>
+            </FormItem>
+            <FormItem label="新密码" prop="newPass">
+                <Input v-model="editPasswordForm.newPass" placeholder="请输入新密码，至少6位字符" type="password" @keyup.native.13="saveEditPass"></Input>
+            </FormItem>
+            <FormItem label="确认新密码" prop="rePass">
+                <Input v-model="editPasswordForm.rePass" placeholder="请再次输入新密码" type="password" @keyup.native.13="saveEditPass"></Input>
+            </FormItem>
+        </Form>
+        <div slot="footer">
+            <Button type="text" @click="cancelEditPass">取消</Button>
+            <Button type="primary" :loading="loading" @click="saveEditPass">保存</Button>
+        </div>
+    </Modal>
 </template>
 
 <style scoped rel="stylesheet/less" type="text/less" lang="less">

@@ -19,7 +19,7 @@ router.use('', oauth(4006),  async function(req, res, next) {
 
     let whereSql = ``;
     if(bookName) {
-        whereSql = `where book.name='${bookName}'`;
+        whereSql = `where book.name="${bookName}"`;
     }
 
     let list = await db.query(`select ${selectSql} from progresserror ${joinSql} ${whereSql} ORDER BY id ASC limit ${(page-1) * limit},${limit}` );
