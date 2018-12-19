@@ -144,8 +144,12 @@ yarn install
 #### 3、导入数据库
 
 ```
-把sql文件夹内的timotaoshu.sql导入mysql里
-温馨提示:数据库里的user表里的账号是冰中焱，密码是123456。
+在mysql里，新建一个名为timotaoshu的数据库（字符集：utf8 -- UTF-8 Unicode；
+排序规则：utf8_general_ci）
+
+然后在timotaoshu里运行sql文件夹内的timotaoshu.sql文件
+
+温馨提示:数据库里的user表里的账号是冰中焱，密码是123456。（mysql里存的用户密码是加密文）
 ```
 
 #### 4、更改mysql和redis的config文件

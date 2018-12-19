@@ -124,264 +124,143 @@ function domCommon(dom, rule, $){
 }
 
 
-
-// let rules = {
-//     '0':{
-//         reptileTypeId:0,
-//         code:'gbk',                 //页面编码格式
-//         name:'笔趣阁',              //备注名称
-//         baseUrl:'http://www.biquge.com.tw/',    //来源地址
-//         codeTransform:'gbk',            //页面转码方式，用于搜索转码方式
-//         searchUrl:'http://www.biquge.com.tw/modules/article/soshu.php?searchkey=+${name}', //搜索地址前缀
-//
-//         /*
-//         * 搜索列表start
-//         * */
-//         searchList:'.grid>tbody>tr',        //搜索到的列表
-//         searchListStart:1,                  //搜索到的列表页   第一本小说从哪里开始      索引值从0开始
-//         searchListEnd:0,                    //搜索到的列表页   最后几条不是小说
-//         searchListTitle:'a、html',           //搜索到的列表页  小说标题
-//         searchListUrl:'a、attrhref',         //搜索到的列表页  小说详情url地址
-//         searchListAuthor:'td:nth-child(3)、html',    //搜索到的列表页  小说作者
-//         searchListStatus:'td:nth-child(6)、html',                  //搜索到的列表页   小说状态
-//         searchListLastTime:'td:nth-child(5)、html',                       //搜索到的列表页   小说最后更新时间
-//         /*
-//         * 搜索列表end
-//         * */
-//
-//         /*
-//         * 小说目录页、详情页  start
-//         * */
-//         bookTitle:'#info>h1、html',
-//         bookAuthor:'#info>p:nth-child(2)、html、split、：、1',
-//         updateTime:'#info>p:nth-child(4)、html、split、：、1',
-//         bookType:'.con_top、html、split、>、7、split、 > 、2',
-//         catalogList:'#list a',                                  //目录列表
-//         firstCatalogList:null,              //第一个索引值
-//         endCatalogList:null,                                          //最后一个索引值
-//         bookImgUrl:'#fmimg>img、attrsrc',                            //小说封面
-//         bookDescription:'#intro、html',                                   //小说描述
-//         /*
-//         * 小说目录页、详情页  end
-//         * */
-//         catalogContent:'#content、html'
-//     },
-//     '1':{
-//         reptileTypeId:1,
-//         code:'gbk',                 //页面编码格式
-//         name:'笔趣阁小说网',              //备注名称
-//         baseUrl:'http://www.biqugexsw.com/',    //来源地址
-//         codeTransform:'gbk',            //页面转码方式，用于搜索转码方式
-//         searchUrl:'http://www.biqugexsw.com/s.php?ie=gbk&s=2758772450457967865&q=${name}', //搜索地址前缀
-//
-//         /*
-//         * 搜索列表start
-//         * */
-//         searchList:'.bookbox',        //搜索到的列表
-//         searchListStart:0,                  //搜索到的列表页   第一本小说从哪里开始  索引值从0开始
-//         searchListEnd:0,                    //搜索到的列表页   最后几条不是小说
-//         searchListTitle:'.bookname>a、html',           //搜索到的列表页  小说标题
-//         searchListUrl:'.bookname>a、attrhref',         //搜索到的列表页  小说详情url地址
-//         searchListAuthor:'.author、html、split、：、1',    //搜索到的列表页  小说作者
-//         searchListStatus:'.cat、html、split、：、1',                  //搜索到的列表页   小说状态
-//         searchListLastTime:null,                       //搜索到的列表页   小说最后更新时间
-//         /*
-//         * 搜索列表end
-//         * */
-//
-//         /*
-//         * 小说目录页、详情页  start
-//         * */
-//         bookTitle:'.info h2、html',
-//         bookAuthor:'.small span:nth-child(1)、html、split、：、1',
-//         updateTime:'.small .last、html、split、：、1',
-//         bookType:'.small span:nth-child(2)、html、split、：、1',
-//         catalogList:'.listmain a',                                  //目录列表
-//         firstCatalogList:'.listmain>dl>dt:eq(1)、index-1',                                        //第一个索引值
-//         endCatalogList:null,                                          //最后几条不是章节
-//         bookImgUrl:'.info>.cover>img、attrsrc',                            //小说封面
-//         bookDescription:'.intro、html',                                   //小说描述
-//         /*
-//         * 小说目录页、详情页  end
-//         * */
-//         catalogContent:'#content、html'
-//     },
-//     '2':{
-//         reptileTypeId:2,
-//         code:'gbk',                 //页面编码格式
-//         name:'笔趣阁5200',              //备注名称
-//         baseUrl:'https://www.biquge5200.cc/',    //来源地址
-//         codeTransform:'utf-8',            //页面转码方式，用于搜索转码方式
-//         searchUrl:'https://www.biquge5200.cc/modules/article/search.php?searchkey=${name}', //搜索地址前缀
-//
-//         /*
-//         * 搜索列表start
-//         * */
-//         searchList:'.grid>tbody>tr',        //搜索到的列表
-//         searchListStart:1,                  //搜索到的列表页   第一本小说从哪里开始  索引值从0开始
-//         searchListEnd:0,                    //搜索到的列表页   最后几条不是小说
-//         searchListTitle:'td>a、html',           //搜索到的列表页  小说标题
-//         searchListUrl:'td>a、attrhref',         //搜索到的列表页  小说详情url地址
-//         searchListAuthor:'td:nth-child(3)、html',    //搜索到的列表页  小说作者
-//         searchListStatus:'td:nth-child(6)、html',                  //搜索到的列表页   小说状态
-//         searchListLastTime:'td:nth-child(5)、html',                       //搜索到的列表页   小说最后更新时间
-//         /*
-//         * 搜索列表end
-//         * */
-//
-//         /*
-//         * 小说目录页、详情页  start
-//         * */
-//         bookTitle:'#info>h1、html',
-//         bookAuthor:'#info>p:nth-child(2)、html、split、：、1',
-//         updateTime:'#info>p:nth-child(4)、html、split、：、1',
-//         bookType:'.con_top、html、split、>、9、split、<、0',
-//         catalogList:'#list a',                                  //目录列表
-//         firstCatalogList:'#list>dl>dt:eq(1)、index-1',                                        //第一个索引值
-//         endCatalogList:null,                                          //最后几条不是章节
-//         bookImgUrl:'#fmimg>img、attrsrc',                            //小说封面
-//         bookDescription:'#intro>p、html',                                   //小说描述
-//         /*
-//         * 小说目录页、详情页  end
-//         * */
-//         catalogContent:'#content、html'
-//     }
-// }
-
 async function reptileCommon2(reptileType) {
     let rules = await reptileConfig.getReptileRule();
     let rule = rules[reptileType];
 
-    let returnObj = {
-        code:rule.code,
-        name:rule.name,
-        baseUrl:rule.baseUrl,
-        searchUrl:(bookName) => {  /*返回搜索地址*/
-            let transformName = '';
-            switch (rule.codeTransform) {
-                case 'gbk':
-                    transformName = tool.encodeURIComponent_GBK(bookName);
-                    break;
-                case 'utf-8':
-                    transformName = tool.url_encode(bookName);
-                    break;
-                default://默认utf-8
-                    transformName = tool.url_encode(bookName);
-                    break;
-            }
-            return rule.searchUrl.replace("${name}", transformName);
-        },
-        getBookList: ($, url, bookName) => {
-            let list = [];
-            if(bookName && url.indexOf(returnObj.searchUrl(bookName) == -1)) {
-                //被302重定向，进入了书的详情页，多存在于只搜到了一本书
-                list.push({
-                    title:returnObj.bookTitle(),
-                    url: (url.indexOf('http') == -1) ? (rule.baseUrl + url) : url,
-                    author:returnObj.bookAuthor(),
-                    status:returnObj.getUpdateTime()
-                })
-            } else {
-                let domList = $(rule.searchList);
-                let i = rule.searchListStart, length = domList.length;
-                for(i; i<length; i++) {
-                    let status = null;
-                    if(rule.searchListLastTime) {
-                        status = domCommon(domList.eq(i), rule.searchListLastTime, $) + ' ____ 最后更新：' + domCommon(domList.eq(i), rule.searchListStatus, $);
-                    } else {
-                        status = domCommon(domList.eq(i), rule.searchListStatus, $);
-                    }
-                    let url = domCommon(domList.eq(i), rule.searchListUrl, $);
-                    if(url.indexOf("http") != 0) {
-                        url = rule.baseUrl + url;
-                    }
+    let returnObj = null;
+    if(rule){
+        returnObj = {
+            code:rule.code,
+            name:rule.name,
+            baseUrl:rule.baseUrl,
+            searchUrl:(bookName) => {  /*返回搜索地址*/
+                let transformName = '';
+                switch (rule.codeTransform) {
+                    case 'gbk':
+                        transformName = tool.encodeURIComponent_GBK(bookName);
+                        break;
+                    case 'utf-8':
+                        transformName = tool.url_encode(bookName);
+                        break;
+                    default://默认utf-8
+                        transformName = tool.url_encode(bookName);
+                        break;
+                }
+                return rule.searchUrl.replace("${name}", transformName);
+            },
+            getBookList: ($, url, bookName) => {
+                let list = [];
+                if(bookName && url.indexOf(returnObj.searchUrl(bookName) == -1)) {
+                    //被302重定向，进入了书的详情页，多存在于只搜到了一本书
                     list.push({
-                        title:domCommon(domList.eq(i), rule.searchListTitle, $),
-                        url:url,
-                        author:domCommon(domList.eq(i), rule.searchListAuthor, $),
-                        status:status
-                    });
-                }
-            }
-            return list;
-        },
-
-        bookTitle: ($) => {
-            return domCommon(null,rule.bookTitle,$);
-        },
-        bookAuthor: ($) => {
-            return domCommon(null,rule.bookAuthor,$);
-        },
-        getUpdateTime: ($) => {
-            return domCommon(null,rule.updateTime,$);
-        },
-        getCatalogListUrl:($) => {
-            if(rule.catalogListUrl) {
-                return domCommon(null,rule.catalogListUrl,$);
-            } else {
-                return null;
-            }
-        },
-        getCatalogList:($) => {
-            return $(rule.catalogList);
-        },
-        getBookType: ($) => {
-            return domCommon(null,rule.bookType,$);
-        },
-        beforeThreeDay() {
-            var date = new Date();//获取当前时间
-            date.setDate(date.getDate() - 3);//设置天数 -3 天
-            return date;
-        },
-        getCatalogFirstNum($){   //暂时为0，以后再找规则
-            if(!rule.firstCatalogList) {
-                return 0
-            } else {
-                return domCommon(null,rule.firstCatalogList,$);
-            }
-        },
-        getBookImgUrl($){
-            return domCommon(null, rule.bookImgUrl, $);
-        },
-        getDescription: ($) => {
-            let description = domCommon(null, rule.bookDescription, $) || '';
-            description = description.replace(/\n/g, "").replace(/<p>/g, "").replace(/<\/p>/g, "");  //将p标签转换成 null
-            return tool.filterHtmlOrContainer(description) // 除br之外，其他标签全部过滤
-        },
-        getCatalog: ($, catalogStr, i) => {     //规则暂时有问题，目前先这样
-            let catalog = $(catalogStr[i]);
-            // let title = catalog.html();
-            let title = domCommon(catalog,rule.catalogTitle);
-            let type = 1;  //1带章节
-            if (title.indexOf("章") == -1 && title.indexOf("第") == -1) {
-                type = 2;   //2没有章节
-            }
-            let href = domCommon(catalog, rule.catalogUrl);
-            // console.log(title,href);
-            return {
-                title: title,
-                // href:"/" + domCommon(catalog, '、' + 'attrhref、split、/、length-1'),
-                href:href,
-                // href: "/" + catalog.attr("href").split("/")[catalog.attr("href").split("/").length - 1],
-                type: type,
-            };
-        },
-        getCatalogContent: ($) => {
-            let content = domCommon(null, rule.catalogContent, $) || '';
-            content = content.replace(/\n/g, "").replace(/<p>/g, "<br>").replace(/<\/p>/g, "<br>");
-            content = tool.filterHtmlOrContainer(content|| '');  // 除br之外，其他标签全部过滤
-            let contentArr = content.split("<br>");
-            let i = 0, length = contentArr.length;
-            for(i; i<length; i++) {
-                if(!contentArr[i] || contentArr[i].trim() == "") {
-                    contentArr.splice(i,1);
-                    i--;
-                    length--;
+                        title:returnObj.bookTitle(),
+                        url: (url.indexOf('http') == -1) ? (rule.baseUrl + url) : url,
+                        author:returnObj.bookAuthor(),
+                        status:returnObj.getUpdateTime()
+                    })
                 } else {
-                    contentArr[i] = contentArr[i] && contentArr[i].trim();
+                    let domList = $(rule.searchList);
+                    let i = rule.searchListStart, length = domList.length;
+                    for(i; i<length; i++) {
+                        let status = null;
+                        if(rule.searchListLastTime) {
+                            status = domCommon(domList.eq(i), rule.searchListLastTime, $) + ' ____ 最后更新：' + domCommon(domList.eq(i), rule.searchListStatus, $);
+                        } else {
+                            status = domCommon(domList.eq(i), rule.searchListStatus, $);
+                        }
+                        let url = domCommon(domList.eq(i), rule.searchListUrl, $);
+                        if(url.indexOf("http") != 0) {
+                            url = rule.baseUrl + url;
+                        }
+                        list.push({
+                            title:domCommon(domList.eq(i), rule.searchListTitle, $),
+                            url:url,
+                            author:domCommon(domList.eq(i), rule.searchListAuthor, $),
+                            status:status
+                        });
+                    }
                 }
+                return list;
+            },
+
+            bookTitle: ($) => {
+                return domCommon(null,rule.bookTitle,$);
+            },
+            bookAuthor: ($) => {
+                return domCommon(null,rule.bookAuthor,$);
+            },
+            getUpdateTime: ($) => {
+                return domCommon(null,rule.updateTime,$);
+            },
+            getCatalogListUrl:($) => {
+                if(rule.catalogListUrl) {
+                    return domCommon(null,rule.catalogListUrl,$);
+                } else {
+                    return null;
+                }
+            },
+            getCatalogList:($) => {
+                return $(rule.catalogList);
+            },
+            getBookType: ($) => {
+                return domCommon(null,rule.bookType,$);
+            },
+            beforeThreeDay() {
+                var date = new Date();//获取当前时间
+                date.setDate(date.getDate() - 3);//设置天数 -3 天
+                return date;
+            },
+            getCatalogFirstNum($){   //暂时为0，以后再找规则
+                if(!rule.firstCatalogList) {
+                    return 0
+                } else {
+                    return domCommon(null,rule.firstCatalogList,$);
+                }
+            },
+            getBookImgUrl($){
+                return domCommon(null, rule.bookImgUrl, $);
+            },
+            getDescription: ($) => {
+                let description = domCommon(null, rule.bookDescription, $) || '';
+                description = description.replace(/\n/g, "").replace(/<p>/g, "").replace(/<\/p>/g, "");  //将p标签转换成 null
+                return tool.filterHtmlOrContainer(description) // 除br之外，其他标签全部过滤
+            },
+            getCatalog: ($, catalogStr, i) => {     //规则暂时有问题，目前先这样
+                let catalog = $(catalogStr[i]);
+                // let title = catalog.html();
+                let title = domCommon(catalog,rule.catalogTitle);
+                let type = 1;  //1带章节
+                if (title.indexOf("章") == -1 && title.indexOf("第") == -1) {
+                    type = 2;   //2没有章节
+                }
+                let href = domCommon(catalog, rule.catalogUrl);
+                // console.log(title,href);
+                return {
+                    title: title,
+                    // href:"/" + domCommon(catalog, '、' + 'attrhref、split、/、length-1'),
+                    href:href,
+                    // href: "/" + catalog.attr("href").split("/")[catalog.attr("href").split("/").length - 1],
+                    type: type,
+                };
+            },
+            getCatalogContent: ($) => {
+                let content = domCommon(null, rule.catalogContent, $) || '';
+                content = content.replace(/\n/g, "").replace(/<p>/g, "<br>").replace(/<\/p>/g, "<br>");
+                content = tool.filterHtmlOrContainer(content|| '');  // 除br之外，其他标签全部过滤
+                let contentArr = content.split("<br>");
+                let i = 0, length = contentArr.length;
+                for(i; i<length; i++) {
+                    if(!contentArr[i] || contentArr[i].trim() == "") {
+                        contentArr.splice(i,1);
+                        i--;
+                        length--;
+                    } else {
+                        contentArr[i] = contentArr[i] && contentArr[i].trim();
+                    }
+                }
+                return contentArr.join("<br>");
             }
-            return contentArr.join("<br>");
         }
     }
 
