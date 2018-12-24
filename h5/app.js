@@ -1,3 +1,4 @@
+global.__base = __dirname + '/';        //设置全局require目录前缀
 const createError = require('http-errors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
