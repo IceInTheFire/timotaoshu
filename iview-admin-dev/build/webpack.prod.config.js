@@ -21,9 +21,9 @@ module.exports = merge(webpackBaseConfig, {
         // publicPath: 'https://iview.github.io/iview-admin/dist/',  // 修改 https://iv...admin 这部分为你的服务器域名
         publicPath: '/dist/',
         // filename: '[name].[hash].js',
-        filename: '[name].js?v=[hash]',
+        filename: '[name].js',
         // chunkFilename: '[name].[hash].chunk.js'
-        chunkFilename: '[name].js'
+        chunkFilename: '[name].js?v=[hash]'
     },
     plugins: [
         new cleanWebpackPlugin(['dist/*'], {
