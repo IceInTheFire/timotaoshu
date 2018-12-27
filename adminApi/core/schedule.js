@@ -201,14 +201,18 @@ let j4 = schedule.scheduleJob(rule4, function(){
 * 截取所有的服务器日志
 * */
 let j5 = schedule.scheduleJob(rule5, async function(){
-    await log.splice(1);
-    await log.splice(2);
-    await log.splice(3);
-    await log.splice(4);
-    await log.splice(5);
-    await log.splice(6);
-    await log.splice(7);
-    await log.splice(8);
+
+    /*
+    * 下面注释的，在linux服务器里用得到，window下没有这个.pm2目录
+    * */
+    await logService.splice(1);
+    // await logService.splice(2);
+    // await logService.splice(3);
+    await logService.splice(4);
+    // await logService.splice(5);
+    // await logService.splice(6);
+    // await logService.splice(7);
+    // await logService.splice(8);
 }) ;
 /*
 * 规则6 每两个小时一次的定时任务

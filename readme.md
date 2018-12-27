@@ -24,19 +24,23 @@ linux系统、nginx、mysql、redis、pm2、privoxy配合shadowsocks搭建的htt
 #### 技术栈：
 
 ```
-node用到的库：
+node主要用到的库：
 	redis、mysql、express、compression(支持gzip压缩)、
 	morgan（中间件记录日志，在本项目的作用相当于服务器访问日志）、
-	jwt-simple（登录加密）、scheduleObj(定时任务)、request、
-	request-promise、cheerio（爬来的页面，用$去获取自己想要的数据，相当于jquery库）、
+	jwt-simple（redis里存储用户加密信息，获取用户信息的时候需要解密）、
+	crypto(使用sha1再次加密用户加密信息得到用户token。)、
+	scheduleObj(定时任务)、
+	request、request-promise、cheerio（爬来的页面，用$去获取自己想要的数据，相当于jquery库）、
 	multer（文件上传）、node-xlsx(解析xls文件的插件)
+    ......
 
 前端用到的框架：
 	iview-admin脚手架（vue2）
 	
-h5用到的技术栈：
+h5主要用到的技术栈：
 	node、pug、less、gulp
-	
+	......
+
 注：为了避免版本错误，node_modules建议用yarn来下载
 ```
 
@@ -87,13 +91,13 @@ h5用到的技术栈：
 
 ​	1、日周月年榜榜单，根据访问量来确定；
 
-​	3、完整的h5页面；
+​	2、完整的h5页面；
 
-​	4、h5的api文档开放；
+​	3、h5的api文档开放；
 
-​	5、后台管理添加作者模块  和  在爬来的小说章节里插入章节；
+​	4、后台管理添加作者模块  和  在爬来的小说章节里插入章节；
 
-​	6、待续...
+​	5、待续...
 
 #### 跑项目之前
 
