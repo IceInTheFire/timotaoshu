@@ -81,7 +81,7 @@ let redisData = {
         * 用user重置下tokne的值
         * */
         reSetToken: async (user, token) => {
-            redisData.token.setToken(user, token);
+            return redisData.token.setToken(user, token);
         },
         /*
         * 用token换取user
@@ -137,6 +137,7 @@ let redisData = {
         },
         /*
         * 用user换取token
+        * 这里后期再考虑要不要使用Promise异步
         * */
         setToken:async (user, token) => {
 
