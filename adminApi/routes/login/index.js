@@ -37,9 +37,8 @@ router.use('', async function(req, res, next) {
         if(user) {
             let token = await tool.token.setToken(user);
             delete user.pwd;
-            if(user.type > 4){
-                res.send(tool.toJson(null, '权限不足，不允许登录', 1002))
-            } else {
+
+            if(user.permission) {
                 if(user.permission == "all") {
                     user.permission = tool.allPermissionList;
                 }
@@ -52,8 +51,9 @@ router.use('', async function(req, res, next) {
                 });
                 user.permission = permission.join(',');
                 res.send(tool.toJson({token:token,user:user}, '登录成功', 1000))
+            } else {
+                res.send(tool.toJson(null, '你没有权限', 1002))
             }
-
         } else {
             res.send(tool.toJson(null, '密码错误', 1002))
         }

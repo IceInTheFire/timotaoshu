@@ -20,7 +20,15 @@ router.use('', oauth(),  async function(req, res, next) {
     await db.query(`update users set pwd="${newPass}" where id=${userId}`).catch(() => {
         res.send(tool.toJson(null, '密码修改失败', 1002))
     });
-    let data2 = await db.query(`select * from users where id=${userId} and pwd="${newPass}" limit 0,1`)
+    let data2 = await db.query(`select 
+                users.id,
+                users.name,
+                users.pwd,
+                users.mobile,
+                role.roleName,
+                role.permission,
+                users.roleId 
+                from users INNER JOIN role on users.roleId = role.id where users.id=${userId} and users.pwd='${newPass}' limit 0,1`);
     let user = data2.length > 0 ? data2[0] : '';
     if(user) {
         await tool.redisData.token.reSetToken(user, req.token);
