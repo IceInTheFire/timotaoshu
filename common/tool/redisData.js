@@ -84,8 +84,23 @@ let redisData = {
             let date = new Date().getTime();
             let jwtToken = jwt.encode(user, key + date) + date;
             // let token = sha1(jwtToken);
-            client.set(token, jwtToken)
+            client.set(token, user.id)
             client.expire(token, 60*60*24*30);  //  缓存30天
+            let obj = {};
+            obj[token] = jwtToken;
+            client2.hmset(user.id, obj, (err, reply) => {
+                if(err) throw err;
+                else {
+                    client2.hgetall(user.id, (err, obj) => {
+                        Object.keys(obj).forEach((value, index) => {
+                            if(value != token) {
+                                client.del(value, client.print);
+                                client2.hdel(user.id, value, client.print);
+                            }
+                        });
+                    });
+                }
+            });
             return true;
         },
         /*

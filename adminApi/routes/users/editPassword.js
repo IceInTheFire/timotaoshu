@@ -23,6 +23,7 @@ router.use('', oauth(),  async function(req, res, next) {
     let data2 = await db.query(`select * from users where id=${userId} and pwd="${newPass}" limit 0,1`)
     let user = data2.length > 0 ? data2[0] : '';
     if(user) {
+        await tool.redisData.token.reSetToken(user, req.token);
         delete user.pwd;
         res.send(tool.toJson({user:user}, '密码更改成功', 1000))
     } else {

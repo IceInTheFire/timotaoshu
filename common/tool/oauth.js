@@ -7,6 +7,7 @@ let oauthRouter = function(num) {
             if(user) {
                 if(!num || (num && (user.permission.indexOf(num) >=0 || user.permission == "all"))) {
                     req.user = user;
+                    req.token = req.query.token || req.body.token;
                     next();
                 } else {
                     res.send(tool.toJson(null,"账号权限不足", 1002));
