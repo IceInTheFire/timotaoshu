@@ -88,12 +88,14 @@ let redisData = {
         * 若没有user则返回空
         * */
         getUser: async (token) => {
+            let userId = null;
             let jwtTokenStr = await new Promise(function(resolve, reject) {
                 client.get(token, function(err, reply) {
                     if(!reply) {
                         resolve("");
                         return;
                     }
+                    userId = reply;
                     client2.hget(reply, token, function(err, reply) {
                         resolve(reply?reply:'');
                     });
@@ -109,6 +111,10 @@ let redisData = {
                     user = jwt.decode(jwtToken, key + date);
                     return user;
                 } catch(err) {
+                    if(userId) {    //删除跟该token有关的值
+                        client.del(token, client.print);
+                        client2.hdel(userId, jwtTokenStr, client2.print);
+                    }
                     return "";
                 }
             } else {
