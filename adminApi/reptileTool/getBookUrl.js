@@ -27,12 +27,15 @@ async function getBookUrl_common(reptileType, bookName, isProxy){
             }
         };
 
-        if(isProxy && global.server) {
-            option.proxy = global.serverProxy
-        } else {
-            let ip = await tool.redisData.ipList.getRandomIpList();
-            if(ip) option.proxy = ip;
-        }
+        /*
+        * 注释原因，是因为老有人说不能爬取。   刚开始是免费代理ip。。
+        * */
+        // if(isProxy && global.server) {
+        //     option.proxy = global.serverProxy
+        // } else {
+        //     let ip = await tool.redisData.ipList.getRandomIpList();
+        //     if(ip) option.proxy = ip;
+        // }
 
         timoRp(option).then(function(data){
             let $ = data[0];
