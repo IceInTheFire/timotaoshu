@@ -166,15 +166,15 @@ yarn install
 #### 5、跑项目（开发模式）
 
 ```
-cd timotaoNew/adminApi
+cd timotaoshu/adminApi
 npm run dev
 
 另开一个命令窗口
-cd timotaoNew/iview-admin
+cd timotaoshu/iview-admin
 npm run dev
 
 另开一个命令窗口
-cd timotaoNew/h5
+cd timotaoshu/h5
 npm run dev
 
 
@@ -189,15 +189,15 @@ npm run dev
 #### 6、部署项目
 
 ```
-cd timotaoNew/adminApi/bin
+cd timotaoshu/adminApi/bin
 pm2 start www
 
 另开一个窗口（部署pc后台管理的前端项目前，请先npm run dist生成vue静态文件）
-cd timotaoNew/iview-admin/server
+cd timotaoshu/iview-admin/server
 pm2 start server
 
 另开一个窗口
-cd timotaoNew/h5/bin
+cd timotaoshu/h5/bin
 pm2 start h5
 
 
