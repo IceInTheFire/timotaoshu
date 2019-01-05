@@ -12,7 +12,7 @@ block content
     div(class="book-info clearfix")
         div(class="fl")
             div(class="book-img")
-                img( src=`http://106.12.37.138:3000/images/${book.id}`)
+                img( src=`http://localhost:3000/images/${book.id}`)
         div(class="book-box")
             span(class="book-name")= book.name
             span
@@ -50,7 +50,7 @@ block content
             - for(ii; ii<length2; ii++)
                 a(href=`/book/info?bookId=${otherBook[ii].id}&toBack=1`)
                     div
-                        img(src=`http://106.12.37.138:3000/images/${otherBook[ii].id}`)
+                        img(src=`http://localhost:3000/images/${otherBook[ii].id}`)
                     span= otherBook[ii].name
 block scripts
     script(type="text/javascript" src="/js/pages/book/info.js?v=4609fc2b63")

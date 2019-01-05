@@ -19,7 +19,7 @@ html
         //- QQ、QQ浏览器分享显示的标题
         meta(itemprop="name" content=`${site?(site.title?site.title +'？提莫淘书,猜你喜欢':'提莫淘书'):'提莫淘书'}`)
         //-QQ、QQ浏览器分享显示的缩略图
-        meta(itemprop="image" content=`${site?(site.title?'http://106.12.37.138:3000/images/'+site.id:'/images/favicon.ico'):'/images/favicon.ico'}`)
+        meta(itemprop="image" content=`${site?(site.title?'http://localhost:3000/images/'+site.id:'/images/favicon.ico'):'/images/favicon.ico'}`)
         //-QQ、QQ浏览器分享显示的简介
         meta(name="description" itemprop="description" content=`${site?(site.description?site.description:'完本小说，尽在提莫淘书'):'完本小说，尽在提莫淘书'}`)
 

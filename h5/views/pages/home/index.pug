@@ -18,7 +18,7 @@ block content
         - for (i; i < length; i++)
             a(class="search-list clearfix" href=`/book/info?bookId=${bookList[i].id}&toBack=1`)
                 div(class="search-img-box")
-                    img(src=`http://106.12.37.138:3000/images/${bookList[i].id}`)
+                    img(src=`http://localhost:3000/images/${bookList[i].id}`)
                 div(class="search-info-box")
                     span= `书名：${bookList[i].name}`
                     span= `作者：${bookList[i].author}`
