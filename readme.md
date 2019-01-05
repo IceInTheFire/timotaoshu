@@ -121,21 +121,21 @@ yarn install
 ##### 下载adminApi的node_modules包
 
 ```
-cd timotaoNew/adminApi
+cd timotaoshu/adminApi
 yarn install
 ```
 
 ##### 下载iview-admin的node_modules包
 
 ```
-cd timotaoNew/iview-admin
+cd timotaoshu/iview-admin
 yarn install
 ```
 
 ##### 下载h5的node_modules包
 
 ```
-cd timotaoNew/h5
+cd timotaoshu/h5
 yarn install
 ```
 
