@@ -320,9 +320,15 @@ function filterHtmlOrContainer(str,isbool) {
 * 同时也为了防止sql注入   把英文双引号改成了英文单引号
 *
 * sql语法尽量用双引号
+*
+* notrans 默认false 如果不想转义的话，则设为true ，，一般
 * */
-function getParams(req, name){
-    return (req.query[name] || req.body[name] || '').replace(/"/g,"'");
+function getParams(req, name, notrans){
+    let body = (req.query[name] || req.body[name] || '');
+    if(!notrans){
+        return body.replace(/"/g,"'");
+    }
+    return body;
 }
 
 /*

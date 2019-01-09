@@ -13,7 +13,7 @@ router.use('', oauth(4007),  async function(req, res, next) {
         return;
     }
 
-    let config = JSON.parse(tool.getParams(req, 'config'));
+    let config = JSON.parse(tool.getParams(req, 'config',true));
     if(isNaN(parseInt(config.reptileTypeId))) {
         res.send(tool.toJson(null, 'reptileTypeId参数不规范', 1002));
         return;
@@ -64,7 +64,7 @@ router.use('', oauth(4007),  async function(req, res, next) {
         catalogUrl:config.catalogUrl
     }
     let setSqlArr = Object.keys(setSqlObj).map((key, index) => {
-        return `${key}="${setSqlObj[key]}"`;
+        return `${key}="${setSqlObj[key]?setSqlObj[key].replace(/"/g,`'`):setSqlObj[key]}"`;
     });
 
     try{
