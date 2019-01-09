@@ -151,7 +151,7 @@ async function reptileCommon2(reptileType) {
             },
             getBookList: ($, url, bookName) => {
                 let list = [];
-                if(bookName && url.indexOf(returnObj.searchUrl(bookName) == -1)) {
+                if(bookName && url.indexOf(returnObj.searchUrl(bookName)) == -1) {
                     //被302重定向，进入了书的详情页，多存在于只搜到了一本书
                     list.push({
                         title:returnObj.bookTitle(),
