@@ -40,7 +40,7 @@ async function getBookUrl_common(reptileType, bookName, isProxy){
         timoRp(option).then(function(data){
             let $ = data[0];
             let url = data[1];
-            let list = reptileCommon.getBookList($, url);
+            let list = reptileCommon.getBookList($, url,bookName);
             // callback && callback(list)
             resolve(list);
         }).catch(function(err){
