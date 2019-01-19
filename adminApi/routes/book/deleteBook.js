@@ -25,14 +25,16 @@ router.use('', oauth(1301),  async function(req, res, next) {
         return;
     }
     await db.execTrans([
+        `delete from progresserror where bookId=${bookId}`,
+        `delete from catalogcontent where bookId=${bookId}`,
         `delete from catalog where bookId = ${bookId}`,
         `delete from book where id = ${bookId}`,
-        `delete from progresserror where bookName="${bookName}"`
     ]);
+    //
+    tool.deleteAll(fs, path.join(__dirname, '../../../books/' + bookId + ".png"));
+    // tool.deleteAll(fs, path.join(__dirname, '../../../book_end/' + bookId + '.json'));
+    // tool.deleteAll(fs, path.join(__dirname, '../../../book/' + bookId + '.json'));
 
-    tool.deleteAll(fs, path.join(__dirname, '../../../books/' + bookId));
-    tool.deleteAll(fs, path.join(__dirname, '../../../book_end/' + bookId + '.json'));
-    tool.deleteAll(fs, path.join(__dirname, '../../../book/' + bookId + '.json'));
 
     res.send(tool.toJson('删除成功', '', 1000));
 });

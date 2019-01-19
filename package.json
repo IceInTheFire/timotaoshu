@@ -1,6 +1,6 @@
 {
-  "name": "common",
-  "version": "1.0.0",
+  "name": "timotaoshu",
+  "version": "2.0.0",
   "description": "mysql\r redis",
   "main": "index.js",
   "scripts": {

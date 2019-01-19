@@ -75,9 +75,9 @@ async function oneKeyRestartCatalog(bookName) {
             }
             await db.query(`delete from progresserror ${whereSql}`);
 
-            log.info(`错误列表，一键《${bookName}》爬取共${length}条，已响应${errorResponseCount}条，失败${errorCount}条`)
+            log.info(`错误列表，一键《${errorObj.bookName}》爬取共${length}条，已响应${errorResponseCount}条，失败${errorCount}条`)
             if (errorResponseCount == length) {
-                log.info(`错误列表的《${bookName}》一键爬取任务结束`);
+                log.info(`错误列表的《${errorObj.bookName}》一键爬取任务结束`);
                 log.info(`爬取完毕，共爬取${length}条，${errorCount}条失败`);
                 resolve(`爬取完毕，共爬取${length}条，${errorCount}条失败`);
             }

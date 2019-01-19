@@ -27,14 +27,10 @@ router.use('', oauth(4009),  async function(req, res, next) {
         // let catalogName = catalogInfo.name;
         // let bookName = errorInfo.bookName;
         let container = "";
-        try{
-            container = fs.readFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + catalogId + ".txt"),'utf-8').toString();
-        }catch(err) {
-            try {
-                container = fs.readFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + tool.jiami(catalogId) + ".txt"),'utf-8').toString();
-            } catch(err) {
-            }
-        }
+        let catalogArr = await db.query(`select * from catalogcontent where catalogId=${catalogId} ORDER BY num ASC;`);
+        catalogArr.forEach((value, index) => {
+            container += value.content;
+        })
         if(container.length < 20) {
             res.send(tool.toJson(null, '章节错误，不允许删除', 1002));
         } else{

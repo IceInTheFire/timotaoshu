@@ -44,16 +44,10 @@ router.use('', oauth(1203),  async function(req, res, next) {
 
 
     let container = "";
-    try{
-        container = fs.readFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + catalogId + ".txt"),'utf-8').toString();
-    }catch(err) {
-        try {
-            container = fs.readFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + tool.jiami(catalogId) + ".txt"),'utf-8').toString();
-        } catch(err) {
-            res.send(tool.toJson(null, '更新失败', 1002));
-            return;
-        }
-    }
+    let catalogArr = await db.query(`select * from catalogcontent where catalogId=${catalogId} ORDER BY num ASC;`);
+    catalogArr.forEach((value, index) => {
+        container += value.content;
+    })
 
     let bookListJson = {
         container: container

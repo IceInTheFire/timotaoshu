@@ -11,25 +11,21 @@ module.exports = getBooksFromJson
 
 async function getBooksFromJson(finish) {
 
-    // clearRepeat();
-    // tool.hasDir(fs, path.join(__dirname, '../../books'));
-    // let bookJson = fs.readdirSync(path.join(__dirname, '../../book'));
     let bookJson = await db.query(`select * from book where type=2`);
     let i = 0, length = bookJson.length;
     let bookCount = 0;      //爬完的书数量
 
-    if(length == 0) {
-        callback();
-    }
+
     for (i; i < length; i++) {
         await getBook(bookJson[i], callback);
+        await tool.sleep(5000);
+    }
+    if(length == 0) {
+        callback();
     }
 
     function callback() {
         bookCount++;
-        // if(bookCount >= ((length - 2) > 0 ? (length - 2) : 0)) {
-        //     finish && finish();
-        // }
         if (bookCount >= length) {
             log.info(`${length}本书已爬完`);
             finish && finish();
@@ -51,54 +47,38 @@ async function getBook(obj, callback) {
         imgUrl = baseUrl + obj.imgUrl;
     }
 
-    // let description = obj.description;
-    // let author = obj.author;
     let bookName = obj.name;
     let originUrl = obj.originUrl;
-    // let catalog = obj.catalog;
     let catalog = await db.query(`select * from catalog where bookId=${bookId}`);
-    // let originName = obj.originName;  //后期添加笔趣阁
-
-    let i = 0, length = catalog.length;
-
-    // let filePath = tool.isRepeat(fs, path.join(__dirname, '../../books/' + bookId));
-
-    // let fubenCount = filePath.split(" - 副本").length - 1;
-    // while (fubenCount > 0) {
-    //     bookId += ' - 副本';
-    //     fubenCount--;
-    // }
-
     getImg(bookId, imgUrl);
-    await startBook(bookId, author, reptileType, catalog, i, length, originUrl, bookName, callback)
+    await startBook(bookId, author, reptileType, catalog, originUrl, bookName, callback)
 }
 
-async function startBook(bookId, author, reptileType, catalog, i, length, originUrl, bookName, callback) {
-    let responseCount = 0, sucCount = 0, errCount = 0;
+async function startBook(bookId, author, reptileType, catalog, originUrl, bookName, callback) {
+    let responseCount = 0, sucCount = 0, errCount = 0, i = 0, length = catalog.length;
     for (i; i < length; i++) {
-        let f = i;
+        // let f = i;
         tool.catalogQueue.push({
-            params: [bookId, reptileType, originUrl, bookName, catalog[f]],
+            params: [bookId, reptileType, originUrl, bookName, catalog[i]],
             pro: getCatalog,
             result: async (data) => {
                 sucCount++;
-                end();
+                await end();
             },
             error: async (data) => {
                 errCount++;
-                end();
+                await end();
             }
         });
-        // await tool.sleep(200);
-        // console.log("测试下睡眠多久" + new Date().getTime());
+    }
+    if(!length) {   //避免没有章节的时候，没有进入end，然后造成书本不全。
+        await end();
     }
 
     async function end() {
         responseCount++;
-        // console.log(`共${length}章，现响应了${responseCount}章，成功抓取${sucCount}章，失败${errCount}章`);
         log.info(`${bookName}总共${length}章，已响应${responseCount}章，成功爬取${sucCount}章，失败爬取${errCount}章`)
         if (responseCount == length) {
-            // await move(json);
 
             /*
             * 已爬取完，更改爬取状态 start

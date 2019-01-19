@@ -359,6 +359,27 @@ function allowVisit(res){
     res.header("Content-Type", "application/json;charset=utf-8");
 }
 
+/*
+* 存入mysql前，先处理章节内容并分段以数组形式输出
+* 把章节内容的双引号全部转换为\"
+*
+*
+* 参数  content   章节内容     size 分段的长度，默认255
+* 返回  []
+* */
+function handleContent(content, size) {
+    let length = content.length;
+    // content = content.replace(/"/g,/\\"/);
+    size = size || 255;
+    let count = Math.ceil(length/size)
+    let arr = [];
+    let i = 0;
+    for(i; i<count;i++){
+        arr.push(content.slice(i * size, size *(i + 1)));
+    }
+    return arr;
+}
+
 
 
 
@@ -392,5 +413,6 @@ module.exports = {
     queue,
     allowVisit,
     getParams,
-    toSql
+    toSql,
+    handleContent
 }

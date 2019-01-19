@@ -53,7 +53,8 @@ async function updateBookInfo_common(reptileType, book, bookId, callback, errorb
             book.bookStatus = bookStatus;
             book.bookType = bookType;
 
-            let exists = fs.existsSync(path.join(__dirname, `../../books/${book.id}/logo.png`));
+            // let exists = fs.existsSync(path.join(__dirname, `../../books/${book.id}/logo.png`));
+            let exists = fs.existsSync(path.join(__dirname, `../../books/${book.id}.png`));
 
             if(oldImgUrl != book.imgUrl || !exists) {
                 let imgUrl = '';

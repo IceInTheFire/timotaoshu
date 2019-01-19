@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : mysql
+Source Server         : 本地
 Source Server Version : 50717
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : timotaoshu
 
 Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-12-18 23:58:05
+Date: 2019-01-19 17:27:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,7 +33,7 @@ CREATE TABLE `book` (
   `reptileType` int(10) DEFAULT '1' COMMENT '来源名称/来源类型\r\n默认1\r\n\r\n对应reptileTool表里的id\r\n',
   `isJin` int(10) NOT NULL DEFAULT '1' COMMENT '1、启用\r\n2、禁用\r\n\r\n默认1\r\n',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of book
@@ -55,10 +55,28 @@ CREATE TABLE `catalog` (
   `isReptileTool` int(10) NOT NULL DEFAULT '2' COMMENT '是否是爬取来的\r\n1：不是爬取的，后来新增的\r\n2：爬取的，就算后来改了这个章节，也没事。这里是做连载的标识\r\n\r\n默认2\r\n',
   `reptileAddress` varchar(100) DEFAULT NULL COMMENT '爬取的地址\r\n为空则表示不是爬取来的\r\n不为空则是爬取的地址（地址里若没有http的话，那则是要跟book表的OriginUrl字段搭配）\r\n',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19748 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of catalog
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for catalogcontent
+-- ----------------------------
+DROP TABLE IF EXISTS `catalogcontent`;
+CREATE TABLE `catalogcontent` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `content` varchar(255) DEFAULT NULL,
+  `bookId` int(11) DEFAULT NULL COMMENT '小说id',
+  `num` int(11) DEFAULT NULL COMMENT '序号',
+  `catalogId` int(11) DEFAULT NULL COMMENT '章节id',
+  PRIMARY KEY (`id`),
+  KEY `catalogId` (`catalogId`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of catalogcontent
 -- ----------------------------
 
 -- ----------------------------
@@ -76,7 +94,7 @@ CREATE TABLE `progresserror` (
   `bookName` varchar(100) DEFAULT NULL COMMENT '书名',
   `catalogName` varchar(100) DEFAULT NULL COMMENT '章节名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of progresserror
@@ -110,7 +128,7 @@ INSERT INTO `reptiletool` VALUES ('4', 'gbk', '笔趣阁1', 'http://www.biquge.c
 -- ----------------------------
 DROP TABLE IF EXISTS `reptiletool2`;
 CREATE TABLE `reptiletool2` (
-  `reptileTypeId` int(11) NOT NULL AUTO_INCREMENT COMMENT '爬取配置Id',
+  `reptileTypeId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '爬取配置Id',
   `code` varchar(20) DEFAULT '' COMMENT '页面编码格式',
   `name` varchar(60) DEFAULT NULL COMMENT '备注名称',
   `baseUrl` varchar(100) DEFAULT NULL COMMENT '来源地址',
@@ -145,11 +163,11 @@ CREATE TABLE `reptiletool2` (
 -- ----------------------------
 -- Records of reptiletool2
 -- ----------------------------
-INSERT INTO `reptiletool2` VALUES ('1', 'gbk', '笔趣阁小说网', 'http://www.biqugexsw.com/', 'gbk', 'http://www.biqugexsw.com/s.php?ie=gbk&s=2758772450457967865&q=${name}', '.bookbox', '0', '0', '.bookname>a、html', '.bookname>a、attrhref', '.author、html、split、：、1', '.cat、html、split、：、1', '', '.info h2、html', '.small span:nth-child(1)、html、split、：、1', '.small .last、html、split、：、1', '.small span:nth-child(2)、html、split、：、1', '.listmain a', '.listmain>dl>dt:eq(1)、index-1', null, '.info>.cover>img、attrsrc', '.intro、html', '#content、html', '1', null, '、html', '、attrhref、split、/、length-1', '');
-INSERT INTO `reptiletool2` VALUES ('2', 'gbk', '笔趣阁5200', 'https://www.biquge5200.cc/', 'utf-8', 'https://www.biquge5200.cc/modules/article/search.php?searchkey=${name}', '.grid>tbody>tr', '1', '0', 'td>a、html', 'td>a、attrhref', 'td:nth-child(3)、html', 'td:nth-child(6)、html', 'td:nth-child(5)、html', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(4)、html、split、：、1', '.con_top、html、split、>、9、split、<、0', '#list a', '#list>dl>dt:eq(1)、index-1', null, '#fmimg>img、attrsrc', '#intro>p、html', '#content、html', '1', null, '、html', '、attrhref、split、/、length-1', '');
+INSERT INTO `reptiletool2` VALUES ('1', 'gbk', '笔趣阁小说网', 'http://www.biqugexsw.com/', 'gbk', 'http://www.biqugexsw.com/s.php?ie=gbk&s=2758772450457967865&q=${name}', '.bookbox', '0', '0', '.bookname>a、html', '.bookname>a、attrhref', '.author、html、split、：、1', '.cat、html、split、：、1', '', '.info h2、html', '.small span:nth-child(1)、html、split、：、1', '.small .last、html、split、：、1', '.small span:nth-child(2)、html、split、：、1', '.listmain a', '.listmain>dl>dt:eq(1)、index-1', '', '.info>.cover>img、attrsrc', '.intro、html', '#content、html', '1', '', '、html', '、attrhref、split、/、length-1', '');
+INSERT INTO `reptiletool2` VALUES ('2', 'gbk', '笔趣阁5200', 'https://www.biquge5200.cc/', 'utf-8', 'https://www.biquge5200.cc/modules/article/search.php?searchkey=${name}', '.grid>tbody>tr', '1', '0', 'td>a、html', 'td>a、attrhref', 'td:nth-child(3)、html', 'td:nth-child(6)、html', 'td:nth-child(5)、html', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(4)、html、split、：、1', '.con_top、html、split、>、9、split、<、0', '#list a', '#list>dl>dt:eq(1)、index-2', '', '#fmimg>img、attrsrc', '#intro>p、html', '#content、html', '1', '', '、html', '、attrhref、split、/、length-1', '');
 INSERT INTO `reptiletool2` VALUES ('3', 'utf-8', '笔趣阁备用站', 'https://www.biquge.cc/', 'gbk', 'https://sou.xanbhx.com/search?t=920895234054625192&siteid=biqugecc&q=${name}', '.s2>a', '', '', '、html', '、attrhref', '.s4、html', 'td:nth-child(6)、html', 'td:nth-child(6)、html', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(4)、html、split、：、1', '.con_top、html、split、>、7、split、 > 、2', '#list a', '#list>dl>dt:eq(1)、index-1', '', '#fmimg>img、attrsrc', '#intro、html', '#content、html', '2', '', '、html', '、attrhref、split、/、length-1', '笔趣阁备用站的搜索不可用');
 INSERT INTO `reptiletool2` VALUES ('12', 'gbk', '全书网', 'http://www.quanshuwang.com/', 'gbk', 'http://www.quanshuwang.com/modules/article/search.php?searchkey=+${name}&searchtype=articlename&searchbuttom.x=51&searchbuttom.y=15', '.seeWell>li', '', '', '.stitle、html', 'a、attrhref', 'span>a:nth-child(2)、html', '', '', '.b-info>h1、html', '.bookso>dd、html', '.ulnav>li、html、split、[、1、split、]、0', '.main-index>a:nth-child(2)、html', '.dirconone>li>a', '', '', '.detail>a.mr11>img、attrsrc', '#waa、html、split、介绍:&nbsp;&nbsp;&nbsp;&nbsp;、1', '#content、html', '1', '.reader、attrhref', '、html', '、attrhref', '');
-INSERT INTO `reptiletool2` VALUES ('13', 'gbk', '笔趣阁', 'http://www.biquge.com.tw/', 'gbk', 'http://www.biquge.com.tw/modules/article/soshu.php?searchkey=+${name}', '.grid>tbody>tr', '1', '0', 'a、html', 'a、attrhref', 'td:nth-child(3)、html', 'td:nth-child(6)、html', 'td:nth-child(5)、html', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(4)、html、split、：、1', '.con_top、html、split、>、7、split、 > 、2', '#list a', '', null, '#fmimg>img、attrsrc', '#intro、html', '#content、html', '1', null, '、html', '、attrhref、split、/、length-1', '');
+INSERT INTO `reptiletool2` VALUES ('13', 'gbk', '笔趣阁', 'http://www.biquge.com.tw/', 'gbk', 'http://www.biquge.com.tw/modules/article/soshu.php?searchkey=+${name}', '.grid>tbody>tr', '1', '0', 'a、html', 'a、attrhref', 'td:nth-child(3)、html', 'td:nth-child(6)、html', 'td:nth-child(5)、html', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(4)、html、split、：、1', '.con_top、html、split、>、7、split、 > 、2', '#list a', '', '', '#fmimg>img、attrsrc', '#intro、html', '#content、html', '1', '', '、html', '、attrhref、split、/、length-1', 'pc端不能访问了，手机可以访问，目测是对方服务器崩了');
 
 -- ----------------------------
 -- Table structure for role
@@ -180,9 +198,10 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   KEY `roleId` (`roleId`),
   CONSTRAINT `roleId` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES ('1', '冰中焱', '7c4a8d09ca3762af61e59520943dc26494f8941b', '16666666666', '1');
+INSERT INTO `users` VALUES ('2', '火炎', '7c4a8d09ca3762af61e59520943dc26494f8941b', '16666666667', '1');

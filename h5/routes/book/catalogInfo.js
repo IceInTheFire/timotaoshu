@@ -57,16 +57,10 @@ router.use('', async function(req, res, next) {
     let bookName = book.name;
 
     let oldContainer = "";
-    try{
-        oldContainer = fs.readFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + catalogId + ".txt"),'utf-8').toString();
-    }catch(err) {
-        try {
-            oldContainer = fs.readFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + tool.jiami(catalogId) + ".txt"),'utf-8').toString();
-        } catch(err) {
-            // res.send(tool.toJson(null, '没有该文本', 1002));
-            // return;
-        }
-    }
+    let catalogArr = await db.query(`select * from catalogcontent where catalogId=${catalogId} ORDER BY num ASC;`);
+    catalogArr.forEach((value, index) => {
+        oldContainer += value.content;
+    })
     let container = "<p>";
     container += oldContainer.replace("<br/>","<br>").split("<br>").join("</p><p>");
     container += "</p>";

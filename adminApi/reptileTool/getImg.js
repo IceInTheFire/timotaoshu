@@ -6,13 +6,7 @@ module.exports = getImg;
 * 得到图片
 * */
 async function getImg(bookId, imgUrl){
-    try{
-        tool.hasDir(fs, path.join(__dirname, '../../books'));
-        tool.hasDir(fs, path.join(__dirname, '../../books/' + bookId))
-    }catch(err) {
-        bookId = tool.jiami(bookId);
-        tool.hasDir(fs, path.join(__dirname, '../../books/' + bookId))
-    }
+    tool.hasDir(fs, path.join(__dirname, '../../books'));
     let start = 0;
     requestImg();
 
@@ -26,7 +20,7 @@ async function getImg(bookId, imgUrl){
         if(ip) option.proxy = ip;
         // global.server && (option.proxy = global.serverProxy);
         timoRp(option).then(function(imgData){
-            let filePath = tool.isRepeat(fs, path.join(__dirname, '../../books/' + bookId + '/logo.png'));
+            let filePath = tool.isRepeat(fs, path.join(__dirname, '../../books/'+bookId+'.png'));
             fs.writeFileSync(filePath, imgData, "binary");
         }).catch(function(err){
             if(start >= 10) {
@@ -35,7 +29,6 @@ async function getImg(bookId, imgUrl){
             } else {
                 requestImg();
             }
-
         });
     }
 

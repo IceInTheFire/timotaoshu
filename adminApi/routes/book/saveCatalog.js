@@ -42,15 +42,23 @@ router.use('', oauth(1101),  async function(req, res, next) {
     // let catalogName = catalogList[0].name;
     // let catalogId = catalogList[0].id;
     try {
-        fs.writeFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + catalogId + ".txt"), container);
-        saveSuccess();
-    } catch(err) {
-        try{
-            fs.writeFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + tool.jiami(catalogId) + ".txt"), container);
-            saveSuccess();
-        }catch(err){
-            res.send(tool.toJson(null, '保存失败， 失败原因：'+err, 1002));
+        let contentSection = tool.handleContent(container);
+        if(contentSection.length<=0) {
+            res.send(tool.toJson(null, '保存失败， 失败原因：内容不可为空', 1002));
+            return;
         }
+        let insertSql = `INSERT INTO catalogcontent (catalogId, content, bookId, num) VALUES `;
+        contentSection.forEach((value, index) => {
+            insertSql += `(${catalogId},"${value}", ${bookId}, ${index}),`;
+        });
+        insertSql = insertSql.slice(0, insertSql.length - 1);
+        await db.execTrans([
+            `delete from catalogcontent where catalogId=${catalogId}`,
+            insertSql
+        ]);
+        saveSuccess();
+    }catch(err) {
+        res.send(tool.toJson(null, '保存失败， 失败原因：'+err, 1002));
     }
 
 
