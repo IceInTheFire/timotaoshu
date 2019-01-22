@@ -26,7 +26,7 @@ router.use('', async function(req, res, next) {
     if(bookId) {
         try{
             book = (await db.query(`
-                select book.id,book.name,book.author,book.description,book.originUrl,book.bookType,DATE_FORMAT(book.updateTime,'%Y-%m-%d') as updateTime,reptiletool2.name from book inner join reptiletool2 on book.reptileType=reptiletool2.reptileTypeId where book.id=${bookId};
+                select book.id,book.name,book.author,book.description,book.originUrl,book.bookType,DATE_FORMAT(book.updateTime,'%Y-%m-%d') as updateTime,reptiletool2.name as remark from book inner join reptiletool2 on book.reptileType=reptiletool2.reptileTypeId where book.id=${bookId};
                 `))[0];
             params.count = (await db.query(`select count(*) from catalog where bookId=${bookId}`))[0]["count(*)"];
             params.allPage = Math.ceil(params.count/params.limit);
