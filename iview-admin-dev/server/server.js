@@ -30,6 +30,7 @@ const compress = require('compression');
 app.use(compress());           //配合nginx做gzip压缩  express4以上写法
 
 const hostArr = require('../../common/host');      //允许访问的域名
+require('../../common/prototype');      //允许访问的域名
 app.all('*', function(req, res, next) {
     if(hostArr.indexOf(req.headers.host) == -1) {
         console.error(`${req.headers.host}在${new Date().Format()}访问，已被拦截`);
