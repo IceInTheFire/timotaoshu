@@ -261,6 +261,7 @@
                 util.post.books.updateCatalog(obj).then((data) => {
                     this.$Message.success("更新成功");
                     tinymce.get('tinymceEditer').setContent(data.container);
+                    this.initTinymce();
                     this.loading = false;
                 }).catch((err) => {
                     this.loading = false;
