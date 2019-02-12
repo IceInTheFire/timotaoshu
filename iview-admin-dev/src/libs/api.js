@@ -30,7 +30,8 @@ export default {
         updateBookStatus:'/book/updateBookStatus',
         updateNewCatalog:'/book/updateNewCatalog',
         oneKeyUpdateNewCatalog:'/book/oneKeyUpdateNewCatalog',
-        delBook:'/book/deleteBook'
+        delBook:'/book/deleteBook',
+        editBookInfo:'/book/editBookInfo',
     },
     reptile:{
         list:'/reptile',
