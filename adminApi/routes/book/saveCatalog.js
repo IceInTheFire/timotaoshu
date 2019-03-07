@@ -8,7 +8,6 @@ router.use('', oauth(1101),  async function(req, res, next) {
     let catalogId = tool.getParams(req, 'catalogId');
     let bookId = tool.getParams(req, 'bookId');
     let num = tool.getParams(req, 'num');
-
     if(!container) {
         res.send(tool.toJson(null, 'container不能为空', 1002));
         return;
@@ -47,19 +46,31 @@ router.use('', oauth(1101),  async function(req, res, next) {
             res.send(tool.toJson(null, '保存失败， 失败原因：内容不可为空', 1002));
             return;
         }
-        let insertSql = `INSERT INTO catalogcontent (catalogId, content, bookId, num) VALUES `;
+        let insertSql = `INSERT INTO catalogcontent${await tool.getCatalogNum(catalogId)} (catalogId, content, bookId, num) VALUES `;
         contentSection.forEach((value, index) => {
             insertSql += `(${catalogId},"${value}", ${bookId}, ${index}),`;
         });
         insertSql = insertSql.slice(0, insertSql.length - 1);
         await db.execTrans([
-            `delete from catalogcontent where catalogId=${catalogId}`,
+            `delete from catalogcontent${await tool.getCatalogNum(catalogId)} where catalogId=${catalogId}`,
             insertSql
         ]);
         saveSuccess();
     }catch(err) {
         res.send(tool.toJson(null, '保存失败， 失败原因：'+err, 1002));
     }
+
+    // try {
+    //     fs.writeFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + catalogId + ".txt"), container);
+    //     saveSuccess();
+    // } catch(err) {
+    //     try{
+    //         fs.writeFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + tool.jiami(catalogId) + ".txt"), container);
+    //         saveSuccess();
+    //     }catch(err){
+    //         res.send(tool.toJson(null, '保存失败， 失败原因：'+err, 1002));
+    //     }
+    // }
 
 
     async function saveSuccess() {

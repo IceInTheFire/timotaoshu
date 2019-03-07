@@ -5,7 +5,8 @@ const catalogQueue = require("./catalogQueue.js");
 const queue = require("./queue.js");
 const permissionList = require("./permissionList.js");
 let iconv = require("iconv-lite");
-
+let db = require("./mysql.js");
+let sqlConfig = require('../../config/sql');
 const toJson = function(data, msg, code) {
     return JSON.stringify({
         code: code || 1000,
@@ -306,6 +307,18 @@ function filterHtmlOrContainer(str,isbool) {
     if(!isbool){        //先把单标签过滤了
         result = result.replace(reg2, '');
     }
+
+    var ranges = [
+        '\ud83c[\udf00-\udfff]',
+        '\ud83d[\udc00-\ude4f]',
+        '\ud83d[\ude80-\udeff]'
+    ];
+    //目前的mysql数据库不可能转成utf8mb4字符集，以后新项目的数据库会转成这种字符集，所以这里先过滤
+    result = result.replace(new RegExp(ranges.join('|'), 'g'), ''); //过滤字符集
+    // result = result.replace(/[\x{10000}-\x{10FFFF}]/g,'');  //目前的mysql数据库不可能转成utf8mb4字符集，以后新项目的数据库会转成这种字符集
+    result = result.replace(/<font>/g,'<br>').replace(/<\/font>/g,'<br>');
+    result = result.replace(/<b>/g,'<br>').replace(/<\/b>/g,'<br>');
+    result = result.replace(/\\/g,'');    //先把\过滤掉把b标签过滤为<br>
     result = result.replace(reg3,'');       //先经过分组匹配，把双标签去除，如果是嵌套标签，则会先将嵌套标签内的双标签过滤掉
     if(reg3.test(result)) {                 //如果为true，则代表还有标签
         return filterHtmlOrContainer(result, true);
@@ -350,7 +363,6 @@ function toSql(param){
     return param.replace(/"/g,"\\\"");
 }
 
-
 /*
 * 允许访问
 *
@@ -383,6 +395,65 @@ function handleContent(content, size) {
         arr.push(content.slice(i * size, size *(i + 1)));
     }
     return arr;
+}
+
+/*
+* catalogContent分表算法
+*
+* 当返回的数字为0的时候，默认为空字符串
+* 返回的数字是  '',1,2,3,4,5
+* 当返回的数字不为空时，
+* 则先判断有没有这个表，如果有，则没事
+* 如果没有，获取之前表的自增值和表结构，新建这个表
+* */
+global.catalogContentArr = [''];
+async function getCatalogNum(catalogId){
+    var num = rangeFn(catalogId, 200000) || '';
+    if(global.catalogContentArr.indexOf(num) == -1){
+        let database = sqlConfig.database;
+        let tables = await db.query(`SELECT
+         table_name FROM information_schema.TABLES 
+         WHERE table_name ='catalogcontent${num}' and TABLE_SCHEMA = '${database}';`);
+        if(!tables.length) {    //没有这个表则新建，新建的前提是前面要有表
+            //新建表
+            await db.query(`create table catalogcontent${num} like catalogcontent;`);
+
+            // try{  //try是必须的，因为可能没有上一张表，然后就获取不到自增id。然后导致的报错
+            //     //获取自增id,也可以不设置 因为可能会重复
+            //     let id = (await db.query(`SELECT
+            //  AUTO_INCREMENT FROM information_schema.tables
+            //  WHERE table_name="catalogcontent${(num-1)||''}" and TABLE_SCHEMA = '${database}';`))[0].AUTO_INCREMENT + 1; //获取自增id
+            //     //设置自增id ,也可以不设置 因为可能会重复
+            //     await db.query(`alter table catalogcontent${num}  auto_increment = ${id};`);
+            // }catch(err){
+            // }
+        }
+        global.catalogContentArr.push(num);
+    }
+    return num;
+}
+/*
+* 获取sql所有的catalogcontent表名
+* */
+async function getCatalogTables(){
+    let tables = await db.query(`SELECT table_name FROM information_schema.TABLES WHERE table_name like "catalogcontent%" and TABLE_SCHEMA = 'timotao';`);
+    let tablesArr = [];
+    tables.forEach((value, index) => {
+        tablesArr.push(value['table_name']);
+    });
+    return tablesArr;
+}
+/*
+* 范围方法
+*
+* num   数字
+* rangeNum  取值范围   默认500
+*
+* num除于rangeNum 的向下取整  算法
+*
+* */
+function rangeFn(num,rangeNum){
+    return Math.floor(num/(rangeNum || 500));
 }
 
 
@@ -419,5 +490,8 @@ module.exports = {
     allowVisit,
     getParams,
     toSql,
-    handleContent
+    handleContent,
+
+    getCatalogNum,
+    getCatalogTables
 }

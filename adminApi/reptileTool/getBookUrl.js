@@ -15,7 +15,7 @@ async function getBookUrl_common(reptileType, bookName, isProxy){
             return;
         }
         let option = {
-            // uri:'https://www.biquge5200.cc/modules/article/search.php?searchkey=' + tool.url_encode(bookName),
+            // uri:"https://www.biquge5200.cc/modules/article/search.php?searchkey=" + tool.url_encode(bookName),
             uri:reptileCommon.searchUrl(bookName),
             encoding : null,
             transform: function(body, response) {
@@ -27,9 +27,6 @@ async function getBookUrl_common(reptileType, bookName, isProxy){
             }
         };
 
-        /*
-        * 注释原因，是因为老有人说不能爬取。   刚开始是免费代理ip。。
-        * */
         // if(isProxy && global.server) {
         //     option.proxy = global.serverProxy
         // } else {
@@ -37,17 +34,18 @@ async function getBookUrl_common(reptileType, bookName, isProxy){
         //     if(ip) option.proxy = ip;
         // }
 
-        timoRp(option).then(function(data){
+        try{
+            let data = await timoRp(option);
             let $ = data[0];
             let url = data[1];
-            let list = reptileCommon.getBookList($, url,bookName);
+            let list = reptileCommon.getBookList($, url, bookName);
             // callback && callback(list)
             resolve(list);
-        }).catch(function(err){
+        }catch(err){
             // errorCallback && errorCallback(err);
             log.error(err);
             resolve(err);
-        });
+        }
     });
 
 };

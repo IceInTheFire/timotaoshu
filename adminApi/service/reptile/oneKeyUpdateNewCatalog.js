@@ -3,17 +3,23 @@ const updateNewCatalog = require("../../reptileTool/updateNewCatalog");
 
 
 
-let oneKeyUpdateNewCatalog = async () => {
+let oneKeyUpdateNewCatalog = async (bookListFromId) => {
     return new Promise(async (resolve, reject) => {
         if(global.isUpdateReptile) {
-            reject('连载小说正在更新中');
+            reject("连载小说正在更新中");
             return
         }
-        let bookList = await db.query(`select * from book where bookStatus=1`);
+        let bookList = [];
+        if(bookListFromId) {
+            bookList = bookListFromId;
+        } else {
+            bookList = await db.query(`select * from book where bookStatus=1`);
+            global.isUpdateReptile = true;
+        }
 
         let i = 0, length = bookList.length;
         let sucCount = 0, errCount = 0;
-        global.isUpdateReptile = true;
+
         try{
             for(i; i<length; i++) {
                 let sqlbook = bookList[i];
@@ -36,7 +42,9 @@ let oneKeyUpdateNewCatalog = async () => {
                 log.info(`共${length}本连载小说，成功更新${sucCount}本连载小说，失败更新${errCount}本连载小说`);
                 wss.broadcast(`共${length}本连载小说，成功更新${sucCount}本连载小说，失败更新${errCount}本连载小说`);
                 if((errCount + sucCount) == length){
-                    global.isUpdateReptile = false;
+                    if(!bookListFromId){
+                        global.isUpdateReptile = false;
+                    }
                 }
             }
         }catch (err) {

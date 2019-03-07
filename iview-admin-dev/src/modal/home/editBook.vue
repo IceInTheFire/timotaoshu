@@ -14,7 +14,7 @@
                 <Input v-model="editBook.author" placeholder="请输入小说作者" type="text" @keyup.native.13="save" disabled></Input>
             </FormItem>
             <!--<FormItem label="图片地址：" prop="imgUrl" :error="eidtError">-->
-            <!--&lt;!&ndash;<Input v-model="config.apiUrl + '/images/' + params.row.id" placeholder="小说作者" type="text" @keyup.native.13="save"></Input>&ndash;&gt;-->
+                <!--&lt;!&ndash;<Input v-model="config.apiUrl + '/images/' + params.row.id" placeholder="小说作者" type="text" @keyup.native.13="save"></Input>&ndash;&gt;-->
             <!--</FormItem>-->
         </Form>
         <div slot="footer">

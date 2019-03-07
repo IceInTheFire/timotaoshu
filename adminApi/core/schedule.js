@@ -201,10 +201,6 @@ let j4 = schedule.scheduleJob(rule4, function(){
 * 截取所有的服务器日志
 * */
 let j5 = schedule.scheduleJob(rule5, async function(){
-
-    /*
-    * 下面注释的，在linux服务器里用得到，window下没有这个.pm2目录
-    * */
     await logService.splice(1);
     // await logService.splice(2);
     // await logService.splice(3);

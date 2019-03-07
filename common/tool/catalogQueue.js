@@ -2,21 +2,21 @@ let async = require("async");
 
 let catalogQueue = async.queue((obj, cb) => {
     obj.pro.apply(this, obj.params).then(async (data) => {
-        if(typeof data == "string" && (data.indexOf('连接10次都是失败') == 0 || data.indexOf("异常错误") == 0)) {
+        if(typeof data == "string" && data.indexOf('错误：') == 0) {
             obj.error && await obj.error(data);
-            cb();
+            await cb();
         } else {
 
             obj.result && await obj.result(data);   //data是字符串或者null
-            cb();
+            await cb();
         }
     }).catch(async (err) => {
         console.log("catalogQueue报错");
         console.log(err);
-        obj.error && await obj.error(err);
-        cb(err);
+        obj.error && await obj.error("错误：" + err);
+        await cb(err);
     });
-}, 200);
+}, 150);
 
 catalogQueue.empty = function() {
     // console.log("当最后一个任务交给worker执行时，会调用empty函数");

@@ -17,6 +17,10 @@ router.use('', oauth(),  async function(req, res, next) {
         return;
     }
     let userId = req.user.id;
+    if(userId == "48") {    //给火炎使用
+        res.send(tool.toJson(null,'公开用户不允许更改密码', 1002));
+        return;
+    }
     await db.query(`update users set pwd="${newPass}" where id=${userId}`).catch(() => {
         res.send(tool.toJson(null, '密码修改失败', 1002))
     });

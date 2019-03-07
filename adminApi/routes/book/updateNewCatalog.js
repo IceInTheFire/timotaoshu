@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const { oauth, tool, db, log, fs, path } = require("../../tool/require");
-const updateNewCatalog = require("../../reptileTool/updateNewCatalog");
+// const updateNewCatalog = require("../../reptileTool/updateNewCatalog");
+const { reptileService } = require("../../service");
 
 
 router.use('', oauth(1204),  async function(req, res, next) {
@@ -16,17 +17,13 @@ router.use('', oauth(1204),  async function(req, res, next) {
         res.send(tool.toJson(null, 'bookName不能为空', 1002));
         return;
     }
-
     let bookList = await db.query(`select * from book where id=${bookId} and name="${bookName}"`);
 
-    let arr = [];
-    let i = 0, length = bookList.length;
-    for(i; i<length; i++) {
-        let sqlbook = bookList[i];
-        arr.push(await updateNewCatalog(sqlbook));
-    }
-
-    res.send(tool.toJson(arr, null, 1000));
+    reptileService.oneKeyUpdateNewCatalog(bookList).then((msg)=>{
+        res.send(tool.toJson(msg, null, 1000));
+    }).catch((err) => {
+        res.send(tool.toJson(null, err, 1002));
+    });
 });
 
 module.exports = router;

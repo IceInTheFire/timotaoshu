@@ -1,11 +1,11 @@
-const {fs, rp, timoRp, cheerio, iconv, path, tool, db, log} = require("../tool/require");
+const {fs, rp, timoRp, cheerio, iconv, path, tool, db, log} = require("../tool/require2");
 // const reptileCommon = require("./common/reptileCommon");
 const reptileCommon2 = require("./common/reptileCommon2");
 
 // module.exports = getBookCatalogJson2;
 module.exports = async (reptileType, url, callback, errorback) => {
     var reptileType = parseInt(reptileType);
-    return getBookCatalogJson_common(reptileType, url, callback, errorback);
+    return await getBookCatalogJson_common(reptileType, url, callback, errorback);
 }
 
 /*
@@ -16,21 +16,26 @@ module.exports = async (reptileType, url, callback, errorback) => {
 async function getBookCatalogJson_common(reptileType, url, callback, errorback) {
     let reptileCommon = await reptileCommon2(reptileType);
     let start = 0;
-    startRp();
+
+
+    await startRp();
 
     async function startRp() {
         start++;
+        let bodyTest = "";
         let option = {
             uri: url,
             encoding: null,
             transform: function (body) {
-                // let body2 = iconv.decode(body, 'gbk');  //用来查看页面
+                // let body2 = iconv.decode(body, "gbk");  //用来查看页面
+                bodyTest = iconv.decode(body, reptileCommon.codeTransform);
                 return cheerio.load(iconv.decode(body, reptileCommon.code), {decodeEntities: false});
             },
             headers: {
                 //模拟谷歌浏览器
                 "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-            }
+            },
+            timeout:20000
         }
 
         if(global.server) {
@@ -39,12 +44,13 @@ async function getBookCatalogJson_common(reptileType, url, callback, errorback) 
             let ip = await tool.redisData.ipList.getRandomIpList();
             if(ip) option.proxy = ip;
         }
-        timoRp(option).then(async function ($) {
+
+        try{
+            let $ = await timoRp(option);
             let title = reptileCommon.bookTitle($);
             let author = reptileCommon.bookAuthor($);
             let updateTime = reptileCommon.getUpdateTime($);
             let bookType = reptileCommon.getBookType($);
-
             let bookStatus = 1;   //1表示连载 2表示完本
             //获取三天之前的时间
             let date = reptileCommon.beforeThreeDay();
@@ -59,7 +65,7 @@ async function getBookCatalogJson_common(reptileType, url, callback, errorback) 
                 return;
             }
             if (count > 0) {
-                if (errorback) errorback('本书已存在');
+                if (errorback) errorback("本书已存在");
                 return;
             }
 
@@ -70,29 +76,31 @@ async function getBookCatalogJson_common(reptileType, url, callback, errorback) 
             let catalogListUrl = reptileCommon.getCatalogListUrl($);
 
             if(catalogListUrl) {        //小说目录
-                let option = {
+                let option2 = {
                     uri: catalogListUrl,
                     encoding: null,
                     transform: function (body) {
-                        // let body2 = iconv.decode(body, 'gbk');  //用来查看页面
+                        // let body2 = iconv.decode(body, "gbk");  //用来查看页面
                         return cheerio.load(iconv.decode(body, reptileCommon.code), {decodeEntities: false});
                     },
                     headers: {
                         //模拟谷歌浏览器
                         "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-                    }
+                    },
+                    timeout:20000
                 }
                 if(global.server) {
-                    option.proxy = global.serverProxy
+                    option2.proxy = global.serverProxy
                 }  else {
                     let ip = await tool.redisData.ipList.getRandomIpList();
-                    if(ip) option.proxy = ip;
+                    if(ip) option2.proxy = ip;
                 }
-                timoRp(option).then( async ($) => {
-                    await getCatalogList($);
-                }).catch((err)=>{
+                try{
+                    let $2 = await timoRp(option2);
+                    await getCatalogList($2);
+                }catch(err){
                     if (errorback) errorback("访问目录页面错误，错误原因：" + err);
-                });
+                }
             } else {        //小说详情页有目录
                 await getCatalogList($);
             }
@@ -128,22 +136,39 @@ async function getBookCatalogJson_common(reptileType, url, callback, errorback) 
                 catalogArr.forEach((value, index) => {
                     catalogSql += `(${bookId},"${tool.toSql(value.title)}",${index*2},${value.type},"${value.href}", now())`;
                     if (index == catalogLength - 1) {
-                        // catalogSql += "('" + value + "')";
+                        // catalogSql += "(${value})";
                     } else {
                         catalogSql += `,`;
                     }
                 })
                 await db.query(catalogSql);
+                // saveJson(book)
                 if (callback) callback();
             }
-
-        }).catch(function (err) {
-            if (start >= 10) {
+        }catch(err){
+            if (start >= 5) {
                 if (errorback) errorback(err);
             } else {
-                log.error("爬取失败：" + err);
-                startRp();
+                // log.error("爬取失败：" + err);
+                log.error(`爬取失败：${err}。失败地址：${url},body:${bodyTest}`);
+                await startRp();
             }
-        });
+        }
     }
 }
+
+
+// async function saveJson(book) {
+//     try{
+//         let sql = `select id from book where name="${book.title}" and author="${book.author}"`;
+//         let id = (await db.query(sql))[0].id;
+//         tool.hasDir(fs, path.join(__dirname, "../../book"))
+//         let filePath = tool.isRepeat(fs, path.join(__dirname, "../../book/" + id + ".json"));
+//         fs.writeFileSync(filePath,JSON.stringify(book));
+//     }catch(err) {
+//         log.error(err);
+//         // let title = tool.jiami(book.title);
+//         // let filePath = tool.isRepeat(fs, path.join(__dirname, "../../book/" + title + ".json"));
+//         // fs.writeFileSync(filePath,JSON.stringify(book));
+//     }
+// }

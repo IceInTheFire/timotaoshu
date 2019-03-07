@@ -8,17 +8,17 @@ const { oauth, tool, db, log, rp,timoRp, request, cheerio, iconv } = require("..
 async function getIpList(page) {
     return new Promise(async (resolve, reject) => {
         let option = {
-            uri:'http://www.xicidaili.com/wt/' + page,
+            uri:"http://www.xicidaili.com/wt/" + page,
             encoding : null,
             transform: function(body, response, resolveWithFullResponse) {
-                // let body2 = iconv.decode(body, 'utf-8');  //用来查看页面
+                // let body2 = iconv.decode(body, "utf-8");  //用来查看页面
                 // console.log(body2);
-                return [cheerio.load(iconv.decode(body, 'utf-8'),{decodeEntities: false}), response.req.path];
+                return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path];
             },
             headers:{
                 "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36",
-                // "X-Forwarded-For":'61.135.217.7',
-                // 'x-real-ip':'61.135.217.7'
+                // "X-Forwarded-For":"61.135.217.7",
+                // "x-real-ip":"61.135.217.7"
             },
             timeout:20000
         };
@@ -38,9 +38,9 @@ async function getIpList(page) {
                     address: value.find("td").eq(3).find("a").html() ? value.find("td").find("a").html().trim() : "",
                     status: value.find("td").eq(4).html() ? value.find("td").eq(4).html().trim() : "",
                     protocol: value.find("td").eq(5).html() ? value.find("td").eq(5).html().toLowerCase() : "",
-                    from: '西刺代理',
-                    fromHref: 'http://www.xicidaili.com/wt/',
-                    responseTime: value.find("td").eq(6).find('.bar').attr("title") ? value.find("td").eq(6).find('.bar').attr("title").trim() : ""
+                    from: "西刺代理",
+                    fromHref: "http://www.xicidaili.com/wt/",
+                    responseTime: value.find("td").eq(6).find(".bar").attr("title") ? value.find("td").eq(6).find(".bar").attr("title").trim() : ""
                 });
             }
 
@@ -63,12 +63,12 @@ async function getIpList(page) {
 async function getIpList2(page) {
     return new Promise(async (resolve, reject) => {
         let option = {
-            uri:'https://www.kuaidaili.com/free/inha/' + page,
+            uri:"https://www.kuaidaili.com/free/inha/" + page,
             encoding : null,
             transform: function(body, response, resolveWithFullResponse) {
-                // let body2 = iconv.decode(body, 'utf-8');  //用来查看页面
+                // let body2 = iconv.decode(body, "utf-8");  //用来查看页面
                 // console.log(body2);
-                return [cheerio.load(iconv.decode(body, 'utf-8'),{decodeEntities: false}), response.req.path];
+                return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path];
             },
             headers:{
                 "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
@@ -91,8 +91,8 @@ async function getIpList2(page) {
                     address: value.find("td").eq(4).html() ? value.find("td").eq(4).html().trim() : "",
                     status: value.find("td").eq(2).html() ? value.find("td").eq(2).html().trim() : "",
                     protocol: value.find("td").eq(3).html() ? value.find("td").eq(3).html().toLowerCase() : "",
-                    from:'快代理',
-                    fromHref:'https://www.kuaidaili.com/free/inha/',
+                    from:"快代理",
+                    fromHref:"https://www.kuaidaili.com/free/inha/",
                     responseTime:value.find("td").eq(5).html() ? value.find("td").eq(5).html().trim() : ""
                 });
             }
@@ -116,12 +116,12 @@ async function getIpList2(page) {
 async function getIpList3(page) {
     return new Promise(async (resolve, reject) => {
         let option = {
-            uri:'https://www.us-proxy.org',
+            uri:"https://www.us-proxy.org",
             encoding : null,
             transform: function(body, response, resolveWithFullResponse) {
-                // let body2 = iconv.decode(body, 'utf-8');  //用来查看页面
+                // let body2 = iconv.decode(body, "utf-8");  //用来查看页面
                 // console.log(body2);
-                return [cheerio.load(iconv.decode(body, 'utf-8'),{decodeEntities: false}), response.req.path];
+                return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path];
             },
             headers:{
                 "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
@@ -167,11 +167,11 @@ async function getIpList3(page) {
 async function getIpList4(page) {
     return new Promise(async (resolve, reject) => {
         let option = {
-            uri:'http://ip.kxdaili.com/ipList/' + page + '.html#ip',
+            uri:"http://ip.kxdaili.com/ipList/" + page + ".html#ip",
             encoding : null,
             transform: function(body, response, resolveWithFullResponse) {
-                // let body2 = iconv.decode(body, 'utf-8');  //用来查看页面
-                return [cheerio.load(iconv.decode(body, 'utf-8'),{decodeEntities: false}), response.req.path];
+                // let body2 = iconv.decode(body, "utf-8");  //用来查看页面
+                return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path];
             },
             headers:{
                 "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
@@ -194,8 +194,8 @@ async function getIpList4(page) {
                     address: value.find("td").eq(5).html() ? value.find("td").eq(5).html().trim() : "",
                     status: value.find("td").eq(2).html() ? value.find("td").eq(2).html().trim() : "",
                     protocol: "http",
-                    from:'开心代理',
-                    fromHref:'http://ip.kxdaili.com',
+                    from:"开心代理",
+                    fromHref:"http://ip.kxdaili.com",
                     responseTime:value.find("td").eq(4).html() ? value.find("td").eq(4).html().trim() : ""
                 });
             }

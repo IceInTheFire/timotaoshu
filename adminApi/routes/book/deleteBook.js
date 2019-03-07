@@ -24,9 +24,32 @@ router.use('', oauth(1301),  async function(req, res, next) {
         res.send(tool.toJson(null, '没有这本书', 1002));
         return;
     }
+    // console.log(`delete from progresserror where bookId=${bookId}`);
+    // console.log(`delete from catalogcontent${await tool.getCatalogNum(catalogId)} where bookId=${bookId}`);
+    // console.log(`delete from catalog where bookId = ${bookId}`);
+    // console.log(`delete from progresserror where bookId=${bookId}`);
+
+    /*
+    *
+    delete catalogcontent.*, catalogcontent5.*,catalogcontent1050.* from catalogcontent
+INNER JOIN  catalogcontent5 on catalogcontent.bookId = catalogcontent5.bookId
+INNER JOIN catalogcontent1050 on catalogcontent.bookId = catalogcontent1050.bookId
+ where catalogcontent.bookId = 3562;
+    * */
+    let tables = await tool.getCatalogTables();
+    let deleteSqlArr = [];
+    if(tables.length > 0) {
+        tables.forEach((value, index) =>{
+            deleteSqlArr.push(`delete from ${value} where bookId = ${bookId}`);
+        });
+    }
+    // let deleteSql = `delete ${lieArr.join(',')} from ${firstCatalog} ${innerArr.join('  ')} where ${firstCatalog}.bookId = ${bookId}`
+
+    log.info(deleteSqlArr);
     await db.execTrans([
         `delete from progresserror where bookId=${bookId}`,
-        `delete from catalogcontent where bookId=${bookId}`,
+        // `delete from catalogcontent where bookId=${bookId}`,
+        ...deleteSqlArr,
         `delete from catalog where bookId = ${bookId}`,
         `delete from book where id = ${bookId}`,
     ]);
@@ -34,7 +57,6 @@ router.use('', oauth(1301),  async function(req, res, next) {
     tool.deleteAll(fs, path.join(__dirname, '../../../books/' + bookId + ".png"));
     // tool.deleteAll(fs, path.join(__dirname, '../../../book_end/' + bookId + '.json'));
     // tool.deleteAll(fs, path.join(__dirname, '../../../book/' + bookId + '.json'));
-
 
     res.send(tool.toJson('删除成功', '', 1000));
 });

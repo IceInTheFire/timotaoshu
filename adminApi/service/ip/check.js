@@ -66,9 +66,9 @@ async function check() {
                 try{
                     let leakIndexArr = allArr.removeArr(successArr).removeArr(indexArr);
                     // if(leakIndexArr.length > 0) {
-                    //     await tool.redisData.ipList.delIpFromIndex(leakIndexArr.join(','))
+                    //     await tool.redisData.ipList.delIpFromIndex(leakIndexArr.join(","))
                     // }
-                    let result = await tool.redisData.ipList.delIpFromIndex(indexArr.concat(leakIndexArr).join(','));
+                    let result = await tool.redisData.ipList.delIpFromIndex(indexArr.concat(leakIndexArr).join(","));
                     global.delIp = false;
                     global.checkIp = false;
                     if(result) {

@@ -56,8 +56,19 @@ router.use('', oauth(1001),  async function(req, res, next) {
     bookName = book.name;
 
     let container = "";
-    let catalogArr = await db.query(`select * from catalogcontent where catalogId=${catalogId} ORDER BY num ASC;`);
-    // let catalogArr = db.query(`select * from catalogcontent where catalogId=${catalogId};`);
+    // try{
+    //     container = fs.readFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + catalogId + ".txt"),'utf-8').toString();
+    // }catch(err) {
+    //     try {
+    //         container = fs.readFileSync(path.join(__dirname, '../../../books/' + bookId + "/" + tool.jiami(catalogId) + ".txt"),'utf-8').toString();
+    //     } catch(err) {
+    //         // res.send(tool.toJson(null, '没有该文本', 1002));
+    //         // return;
+    //     }
+    //
+    // }
+    let catalogArr = await db.query(`select * from catalogcontent${await tool.getCatalogNum(catalog.id)} where catalogId=${catalogId} ORDER BY num ASC;`);
+    // let catalogArr = db.query(`select * from catalogcontent${await tool.getCatalogNum(catalog.id)} where catalogId=${catalogId};`);
     catalogArr.forEach((value, index) => {
         container += value.content;
     })

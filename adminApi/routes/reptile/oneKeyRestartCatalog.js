@@ -8,7 +8,8 @@ const {reptileService} = require("../../service/");
 * */
 router.use('', oauth(4008), async function (req, res, next) {
     let bookName = tool.getParams(req, 'bookName');
-    reptileService.oneKeyRestartCatalog(bookName).then((msg) => {
+    let tiType = tool.getParams(req, 'tiType') == 1 ? true:false;       //当tiType为1时，是替代
+    reptileService.oneKeyRestartCatalog(bookName,tiType).then((msg) => {
         res.send(tool.toJson(msg, null, 1000));
     }).catch((err) => {
         res.send(tool.toJson(null, err, 1002));

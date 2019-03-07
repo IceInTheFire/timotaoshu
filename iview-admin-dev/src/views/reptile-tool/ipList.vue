@@ -100,7 +100,7 @@
                     {
                         title: '响应时间',
                         key: 'responseTime'
-            },
+                    },
                     {
                         title:'操作',
                         render:(h, params) => {

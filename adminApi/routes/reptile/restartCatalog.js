@@ -8,7 +8,8 @@ const {reptileService} = require("../../service/");
 * */
 router.use('', oauth(4007), async function (req, res, next) {
     let errorId = parseInt(tool.getParams(req, 'errorId'));
-    reptileService.restartCatalog(errorId).then((msg) => {
+    let tiType = tool.getParams(req, 'tiType') == 1 ? true:false;       //当tiType为1时，是替代
+    reptileService.restartCatalog(errorId,tiType).then((msg) => {
         res.send(tool.toJson(msg, null, 1000));
     }).catch((err) => {
         res.send(tool.toJson(null, err, 1002));

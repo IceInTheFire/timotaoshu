@@ -1,16 +1,16 @@
 let async = require("async");
 
 let queue = async.queue(function (obj, cb) {
-    obj.pro.apply(this, obj.params).then((data) => {
-        obj.result && obj.result.apply(this, data);
-        cb();
-    }).catch((err) => {
+    obj.pro.apply(this, obj.params).then(async (data) => {
+        obj.result && await obj.result.apply(this, data);
+        await cb();
+    }).catch(async (err) => {
         console.log("queue报错啦");
         console.log(err);
-        obj.error && obj.error(err);
-        cb(err);
+        obj.error && await obj.error(err);
+        await cb(err);
     });
-}, 50);
+}, 150);
 
 queue.empty = function() {
     // console.log("当最后一个任务交给worker执行时，会调用empty函数");

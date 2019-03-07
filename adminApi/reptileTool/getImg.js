@@ -6,9 +6,16 @@ module.exports = getImg;
 * 得到图片
 * */
 async function getImg(bookId, imgUrl){
-    tool.hasDir(fs, path.join(__dirname, '../../books'));
+    // try{
+    //     tool.hasDir(fs, path.join(__dirname, "../../books"));
+    //     tool.hasDir(fs, path.join(__dirname, "../../books/" + bookId))
+    // }catch(err) {
+    //     bookId = tool.jiami(bookId);
+    //     tool.hasDir(fs, path.join(__dirname, "../../books/" + bookId))
+    // }
+    tool.hasDir(fs, path.join(__dirname, "../../books"));
     let start = 0;
-    requestImg();
+    await requestImg();
 
     async function requestImg() {
         start++;
@@ -19,17 +26,18 @@ async function getImg(bookId, imgUrl){
         let ip = await tool.redisData.ipList.getRandomIpList();
         if(ip) option.proxy = ip;
         // global.server && (option.proxy = global.serverProxy);
-        timoRp(option).then(function(imgData){
-            let filePath = tool.isRepeat(fs, path.join(__dirname, '../../books/'+bookId+'.png'));
+        try{
+            let imgData = await timoRp(option);
+            let filePath = tool.isRepeat(fs, path.join(__dirname, "../../books/"+bookId+".png"));
             fs.writeFileSync(filePath, imgData, "binary");
-        }).catch(function(err){
-            if(start >= 10) {
+        }catch(err){
+            if(start >= 5) {
                 log.error(`获取${bookId}图片失败`);
                 log.error(err);
             } else {
-                requestImg();
+                await requestImg();
             }
-        });
+        }
     }
 
 }

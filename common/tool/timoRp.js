@@ -23,11 +23,12 @@ const timoRp = function(options) {
                     reject(error);
                 }
             }
-        }, time(options.timeout));
+        }, time(options.timeout,options.timeout2));
         /*
         * 设置超时
         * */
-        function time(timeout) {
+        function time(timeout,timeout2) {
+            if(timeout2) return;
             if(parseInt(timeout) > 0) {
                 let setTime = setTimeout(() => {
                     if(chaoshi) {
