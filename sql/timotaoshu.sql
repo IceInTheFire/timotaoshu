@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-03-04 11:45:21
+Date: 2019-03-07 16:57:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -198,9 +198,10 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   KEY `roleId` (`roleId`),
   CONSTRAINT `roleId` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES ('1', '火炎', '7c4a8d09ca3762af61e59520943dc26494f8941b', '123456', '1');
+INSERT INTO `users` VALUES ('2', '冰中焱', '7c4a8d09ca3762af61e59520943dc26494f8941b', '1234567', '1');
