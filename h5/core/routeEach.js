@@ -1,6 +1,15 @@
 const {fs, path,log} = require('../tool/require');
 
-function routeEach(pathArr, basePathStr, basePath, app) {
+const basePathG = path.join(__dirname, '../routes');
+let arrG = fs.readdirSync(basePathG);
+let basePathStrG = "";
+
+
+function routeEach(app, pathArr, basePathStr, basePath) {
+    pathArr = pathArr ? pathArr : arrG;
+    basePathStr = basePathStr ? basePathStr : basePathStrG;
+    basePath = basePath ? basePath : basePathG;
+
     let i, length = pathArr.length;
     for(i = 0; i<length; i++){
         let pathStr = path.join(basePath,`${basePathStr}/${pathArr[i]}`);
@@ -9,7 +18,7 @@ function routeEach(pathArr, basePathStr, basePath, app) {
         }
         if(isDir(pathStr)) {        //检查是不是文件夹
             let arr = fs.readdirSync(pathStr);
-            routeEach(arr, `${basePathStr}/${pathArr[i]}`, basePath, app);
+            routeEach(app, arr, `${basePathStr}/${pathArr[i]}`, basePath);
         }else {
             let str = "";
             if(pathArr[i] == 'index.js') {

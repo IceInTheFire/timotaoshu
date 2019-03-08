@@ -99,11 +99,7 @@ app.use(urlLog);    //生成访问日志
 // })
 
 
-const basePath = path.join(__dirname, './routes');
-let arr = fs.readdirSync(basePath);
-let basePathStr = "";
-
-routeEach(arr, basePathStr, basePath, app);
+routeEach(app);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     if(req.h5Error) {

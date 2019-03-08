@@ -41,11 +41,7 @@ morgan(app);
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-const basePath = path.join(__dirname, './routes');
-let arr = fs.readdirSync(basePath);
-let basePathStr = "";
-
-routeEach(arr, basePathStr, basePath, app);
+routeEach(app);
 app.use(function (req, res, next) {
     res.send("没有接口");
 });
