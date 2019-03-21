@@ -186,7 +186,7 @@ async function updateBookNewCatalog_common(sqlBook, reptileType, end) {
                         // saveJson(sqlBook.id, book);
                     }
                     end();
-                    resolve(upDateLength - nowLength);  //返回更新的数据
+                    resolve([upDateLength - nowLength]);  //返回更新的数据
                 }
             }catch(err){
                 if (start >= 5) {
