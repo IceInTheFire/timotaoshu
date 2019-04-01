@@ -75,6 +75,7 @@ export default {
                     }
                     util.post.login(obj).then((data) => {
                         this.$Message.success('登录成功');
+                        this.$store.commit('setUser', data.user);
                         Cookies.set('token', data.token);
                         Cookies.set('user', data.user);
                         Cookies.set('access', data.user.permission);

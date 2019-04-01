@@ -59,12 +59,15 @@ async function getCatalog(bookId) {
 
 /*
 * 检查章节里有没有内容
-* 如果有，则返回true
-* 如果没有，则返回false
+* 如果有且文字长度大于10，则返回true
+* 否则，则返回false
 * */
 async function checkCatalog(catalogId) {
     let catalogArr = await db.query(`select * from catalogcontent${await tool.getCatalogNum(catalogId)} where catalogId = ${catalogId}`);
     if (catalogArr.length > 0) {
+        if(catalogArr[0].length<10){
+            return false;
+        }
         return true;
     } else {
         return false;

@@ -14,7 +14,7 @@
                 <Input v-model="editBook.author" placeholder="请输入小说作者" type="text" @keyup.native.13="save" disabled></Input>
             </FormItem>
             <!--<FormItem label="图片地址：" prop="imgUrl" :error="eidtError">-->
-                <!--&lt;!&ndash;<Input v-model="config.apiUrl + '/images/' + params.row.id" placeholder="小说作者" type="text" @keyup.native.13="save"></Input>&ndash;&gt;-->
+            <!--&lt;!&ndash;<Input v-model="config.apiUrl + '/images/' + params.row.id" placeholder="小说作者" type="text" @keyup.native.13="save"></Input>&ndash;&gt;-->
             <!--</FormItem>-->
         </Form>
         <div slot="footer">
@@ -65,23 +65,48 @@
                 this.edit.status = false;
             },
             save(){
-                if(this.loading) return;
-                let obj = {
-                    params:{
-                        id:this.editBook.id,
-                        bookType:this.editBook.bookType
+                this.$refs["editBook"].validate((valid) => {
+                    if (valid) {
+                        // this.$Message.success('提交成功!');
+                        if(this.loading) return;
+                        let obj = {
+                            params:{
+                                id:this.editBook.id,
+                                bookType:this.editBook.bookType
+                            }
+                        };
+                        this.loading = true;
+                        util.post.books.editBookInfo(obj).then((data) => {
+                            this.loading = false;
+                            this.cancel();
+                            console.log(this.$parent);
+                            this.$emit("search");
+                            console.log(data);
+                        }).catch((error) => {
+                            this.loading = false;
+                        });
+                    } else {
+                        // this.$Message.error('表单验证失败!');
                     }
-                };
-                this.loading = true;
-                util.post.books.editBookInfo(obj).then((data) => {
-                    this.loading = false;
-                    this.cancel();
-                    console.log(this.$parent);
-                    this.$emit("search");
-                    console.log(data);
-                }).catch((error) => {
-                    this.loading = false;
                 });
+
+                // if(this.loading) return;
+                // let obj = {
+                //     params:{
+                //         id:this.editBook.id,
+                //         bookType:this.editBook.bookType
+                //     }
+                // };
+                // this.loading = true;
+                // util.post.books.editBookInfo(obj).then((data) => {
+                //     this.loading = false;
+                //     this.cancel();
+                //     console.log(this.$parent);
+                //     this.$emit("search");
+                //     console.log(data);
+                // }).catch((error) => {
+                //     this.loading = false;
+                // });
             }
         },
         components: {},
@@ -90,6 +115,7 @@
         },
         mounted() {
             this.$on('editBook', (book) => {
+                // console.log(book);
                 this.edit.status = true;
                 this.editBook = Object.assign({},book);
             });

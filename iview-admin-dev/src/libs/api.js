@@ -33,6 +33,13 @@ export default {
         delBook:'/book/deleteBook',
         editBookInfo:'/book/editBookInfo',
     },
+    writer:{
+        bookList:"/writer/bookList",
+        addBook:"/writer/addBook",
+        addCatalog:"/writer/addCatalog",
+        delCatalog:"/writer/delCatalog",
+        editBook:'/writer/editBook',
+    },
     reptile:{
         list:'/reptile',
         getUrl:'/reptile/getUrl',

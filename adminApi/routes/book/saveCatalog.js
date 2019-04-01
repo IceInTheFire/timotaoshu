@@ -29,6 +29,15 @@ router.use('', oauth(1101),  async function(req, res, next) {
     let bookList = await db.query(`select * from book where id=${bookId}`);
     let catalogList = await db.query(`select * from catalog where id=${catalogId} and bookId=${bookId} and num=${num}`);
 
+    if(bookList.length > 0){
+        let reptileType = bookList[0].reptileType;
+        let author = bookList[0].author;
+        if(reptileType == 0 && author != req.user.name) {
+            res.send(tool.toJson(null, '保存失败， 失败原因：书源来自本站，属于原创小说，而您不属于该原创小说的作者', 1002));
+            return ;
+        }
+    }
+
     if(bookList.length < 1) {
         res.send(tool.toJson(null, '保存失败， 失败原因：没有这本书', 1002));
         return;

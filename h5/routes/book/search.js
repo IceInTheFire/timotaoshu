@@ -10,7 +10,7 @@ router.use('', async function(req, res, next) {
     let bookList = [];
     if(bookName) {
         // isJin=1 是启用   type=3是爬完了
-        bookList = await db.query(`select * from book where name like '%${bookName}%' and isJin=1 and type = 3`);
+        bookList = await db.query(`select * from book where name like '%${bookName}%' and isJin=1 and (type = 3 or type = 4)`);
     } else {
 
     }

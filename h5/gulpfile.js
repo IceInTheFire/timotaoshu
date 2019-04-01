@@ -10,6 +10,7 @@ const rev = require('./lib/gulp-rev/index');            //生成hash文件   自
 const revReplace = require("gulp-rev-replace");
 const clean = require("gulp-clean");
 
+// gulp revReplace
 
 // gulp.task('build', ['less','js','concatJs', 'imagemin','lib']);
 gulp.task('less', function() {

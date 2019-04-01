@@ -22,6 +22,13 @@ router.use('', oauth(1203),  async function(req, res, next) {
     }
 
     let bookList = await db.query(`select * from book where id=${bookId}`);
+    if(bookList.length > 0){
+        let reptileType = bookList[0].reptileType;
+        if(reptileType == 0) {
+            res.send(tool.toJson(null, '更新失败， 失败原因：书源来自本站，属于原创小说', 1002));
+            return ;
+        }
+    }
     let catalogList = await db.query(`select * from catalog where id=${catalogId} and bookId=${bookId} and num=${num}`);
     if(bookList.length < 1) {
         res.send(tool.toJson(null, '更新失败， 失败原因：没有这本书', 1002));

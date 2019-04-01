@@ -456,6 +456,30 @@ function rangeFn(num,rangeNum){
     return Math.floor(num/(rangeNum || 500));
 }
 
+function filter(str) { // 特殊字符转义
+    str += ''; // 隐式转换
+    str = str.replace(/%/g, '%25');
+    str = str.replace(/\+/g, '%2B');
+    str = str.replace(/ /g, '%20');
+    str = str.replace(/\//g, '%2F');
+    str = str.replace(/\?/g, '%3F');
+    str = str.replace(/&/g, '%26');
+    str = str.replace(/\=/g, '%3D');
+    str = str.replace(/#/g, '%23');
+    return str;
+}
+/*
+*   将对象转换为url参数
+* */
+function urlEncode(paramObj) {
+    const sdata = [];
+    for (let attr in paramObj) {
+        sdata.push(`${attr}=${filter(paramObj[attr])}`);
+    }
+    return sdata.join('&');
+};
+
+
 
 
 
@@ -493,5 +517,6 @@ module.exports = {
     handleContent,
 
     getCatalogNum,
-    getCatalogTables
+    getCatalogTables,
+    urlEncode
 }

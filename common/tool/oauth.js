@@ -8,15 +8,22 @@ let oauthRouter = function(num) {
                 if(!num || (num && (user.permission.indexOf(num) >=0 || user.permission == "all"))) {
                     req.user = user;
                     req.token = req.query.token || req.body.token;
-                    next();
+                    if(next) next()
+                    else return true;
+
                 } else {
-                    res.send(tool.toJson(null,"账号权限不足", 1002));
+                    if(res) res.send(tool.toJson(null,"账号权限不足", 1002));
+                    else return tool.toJson(null,"账号权限不足", 1002);
                 }
             } else {
-                res.send(tool.toJson(null,"token验证无效", 1003));
+                // res.send(tool.toJson(null,"token验证无效", 1003));
+                if(res) res.send(tool.toJson(null,"token验证无效", 1003));
+                else return tool.toJson(null,"token验证无效", 1003);
             }
         } else {
-            res.send(tool.toJson(null,"请填写token参数", 1003));
+            // res.send(tool.toJson(null,"请填写token参数", 1003));
+            if(res) res.send(tool.toJson(null,"请填写token参数", 1003));
+            else return tool.toJson(null,"请填写token参数", 1003);
         }
     }
 }

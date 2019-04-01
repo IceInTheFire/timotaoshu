@@ -1,11 +1,11 @@
 <style lang="less">
     @import "./catalog.less";
-
-    .textarea{
-        width: calc(~'100% - 150px');
-    }
-    textarea{
-        text-indent:20px;
+    /*.textarea{*/
+    /*width: calc(~'100% - 150px');*/
+    /*}*/
+    .bookImg{
+        max-width:300px;
+        max-height:300px;
     }
 </style>
 <template>
@@ -13,14 +13,19 @@
         <Card>
             <Row>
                 <Col span="24">
-                    <img class="bookImg" :src="imgUrl + params.bookId" alt="书名">
-                    <h1>
-                        {{book.name}}
-                        <Button type="primary" :disabled="loading" @click="isEdit = !isEdit;" class="fr" >{{isEdit?'取消编辑':'编辑描述'}}</Button>
-                        <Button type="primary" :disabled="loading" @click="onClickSaveDescription" class="fr mr10" v-show="isEdit">保存描述</Button>
-                    </h1>
-                    <p class="description" v-show="!isEdit">{{book.description}}</p>
-                    <Input class="textarea" v-show="isEdit" v-model="description" type="textarea" :rows="4" placeholder="请输入描述"></Input>
+                <Upload class="upload" :show-upload-list="false" multiple :action="baseUrl + '/upload'" :data="uploadParams" :on-success="uploadIpSuccess" :on-error="uploadIpError" :format="['jpg','png','gif']" :on-format-error="uploadFormatError">
+                    <img class="bookImg" :src="imgUrl + params.bookId + imgHash" alt="书名">
+                </Upload>
+                <!--<img class="bookImg" :src="imgUrl + params.bookId" alt="书名">-->
+                <h1>
+                    {{book.name}}
+                    <Button type="primary" :disabled="loading" @click="isEdit = !isEdit;" class="fr" >{{isEdit?'取消编辑':'编辑描述'}}</Button>
+                    <Button type="primary" :disabled="loading" @click="onClickSaveDescription" class="fr mr10" v-show="isEdit">保存描述</Button>
+
+                    <Button type="primary" :disabled="loading" class="fr mr10" v-show="isMyBook" @click="onClickAddCatalog">新增章节</Button>
+                </h1>
+                <p class="description" v-show="!isEdit">{{book.description}}</p>
+                <Input class="textarea" v-show="isEdit" v-model="description" type="textarea" :rows="4" placeholder="请输入描述"></Input>
                 </Col>
             </Row>
         </Card>
@@ -30,12 +35,16 @@
         <Card shadow>
             <Page :current="params.page" :page-size="params.limit" :total="total" show-total show-elevator @on-change="getCatalog"></Page>
         </Card>
+
+        <edit-catalog-info :edit="editStatus" :book="book" ref="edit" @search="getCatalog"></edit-catalog-info>
     </Layout>
 </template>
 
 <script type="text/ecmascript-6">
     import util from 'util';
-    import config from "config"
+    import config from "config";
+    import Cookies from 'js-cookie';
+    import editCatalogInfo from "modal/home/editCatalogInfo";
     export default {
         name: "catalog",
         data() {
@@ -47,10 +56,11 @@
                 },
                 total:1,
                 loading:false,
-                columns:[
+                initColumns:[
                     {
                         title: "id",
                         key: 'id',
+                        width:100,
                         render: (h, params) => {
                             return h('a', {
                                 attrs:{
@@ -74,11 +84,12 @@
                     {
                         title:'排序NUM',
                         key:'num',
-                        width:100
+                        // width:100
                     },
                     {
                         title:'是否禁用',
                         key:'isJin',
+                        // width:130,
                         render: (h, params) => {
                             // return h('span', {
                             // }, params.row.isJin == "2" ? "未禁用":"已禁用")
@@ -101,6 +112,7 @@
                     {
                         title:'章节类型',
                         key:'type',
+                        // width:100,
                         render: (h, params) => {
                             return h('span', {
                             }, params.row.type == "2" ? "特殊章节":"普通章节")
@@ -109,17 +121,75 @@
                     {
                         title:'创建时间',
                         key:'createTime',
+                        // width:200,
                         render: (h, params) => {
                             return h('span', {
                             }, util.timeChange(params.row.createTime))
                         }
                     },
                     {
-                        title:'最后修改时间',
-                        key:'updateTime',
+                        title: '最后修改时间',
+                        key: 'updateTime',
+                        // width:200,
                         render: (h, params) => {
-                            return h('span', {
-                            }, util.timeChange(params.row.updateTime))
+                            return h('span', {}, util.timeChange(params.row.updateTime))
+                        }
+                    }
+                ],
+                columns:[],
+                myBookColumns:[
+                    {
+                        title:"操作（来源本站）",
+                        key:"handle",
+                        render:(h, params) => {
+                            return h('div', [
+                                h('a', {
+                                    attrs:{
+                                        href:'javascript:void(0);'
+                                    },
+                                    on:{
+                                        click: () => {
+                                            this.$Message.info("功能尚未开放，敬请期待");
+                                        }
+                                    }
+                                }, `上移`),
+                                h('a', {
+                                    attrs:{
+                                        href:'javascript:void(0);',
+                                        style:`margin-left:10px;`
+                                    },
+                                    on:{
+                                        click: () => {
+                                            this.$Message.info("功能尚未开放，敬请期待");
+
+                                        }
+                                    }
+                                }, `下移`),
+                                h("a", {
+                                    attrs: {
+                                        href:"javascript:void(0);",
+                                        style:`margin-left:10px;`
+                                    },
+                                    on:{
+                                        click: (e) =>{
+                                            // this.$router.push("/reptile-tool/channel");
+                                            this.showEdit(params.row);
+                                        }
+                                    },
+                                }, `编辑`),
+                                h('a', {
+                                    attrs:{
+                                        href:'javascript:void(0);',
+                                        style:`margin-left:10px;`
+                                    },
+                                    on:{
+                                        click: () => {
+                                            // this.onClickDelBook(params.row.id, params.row.name)
+                                            this.onClickDelCatalog(params.row);
+                                        }
+                                    }
+                                }, `删除`),
+                            ])
                         }
                     }
                 ],
@@ -129,7 +199,20 @@
                 },
                 imgUrl: config.apiUrl + '/images/',
                 isEdit:false,    //是否是编辑状态
-                description:''
+                description:'',
+
+
+                imgHash:"",
+                baseUrl:config.apiUrl,
+                uploadParams:{
+                    token:Cookies.get("token"),
+                    type:1,  //表示小说封面上传
+                    bookId:''
+                },
+                isMyBook:false,
+                editStatus:{
+                    status:false
+                },
             }
         },
         computed: {},
@@ -152,6 +235,13 @@
                     this.loading = false;
                 });
             },
+            initColumnsFn(){
+                if(this.isMyBook) {
+                    this.columns = [...this.initColumns, ...this.myBookColumns];
+                } else {
+                    this.columns = [...this.initColumns];
+                }
+            },
             getBook(){
                 let obj = {
                     params:{
@@ -161,6 +251,12 @@
                 util.post.books.book(obj).then((data) => {
                     this.book = data.book[0];
                     this.description = this.book.description;
+                    if(this.book.reptileType == 0  && this.book.author == this.$store.state.user.user.name){
+                        this.isMyBook = true;
+                    } else {
+                        this.isMyBook = false;
+                    }
+                    this.initColumnsFn();
                 })
             },
             onClickUpdateCatalogisJin(catalogId, isJin) {
@@ -195,9 +291,59 @@
                 }).catch((err) => {
                     this.loading = false;
                 })
-            }
+            },
+
+
+            showEdit(catalogInfo){
+                this.$refs.edit.$emit("editCatalog",catalogInfo);
+            },
+            onClickAddCatalog(){
+                this.showEdit();
+            },
+
+            onClickDelCatalog(catalog){
+                this.$Modal.confirm({
+                    closable:true,//按esc关闭
+                    title: `温馨提示`,
+                    content: `<p>你确定要删除《${catalog.name}》吗？</p>`,
+                    onOk: () => {
+                        if(this.loading) return;
+                        this.loading = true;
+                        let obj = {
+                            params:{
+                                id:catalog.id,
+                                num:catalog.num,
+                                bookId: catalog.bookId,
+                            }
+                        };
+                        util.post.writer.delCatalog(obj).then((data) =>{
+                            this.$Message.success(data);
+                            this.loading = false;
+                            this.getCatalog();
+                        }).catch((err) => {
+                            this.loading = false;
+                        });
+                    },
+                    onCancel: () => {
+                        this.$Message.info('你取消了删除');
+                    }
+                });
+            },
+
+            uploadIpSuccess(data) {
+                // this.succesFun(data);
+                this.imgHash = "?v=" + new Date().getTime();
+            },
+            uploadIpError(err){
+                this.$Message.error("上传失败，失败原因:" + err);
+            },
+            uploadFormatError(file, fileList){
+                this.$Message.error("上传失败，失败原因：文件格式不正确，只支持图片后缀的格式");
+            },
         },
-        components: {},
+        components: {
+            editCatalogInfo
+        },
         created() {
 
         },
@@ -217,6 +363,7 @@
             if(bookId !== this.params.bookId || page !== this.params.page || limit !== this.params.limit) {
                 if(bookId !== this.params.bookId) {
                     this.params.bookId = bookId;
+                    this.uploadParams.bookId = bookId;
                     this.getBook();
                 }
                 if(page !== this.params.page) {

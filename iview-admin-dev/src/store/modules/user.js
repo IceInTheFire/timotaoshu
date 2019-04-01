@@ -1,12 +1,15 @@
 import Cookies from 'js-cookie';
 
 const user = {
-    state: {},
+    state: {
+        user:Cookies.get("user") ? JSON.parse(Cookies.get("user")) : {}
+    },
     mutations: {
         logout (state, vm) {
             Cookies.remove('token');
             Cookies.remove('user');
             Cookies.remove('access');
+            state.user = {};
             // 恢复默认样式
             let themeLink = document.querySelector('link[name="theme"]');
             themeLink.setAttribute('href', '');
@@ -19,6 +22,9 @@ const user = {
             if (theme) {
                 localStorage.theme = theme;
             }
+        },
+        setUser(state,user) {
+            state.user = user;
         }
     }
 };

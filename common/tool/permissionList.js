@@ -150,7 +150,19 @@ let permissionList = [{
             children:[
                 {title:'图片上传',id:7001},
             ]
-        }
+        },
+        {
+            title: '作家模块',
+            expand: false,
+            // id: 8000,
+            children:[
+                {title:'我的书籍',id:8001},
+                {title:'添加小说',id:8002},
+                {title:'添加编辑章节',id:8003},
+                {title:'删除章节',id:8004},
+                {title:'编辑小说',id:8005},
+            ]
+        },
     ]
 }];
 

@@ -4,16 +4,16 @@ block links
     link(rel='stylesheet', href='/css/pages/book/index.css')
 block header
     header 浏览记录
-        a(href="/home/" class="fl")
+        a(href="/home/" class="pol")
             icon(class="iconfont icon-shouye")
         if(list && list.length > 0)
-            a(href="javascript:void(0);" class="fr fz08" id="edit") 编辑
+            a(href="javascript:void(0);" class="por fz08" id="edit") 编辑
     header(class="edit-header" id="editHeader")
-        a(href="javascript:void(0)" class="fl" id="cancel") 取消
+        a(href="javascript:void(0)" class="pol" id="cancel") 取消
         div(class="edit-header-center")
             span 书籍管理
             i 已选择<span id="bookCount">0</span>本书籍
-        a(href="javascript:void(0);" class="fr fz08" id="allSelect") 全选
+        a(href="javascript:void(0);" class="por fz08" id="allSelect") 全选
 block content
     - let i = 0;
     - let length = list ? list.length : 0;

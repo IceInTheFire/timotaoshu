@@ -24,6 +24,14 @@ router.use('', oauth(1301),  async function(req, res, next) {
         res.send(tool.toJson(null, '没有这本书', 1002));
         return;
     }
+    if(bookList.length > 0){
+        let reptileType = bookList[0].reptileType;
+        let author = bookList[0].author;
+        if(reptileType == 0 && author != req.user.name) {
+            res.send(tool.toJson(null, '保存失败， 失败原因：书源来自本站，属于原创小说，而您不属于该原创小说的作者', 1002));
+            return ;
+        }
+    }
     // console.log(`delete from progresserror where bookId=${bookId}`);
     // console.log(`delete from catalogcontent${await tool.getCatalogNum(catalogId)} where bookId=${bookId}`);
     // console.log(`delete from catalog where bookId = ${bookId}`);

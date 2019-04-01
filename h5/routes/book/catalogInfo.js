@@ -57,7 +57,7 @@ router.use('', async function(req, res, next) {
     let bookName = book.name;
 
     let oldContainer = "";
-    let catalogArr = await db.query(`select * from catalogcontent where catalogId=${catalogId} ORDER BY num ASC;`);
+    let catalogArr = await db.query(`select * from catalogcontent${await tool.getCatalogNum(catalog.id)} where catalogId=${catalogId} ORDER BY num ASC;`);
     catalogArr.forEach((value, index) => {
         oldContainer += value.content;
     })

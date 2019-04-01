@@ -13,11 +13,11 @@ block links
 block header
     header
         if(catalogInfo.prevCatalog)
-            a(href=`/book/catalogInfo?bookId=${catalogInfo.prevCatalog.bookId}&catalogId=${catalogInfo.prevCatalog.id}&num=${catalogInfo.prevCatalog.num}` class="fl")
+            a(href=`/book/catalogInfo?bookId=${catalogInfo.prevCatalog.bookId}&catalogId=${catalogInfo.prevCatalog.id}&num=${catalogInfo.prevCatalog.num}` class="pol")
                 icon(class="iconfont icon-Toright")
                 span 上章
         if(catalogInfo.nextCatalog)
-            a(href=`/book/catalogInfo?bookId=${catalogInfo.nextCatalog.bookId}&catalogId=${catalogInfo.nextCatalog.id}&num=${catalogInfo.nextCatalog.num}` class="fr")
+            a(href=`/book/catalogInfo?bookId=${catalogInfo.nextCatalog.bookId}&catalogId=${catalogInfo.nextCatalog.id}&num=${catalogInfo.nextCatalog.num}` class="por")
                 span 下章
                 icon(class="iconfont icon-Toleft")
         a(class="header-center" href=`/book/catalog?bookId=${catalogInfo.book.id}`) 返回目录

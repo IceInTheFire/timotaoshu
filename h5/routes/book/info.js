@@ -28,9 +28,20 @@ router.use('', async function(req, res, next) {
     let otherBook = [];
     if(bookId) {
         try{
-            book = (await db.query(`
+            book = (await db.query(`select id,name,author,description,originUrl,bookType,DATE_FORMAT(updateTime,'%Y-%m-%d'),reptileType from book where id=${bookId}`))[0];
+            if(book.length<0) {
+                req.h5Error = {
+                    message:'报错信息：搜索出错'
+                }
+                return;
+            }
+            if(!book.reptileType) {
+                book.remork = "来源本站";
+            } else {
+                book = (await db.query(`
                 select book.id,book.name,book.author,book.description,book.originUrl,book.bookType,DATE_FORMAT(book.updateTime,'%Y-%m-%d') as updateTime,reptiletool2.name as remark from book inner join reptiletool2 on book.reptileType=reptiletool2.reptileTypeId where book.id=${bookId};
                 `))[0];
+            }
             let description = "<p>";
             description += book.description.replace("<br/>","<br>").split("<br>").join("</p><p>");
             description += "</p>";

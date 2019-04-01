@@ -1,7 +1,7 @@
 extends ../../common/layout
 
 block links
-    //link(rel='stylesheet', href='/lib/swiper/dist/css/swiper.min.css?v=9aade19d0a')
+    //link(rel='stylesheet', href='/lib/swiper/dist/css/swiper.min.css?v=a14f9e37fa')
     link(rel='stylesheet', href='/css/pages/home/index.css?v=50464b11dc')
 
 block header
@@ -10,6 +10,7 @@ block header
         a(class="book-searct-a") 点击搜索
 
 block content
+
     a( href="/home" style="display:block;line-height:2rem;font-size:1rem;text-align:center;") 随机十本推荐--点击刷新
     - let i = 0;
     - let length = bookList ? bookList.length : 0;
@@ -28,5 +29,5 @@ block footer
     +footer(myUrl)
 
 block scripts
-    //script(type="text/javascript" src="/lib/swiper/dist/js/swiper.min.js?v=b1f64dfa2d")
+    //script(type="text/javascript" src="/lib/swiper/dist/js/swiper.min.js?v=f73e23ebde")
     script(type="text/javascript" src="/js/pages/home/index.js?v=83695827f2")

@@ -1,13 +1,34 @@
 var express = require('express');
 var router = express.Router();
 const { oauth, tool, db, log, xlsx , fs, path} = require("../../tool/require");
-// var xlsx = require('node-xlsx');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: async function (req, file, cb) {
+
+        let result = await oauth(2006)(req);
+        if(result == true) {        //有权限
+            // 接收到文件后输出的保存路径（若不存在则需要创建）
+            // cb(null, 'upload/');
+            cb(null, path.join(__dirname, '../../upload/'));
+        } else {
+            return cb( new Error(result.msg), false);
+        }
+
+    },
+    filename: function (req, file, cb) {
+        // 将保存文件名设置为 时间戳 + 文件原始名，比如 151342376785-123.jpg
+        cb(null, Date.now() + "-" + Math.ceil(Math.random()*1000000)  + "-" + file.originalname);
+    }
+});
+
+const upload = multer({storage: storage});
 
 /*
 *
 * 这里的权限跟ip/index的权限一致
 * */
-router.use('', oauth(2006),  async function(req, res, next) {
+router.use('',upload.single('file'), oauth(2006),  async function(req, res, next) {
     if (req.file) {
         if(req.file.mimetype != 'application/vnd.ms-excel') {
             res.send(tool.toJson(null, '上传文件格式错误', 1002));

@@ -6,9 +6,9 @@ block links
         link(rel="prerender" href=`/book/catalog?bookId=${book.id}&page=${parseInt(params.page) + 1}&limit=${params.limit}&isSort=${params.isSort}`)
 block header
     header= book.name
-        a(href=`/book/info?bookId=${book.id}` class="fl")
+        a(href=`/book/info?bookId=${book.id}` class="pol")
             icon(class="iconfont icon-Toright")
-        a(href="/book" class="fr")
+        a(href="/book" class="por")
             icon(class="iconfont icon-books")
 block content
     div(class="catalog-header")

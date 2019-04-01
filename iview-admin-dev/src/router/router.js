@@ -145,9 +145,20 @@ export const appRouter = [
         ]
     },
     {
+        path: '/write',
+        icon: 'ios-image',
+        title: '作家专区',
+        name: 'write-tool',
+        component: Main,
+        access:["7000"],
+        children: [
+            { path: 'index', title: '我的书籍', access:["7000"], name: 'write-list', component: () => import('@/views/writer/bookList.vue') },
+        ]
+    },
+    {
         path: '/img',
         icon: 'ios-image',
-        title: '图片',
+        title: '图片专区',
         name: 'img-tool',
         component: Main,
         access:["7000"],
