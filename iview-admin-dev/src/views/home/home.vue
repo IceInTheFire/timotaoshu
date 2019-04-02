@@ -6,31 +6,32 @@
         <Card>
             <Row>
                 <Col span="12">
-                <Select v-model="selectName" class="w100" placeholder="全部" label-in-value @on-change="selectChange">
-                    <Option v-for="item in selectList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-                <Input v-show="selectName" @keyup.native.13="onClickSearch"
-                       v-model="inputValue" :placeholder="inputPlaceholder" clearable class="w200"></Input>
-                <!--:type="selectName == 'bookId'? 'number':'text'"-->
-                <Select v-model="isJin" class="w100" placeholder="全部" label-in-value @on-change="onClickSearch">
-                    <Option v-for="item in isJinList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-                <Select v-model="type" class="w100" placeholder="全部" label-in-value @on-change="onClickSearch">
-                    <Option v-for="item in reptileStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
+                    <Select v-model="selectName" class="w100" placeholder="全部" label-in-value @on-change="selectChange">
+                        <Option v-for="item in selectList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
+                    <Input v-show="selectName" @keyup.native.13="onClickSearch"
+                           v-model="inputValue" :placeholder="inputPlaceholder" clearable class="w200"></Input>
+                    <!--:type="selectName == 'bookId'? 'number':'text'"-->
+                    <Select v-model="isJin" class="w100" placeholder="全部" label-in-value @on-change="onClickSearch">
+                        <Option v-for="item in isJinList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
+                    <Select v-model="type" class="w100" placeholder="全部" label-in-value @on-change="onClickSearch">
+                        <Option v-for="item in reptileStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
 
-                <Select v-model="bookType" class="w100" placeholder="全部" label-in-value @on-change="onClickSearch">
-                    <Option v-for="item in bookTypeList" :value="item.bookType" :key="item.bookType">{{ item.bookType }}</Option>
-                </Select>
-                <Select v-model="bookStatus" class="w100" placeholder="全部" label-in-value @on-change="onClickSearch">
-                    <Option v-for="item in bookStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
+                    <Select v-model="bookType" class="w100" placeholder="全部" label-in-value @on-change="onClickSearch">
+                        <Option v-for="item in bookTypeList" :value="item.bookType" :key="item.bookType">{{ item.bookType }}</Option>
+                    </Select>
+                    <Select v-model="bookStatus" class="w100" placeholder="全部" label-in-value @on-change="onClickSearch">
+                        <Option v-for="item in bookStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
+                    <Checkbox :value="fromMe" @click.prevent.native="handleCheckAll">来源本站</Checkbox>
                 </Col>
                 <Col span="12" class="tr">
-                <Button type="primary" :disabled="loading" @click="onClickSearch">搜索</Button>
-                <Button type="primary" :disabled="loading" @click="onClickUpdateBookisJin">批量启用</Button>
-                <Button type="primary" :disabled="loading" @click="onClickOneKeyUpdateNewCatalog">一键全部更新至最新章节</Button>
-                <Button type="primary" :disabled="loading" @click="onclickOneKeyGetAllBookImg">一键更新全部图片</Button>
+                    <Button type="primary" :disabled="loading" @click="onClickSearch">搜索</Button>
+                    <Button type="primary" :disabled="loading" @click="onClickUpdateBookisJin">批量启用</Button>
+                    <Button type="primary" :disabled="loading" @click="onClickOneKeyUpdateNewCatalog">一键全部更新至最新章节</Button>
+                    <Button type="primary" :disabled="loading" @click="onclickOneKeyGetAllBookImg">一键更新全部图片</Button>
                 </Col>
             </Row>
         </Card>
@@ -388,11 +389,15 @@
                 editStatus:{
                     status:false
                 },
-                selection:[]
+                selection:[],
+                fromMe:''
             };
         },
         computed: {},
         methods: {
+            handleCheckAll(){
+                this.fromMe = !this.fromMe;
+            },
             getBooks(page) {
                 if(this.loading) return;
                 if(page > 0) {
@@ -418,6 +423,9 @@
                 }
                 if(this.isJin){
                     obj.params.isJin = this.isJin;
+                }
+                if(this.fromMe) {
+                    obj.params.fromMe = this.fromMe;
                 }
 
                 this.loading = true;
@@ -659,6 +667,7 @@
                 let bookType = this.$route.query.bookType || "";
                 let bookStatus = this.$route.query.bookStatus || "";
                 let isJin = this.$route.query.isJin || "";
+                let fromMe = this.$route.query.fromMe || "";
 
                 let selectName = "";
                 let inputValue = "";
@@ -672,13 +681,14 @@
                         inputValue = this.$route.query[value.value]
                     }
                 });
-                if(page !== this.params.page || limit !== this.params.limit || type !== this.type || selectName !== this.selectName || inputValue !== this.inputValue || bookType !== this.bookType || this.bookStatus !== bookStatus || this.isJin !== isJin) {
+                if(page !== this.params.page || limit !== this.params.limit || type !== this.type || selectName !== this.selectName || inputValue !== this.inputValue || bookType !== this.bookType || this.bookStatus !== bookStatus || this.isJin !== isJin ||this.fromMe !== fromMe) {
 
                     if(this.type !== type) this.type = type;
                     if(this.selectName !== selectName) this.selectName = selectName;
                     if(this.inputValue !== inputValue) this.inputValue = inputValue;
                     if(this.bookStatus !== bookStatus) this.bookStatus = bookStatus;
                     if(this.isJin !== isJin) this.isJin = isJin;
+                    if(this.fromMe !== fromMe) this.fromMe = fromMe;
                     if(this.bookType !== bookType) {
                         if(this.bookTypeList.length <= 0) {
                             this.bookTypeList = [

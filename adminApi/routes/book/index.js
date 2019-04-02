@@ -19,6 +19,7 @@ router.use('', oauth(1003),  async function(req, res, next) {
     let bookType = tool.getParams(req, 'bookType');
     let bookStatus = tool.getParams(req, 'bookStatus');
     let isJin = tool.getParams(req, 'isJin');
+    let fromMe = tool.getParams(req, 'fromMe');
     let books, count, sqlArr = [], sql;
     let searchSqlStart = `select id,name,author,description,reptileType,OriginUrl,type,updateTime,bookStatus,bookType,isJin from book`
 
@@ -43,6 +44,9 @@ router.use('', oauth(1003),  async function(req, res, next) {
     }
     if(isJin) {
         sqlArr.push(`isJin=${isJin}`);
+    }
+    if(fromMe) {
+        sqlArr.push(`reptileType=0`);
     }
     sql = sqlArr.join(" and ");
     if(sql) {
