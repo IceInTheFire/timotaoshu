@@ -54,7 +54,9 @@
     import description from "./components/description";
     import wbImg from "./components/wb-img";
     import editBook from 'modal/home/editBook.vue';
+    import isMeMixin from '@/mixins/isMe';
     export default {
+        mixins:[isMeMixin],
         name: 'home',
         components: {
             description,
@@ -376,7 +378,6 @@
                 ],
                 isJin:'',
                 type:'',
-                isme:false,
                 bigImg:{
                     url:'',
                     right:0,
@@ -688,7 +689,8 @@
                     if(this.inputValue !== inputValue) this.inputValue = inputValue;
                     if(this.bookStatus !== bookStatus) this.bookStatus = bookStatus;
                     if(this.isJin !== isJin) this.isJin = isJin;
-                    if(this.fromMe !== fromMe) this.fromMe = fromMe;
+                    if(this.fromMe !== fromMe) this.handleCheckAll();
+
                     if(this.bookType !== bookType) {
                         if(this.bookTypeList.length <= 0) {
                             this.bookTypeList = [
@@ -706,9 +708,6 @@
                     if(limit !== this.params.limit) this.params.limit = limit;
                     this.getBooks();
                 }
-                this.$nextTick(() =>{
-                    this.isme = true;
-                })
             },
             start(){
                 if(this.reptileList.length > 0) {
@@ -741,7 +740,7 @@
             this.start();
         },
         deactivated() {
-            this.isme = false;
+
         }
     };
 </script>

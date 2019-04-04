@@ -30,8 +30,10 @@
     import wbImg from "@/views/home/components/wb-img";
     import editBook from 'modal/writer/editBook.vue';
     import Cookies from 'js-cookie';
+    import isMeMixin from '@/mixins/isMe';
 
     export default {
+        mixins:[isMeMixin],
         name: "write",
         data() {
             return {
@@ -452,9 +454,6 @@
 
                     this.getBooks();
                 }
-                this.$nextTick(() =>{
-                    this.isme = true;
-                })
             },
             start(){
                 if(this.reptileList.length > 0) {
