@@ -13,19 +13,19 @@
         <Card>
             <Row>
                 <Col span="24">
-                <Upload class="upload" :show-upload-list="false" multiple :action="baseUrl + '/upload'" :data="uploadParams" :on-success="uploadIpSuccess" :on-error="uploadIpError" :format="['jpg','png','gif']" :on-format-error="uploadFormatError">
-                    <img class="bookImg" :src="imgUrl + params.bookId + imgHash" alt="书名">
-                </Upload>
-                <!--<img class="bookImg" :src="imgUrl + params.bookId" alt="书名">-->
-                <h1>
-                    {{book.name}}
-                    <Button type="primary" :disabled="loading" @click="isEdit = !isEdit;" class="fr" >{{isEdit?'取消编辑':'编辑描述'}}</Button>
-                    <Button type="primary" :disabled="loading" @click="onClickSaveDescription" class="fr mr10" v-show="isEdit">保存描述</Button>
+                    <Upload class="upload" :show-upload-list="false" multiple :action="baseUrl + '/upload'" :data="uploadParams" :on-success="uploadSuccess" :on-error="uploadError" :format="['jpg','png','gif']" :on-format-error="uploadFormatError">
+                        <img class="bookImg" :src="imgUrl + params.bookId + imgHash" alt="书名">
+                    </Upload>
+                    <!--<img class="bookImg" :src="imgUrl + params.bookId" alt="书名">-->
+                    <h1>
+                        {{book.name}}
+                        <Button type="primary" :disabled="loading" @click="isEdit = !isEdit;" class="fr" >{{isEdit?'取消编辑':'编辑描述'}}</Button>
+                        <Button type="primary" :disabled="loading" @click="onClickSaveDescription" class="fr mr10" v-show="isEdit">保存描述</Button>
 
-                    <Button type="primary" :disabled="loading" class="fr mr10" v-show="isMyBook" @click="onClickAddCatalog">新增章节</Button>
-                </h1>
-                <p class="description" v-show="!isEdit">{{book.description}}</p>
-                <Input class="textarea" v-show="isEdit" v-model="description" type="textarea" :rows="4" placeholder="请输入描述"></Input>
+                        <Button type="primary" :disabled="loading" class="fr mr10" v-show="isMyBook" @click="onClickAddCatalog">新增章节</Button>
+                    </h1>
+                    <p class="description" v-show="!isEdit">{{book.description}}</p>
+                    <Input class="textarea" v-show="isEdit" v-model="description" type="textarea" :rows="4" placeholder="请输入描述"></Input>
                 </Col>
             </Row>
         </Card>
@@ -329,17 +329,9 @@
                     }
                 });
             },
-
-            uploadIpSuccess(data) {
-                // this.succesFun(data);
+            succesFun(data) {
                 this.imgHash = "?v=" + new Date().getTime();
-            },
-            uploadIpError(err){
-                this.$Message.error("上传失败，失败原因:" + err);
-            },
-            uploadFormatError(file, fileList){
-                this.$Message.error("上传失败，失败原因：文件格式不正确，只支持图片后缀的格式");
-            },
+            }
         },
         components: {
             editCatalogInfo

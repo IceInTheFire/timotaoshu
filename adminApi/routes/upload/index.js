@@ -12,12 +12,27 @@ let storage = multer.diskStorage({
             // let bookId = tool.getParams(req, 'bookId');
 
             if(type == 1) {//如果为1  表示小说封面上传
+                let bookId = tool.getParams(req, 'bookId');
+
+                let bookList = await db.query(`select * from book where id=${bookId}`);
+
+                if(bookList.length <= 0){
+                    return cb(tool.toJson(null, '没有这本书', 1002), false);
+                }
+                if(bookList.length > 0){
+                    let reptileType = bookList[0].reptileType;
+                    let author = bookList[0].author;
+                    if(reptileType == 0 && author != req.user.name) {
+                        return cb(tool.toJson(null, '操作失败， 失败原因：书源来自本站，属于原创小说，而您非该原创小说的作者', 1002), false);
+                    }
+                }
                 cb(null, path.join(__dirname, '../../../books/'));
             } else {    //公共上传
                 cb(null, path.join(__dirname, '../../public/img'));
             }
         } else {
-            return cb( new Error(result.msg), false);
+            // return cb( new Error(result.msg), false);
+            return cb(result, false);
         }
     },
     filename: function(req, file, cb) {

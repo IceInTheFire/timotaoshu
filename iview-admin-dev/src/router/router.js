@@ -150,9 +150,9 @@ export const appRouter = [
         title: '作家专区',
         name: 'write-tool',
         component: Main,
-        access:["7000"],
+        access:["8000"],
         children: [
-            { path: 'index', title: '我的书籍', access:["7000"], name: 'write-list', component: () => import('@/views/writer/bookList.vue') },
+            { path: 'index', title: '我的书籍', access:["8000"], name: 'write-list', component: () => import('@/views/writer/bookList.vue') },
         ]
     },
     {

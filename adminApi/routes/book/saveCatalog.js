@@ -33,7 +33,7 @@ router.use('', oauth(1101),  async function(req, res, next) {
         let reptileType = bookList[0].reptileType;
         let author = bookList[0].author;
         if(reptileType == 0 && author != req.user.name) {
-            res.send(tool.toJson(null, '保存失败， 失败原因：书源来自本站，属于原创小说，而您不属于该原创小说的作者', 1002));
+            res.send(tool.toJson(null, '保存失败， 失败原因：书源来自本站，属于原创小说，而您非该原创小说的作者', 1002));
             return ;
         }
     }

@@ -13,7 +13,7 @@
         </Card>
 
 
-        <Upload class="upload" :show-upload-list="false" multiple :action="baseUrl + '/upload'" :data="uploadParams" :on-success="uploadIpSuccess" :on-error="uploadIpError" :format="['jpg','png','gif']" :on-format-error="uploadFormatError" ref="upload">
+        <Upload class="upload" :show-upload-list="false" multiple :action="baseUrl + '/upload'" :data="uploadParams" :on-success="uploadSuccess" :on-error="uploadError" :format="['jpg','png','gif']" :on-format-error="uploadFormatError" ref="upload">
             <label id="uploadClick"></label>
         </Upload>
 
@@ -468,17 +468,11 @@
                     },300);
                 }
             },
-            uploadIpSuccess() {
+            succesFun() {
                 let imgDom = document.getElementById("img" + this.uploadParams.bookId);
                 let imgUrl = imgDom.src;
                 imgDom.src = imgUrl.split("?")[0] + "?v=" + Date.now();
-            },
-            uploadIpError(err){
-                this.$Message.error("上传失败，失败原因:" + err);
-            },
-            uploadFormatError(file, fileList){
-                this.$Message.error("上传失败，失败原因：文件格式不正确，只支持图片后缀的格式");
-            },
+            }
         },
         components: {
             description,

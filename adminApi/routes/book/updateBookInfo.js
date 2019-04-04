@@ -23,7 +23,7 @@ router.use('', oauth(1202),  async function(req, res, next) {
     try{
         let i = 0, length = book.length;
         for(i; i<length; i++){
-            let json = book[i].id + '.json';
+            // let json = book[i].id + '.json';
             // let obj = null;
             book[i].isHandle = false;
             try{

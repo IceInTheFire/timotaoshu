@@ -12,7 +12,8 @@ const storage = multer.diskStorage({
             // cb(null, 'upload/');
             cb(null, path.join(__dirname, '../../upload/'));
         } else {
-            return cb( new Error(result.msg), false);
+            // return cb( new Error(result.msg), false);
+            return cb(result, false);
         }
 
     },

@@ -14,7 +14,7 @@
                     <Button class="ml10" type="primary" @click="onClickReptile">爬取</Button>
                 </Col>
                 <Col span="12" class="tr">
-                    <Upload class="upload" :show-upload-list="false" :action="baseUrl + '/ip/uploadIp'" :data="uploadParams" :on-success="uploadIpSuccess" :on-error="uploadIpError" :format="['xls']" :on-format-error="uploadFormatError">
+                    <Upload class="upload" :show-upload-list="false" :action="baseUrl + '/ip/uploadIp'" :data="uploadParams" :on-success="uploadSuccess" :on-error="uploadError" :format="['xls']" :on-format-error="uploadFormatError">
                         <Button type="primary">导入代理IP</Button>
                     </Upload>
                     <Button type="primary" @click="onClickExportIp">导出代理IP</Button>
@@ -278,31 +278,8 @@
                     console.error(err);
                 });
             },
-            uploadIpSuccess(data) {
-                console.log("成功了");
-                console.log(data);
-                this.succesFun(data);
-            },
-            uploadIpError(err){
-                console.log("失败了")
-                this.$Message.error("上传失败，失败原因:" + err);
-            },
-            uploadFormatError(file, fileList){
-                console.log(file);
-                console.log(fileList);
-                this.$Message.error("上传失败，失败原因：文件格式不正确，只支持xls后缀的格式");
-            },
             succesFun(data) {
-                if(data.code == "1002") {
-                    this.$Message.error(data.msg);
-                } else if(data.code == "1003") {
-                    this.$Message.error(data.msg);
-                } else if(data.code == "1000"){
-                    this.getList();
-                    this.$Message.success(data.data);
-                } else {
-                    this.$Message.error("上传失败，失败原因：文件格式不正确，只支持xls后缀的格式")
-                }
+                this.getList();
             }
         },
         components: {},

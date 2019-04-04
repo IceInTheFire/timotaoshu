@@ -1,7 +1,7 @@
 <template>
     <div>
         <Card>
-            <Upload class="upload" :show-upload-list="false" multiple :action="baseUrl + '/upload'" :data="uploadParams" :on-success="uploadIpSuccess" :on-error="uploadIpError" :format="['jpg','png','gif']" :on-format-error="uploadFormatError">
+            <Upload class="upload" :show-upload-list="false" multiple :action="baseUrl + '/upload'" :data="uploadParams" :on-success="uploadSuccess" :on-error="uploadError" :format="['jpg','png','gif']" :on-format-error="uploadFormatError">
                 <Button type="primary">图片上传</Button>
             </Upload>
         </Card>
@@ -53,28 +53,10 @@
         },
         computed: {},
         methods: {
-            uploadIpSuccess(data) {
-                this.succesFun(data);
-            },
-            uploadIpError(err){
-                this.$Message.error("上传失败，失败原因:" + err);
-            },
-            uploadFormatError(file, fileList){
-                this.$Message.error("上传失败，失败原因：文件格式不正确，只支持图片后缀的格式");
-            },
             succesFun(data) {
-                if(data.code == "1002") {
-                    this.$Message.error(data.msg);
-                } else if(data.code == "1003") {
-                    this.$Message.error(data.msg);
-                } else if(data.code == "1000"){
-                    this.$Message.success(data.msg);
-                    this.imgList.push({
-                        imgUrl:config.apiUrl + '/img/' +data.data.imgUrl
-                    })
-                } else {
-                    this.$Message.error("上传失败，失败原因：文件格式不正确，只支持图片后缀的格式")
-                }
+                this.imgList.push({
+                    imgUrl:config.apiUrl + '/img/' +data.data.imgUrl
+                })
             }
         },
         components: {},
