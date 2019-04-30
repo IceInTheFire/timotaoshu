@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 // var common = require('../../tool/common');
-const { tool, db, log } = require("../../tool/require");
+const { tool, db, log, imgUrlConfig } = require("../../tool/require");
 
 /* GET home page. */
 router.use('', async function(req, res, next) {
@@ -24,7 +24,7 @@ router.use('', async function(req, res, next) {
 
     // res.send(tool.toJson(bookList, '', 1000));
 
-    res.render('pages/book/search', { myUrl:'/book/search',bookName,bookList});
+    res.render('pages/book/search', { myUrl:'/book/search',bookName,bookList, imgUrlConfig});
 });
 
 module.exports = router;

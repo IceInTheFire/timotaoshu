@@ -1,7 +1,7 @@
 extends ../../common/layout
 
 block links
-    link(rel='stylesheet', href='/css/pages/book/search.css?v=d633f70329')
+    link(rel='stylesheet', href='/css/pages/book/search.css?v=95074f7dab')
 block header
     header= bookName
         a(href="javascript:history.back();" class="pol")
@@ -16,7 +16,7 @@ block content
         - for (i; i < length; i++)
             a(class="search-list clearfix" href=`/book/info?bookId=${bookList[i].id}&toBack=1`)
                 div(class="search-img-box")
-                    img(src=`http://localhost:3000/images/${bookList[i].id}`)
+                    img(src=`${imgUrlConfig + bookList[i].id}`)
                 div(class="search-info-box")
                     span= `书名：${bookList[i].name}`
                     span= `作者：${bookList[i].author}`

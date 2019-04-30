@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 // var common = require('../../tool/common');
-const { tool, db, log,path,fs } = require("../../tool/require");
+const { tool, db, log,path,fs,imgUrlConfig} = require("../../tool/require");
 
 /* GET home page. */
 router.use('', async function(req, res, next) {
@@ -84,7 +84,7 @@ router.use('', async function(req, res, next) {
 
 
 
-    res.render('pages/book/catalogInfo', { myUrl:'/book/catalogInfo',catalogInfo,site,bookConfig});
+    res.render('pages/book/catalogInfo', { myUrl:'/book/catalogInfo',catalogInfo,site,bookConfig, imgUrlConfig});
 });
 
 module.exports = router;

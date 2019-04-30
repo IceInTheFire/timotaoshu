@@ -1,8 +1,8 @@
 extends ../../common/layout
 
 block links
-    //link(rel='stylesheet', href='/lib/swiper/dist/css/swiper.min.css?v=a14f9e37fa')
-    link(rel='stylesheet', href='/css/pages/home/index.css?v=50464b11dc')
+    //link(rel='stylesheet', href='/lib/swiper/dist/css/swiper.min.css?v=9aade19d0a')
+    link(rel='stylesheet', href='/css/pages/home/index.css?v=25f8fc1c22')
 
 block header
     div(class="book-search") 搜索书名：
@@ -18,7 +18,7 @@ block content
         - for (i; i < length; i++)
             a(class="search-list clearfix" href=`/book/info?bookId=${bookList[i].id}&toBack=1`)
                 div(class="search-img-box")
-                    img(src=`http://localhost:3000/images/${bookList[i].id}`)
+                    img(src=`${imgUrlConfig + bookList[i].id}`)
                 div(class="search-info-box")
                     span= `书名：${bookList[i].name}`
                     span= `作者：${bookList[i].author}`
@@ -29,5 +29,5 @@ block footer
     +footer(myUrl)
 
 block scripts
-    //script(type="text/javascript" src="/lib/swiper/dist/js/swiper.min.js?v=f73e23ebde")
+    //script(type="text/javascript" src="/lib/swiper/dist/js/swiper.min.js?v=b1f64dfa2d")
     script(type="text/javascript" src="/js/pages/home/index.js?v=83695827f2")

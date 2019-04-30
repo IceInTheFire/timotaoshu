@@ -1,2 +1,6 @@
 const common = require("../../common/tool/require");
-module.exports = common;
+const imgUrlConfig = require("../../config/imgUrl");
+module.exports = {
+    ...common,
+    imgUrlConfig,
+};

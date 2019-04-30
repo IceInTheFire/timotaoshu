@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var common = require('../../tool/common');
+const { tool, db, log, imgUrlConfig } = require("../../tool/require");
 
 /* GET home page. */
 router.use('', async function(req, res, next) {
@@ -27,10 +28,10 @@ router.use('', async function(req, res, next) {
                 length--;
             }
         }
-        res.render('pages/book/index', { myUrl:'/book/index', list: result.book });
+        res.render('pages/book/index', { myUrl:'/book/index', list: result.book, imgUrlConfig });
         return;
     } else{
-        res.render('pages/book/index', { myUrl:'/book/index', error: "未知错误" });
+        res.render('pages/book/index', { myUrl:'/book/index', error: "未知错误", imgUrlConfig});
         return;
     }
 });

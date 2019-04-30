@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var common = require('../../tool/common');
-const { tool, db, log,path,fs } = require("../../tool/require");
+const { tool, db, log,path,fs, imgUrlConfig } = require("../../tool/require");
 
 /* GET home page. */
 router.use('', async function(req, res, next) {
@@ -44,7 +44,7 @@ router.use('', async function(req, res, next) {
 
     let book = await db.query(`SELECT * FROM book where isJin = 1 and type = 3 ORDER BY RAND() LIMIT 10`)
 
-    res.render('pages/home/index', { myUrl:'/home/index',bookList: book });
+    res.render('pages/home/index', { myUrl:'/home/index',bookList: book, imgUrlConfig });
 });
 
 module.exports = router;

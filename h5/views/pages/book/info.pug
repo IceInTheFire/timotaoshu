@@ -12,7 +12,7 @@ block content
     div(class="book-info clearfix")
         div(class="fl")
             div(class="book-img")
-                img( src=`http://localhost:3000/images/${book.id}`)
+                img( src=`${imgUrlConfig + book.id}`)
         div(class="book-box")
             span(class="book-name")= book.name
             span

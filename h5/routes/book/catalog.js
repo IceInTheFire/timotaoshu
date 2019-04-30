@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var common = require('../../tool/common');
-const { tool, db, log } = require("../../tool/require");
+const { tool, db, log, imgUrlConfig } = require("../../tool/require");
 
 /* GET home page. */
 router.use('', async function(req, res, next) {
@@ -42,7 +42,7 @@ router.use('', async function(req, res, next) {
         description:tool.filterHtml(book.description)
     };
 
-    res.render('pages/book/catalog', { myUrl:'/book/catalog', book, catalog,params,site});
+    res.render('pages/book/catalog', { myUrl:'/book/catalog', book, catalog,params,site,imgUrlConfig });
 });
 
 module.exports = router;
