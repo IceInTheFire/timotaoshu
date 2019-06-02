@@ -98,7 +98,15 @@ app.use(urlLog);    //生成访问日志
 //     next();
 // })
 
-
+// 字段不符合就就不允许
+app.use((req, res, next) => {
+    let limit = tool.getParams(req, 'limit');
+    if(limit && limit > 200) {
+        res.send(tool.toJson('', 'limit参数不能大于200', 1002));
+    } else {
+        next()
+    }
+})
 routeEach(app);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

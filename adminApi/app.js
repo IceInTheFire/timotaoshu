@@ -48,7 +48,15 @@ morgan(app);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-
+// 字段不符合就就不允许
+app.use((req, res, next) => {
+    let limit = tool.getParams(req, 'limit');
+    if(limit && limit > 200) {
+        res.send(tool.toJson('', 'limit参数不能大于200', 1002));
+    } else {
+        next()
+    }
+})
 routeEach(app);
 app.use(function (req, res, next) {
     res.send("没有接口");
