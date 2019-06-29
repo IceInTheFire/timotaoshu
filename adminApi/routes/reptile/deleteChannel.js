@@ -28,6 +28,11 @@ router.use('', oauth(4009),  async function(req, res, next) {
         res.send(tool.toJson(null, '正在启用中的来源配置是不可删除的', 1002));
         return;
     }
+    let bookCount = (await db.query(`select count(id) from book where reptileType = ${reptileTypeId} and bookStatus = 1`))[0]['count(id)'];
+    if(bookCount > 0) {
+        res.send(tool.toJson(null, '该来源渠道有正在连载的小说，请先处理！', 1002));
+        return;
+    }
 
     try{
         await db.query(`delete from reptiletool2 where reptileTypeId = ${reptileTypeId}`);

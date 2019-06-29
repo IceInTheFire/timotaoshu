@@ -105,7 +105,15 @@ function domCommon(dom, rule, $){
 
     if(type == "html") {
         result = findDom.html() && findDom.html().trim();
-    }else if(type == "val"){
+    } else if(type == 'fontHtml') {
+        result = findDom.html() && findDom.html().replace(/(<\/?font.*?>)/g, '').trim();        // 过滤标签，保留内容
+    } else if(type == 'spanHtml') {
+        result = findDom.html() && findDom.html().replace(/(<\/?span.*?>)/g, '').trim();        // 过滤标签，保留内容
+    } else if(type == 'aHtml') {
+        result = findDom.html() && findDom.html().replace(/(<\/?a.*?>)/g, '').trim();        // 过滤标签，保留内容
+    } else if(type == 'allHtml') {
+        result = findDom.html() && findDom.html().replace(/(<\/?font.*?>)|(<\/?span.*?>)|(<\/?a.*?>)/g, '').trim();
+    } else if(type == 'val'){
         result = findDom.val() && findDom.val().trim();
     } else if(type && type.indexOf("attr") == 0) {
         result = findDom.attr(type.split("attr")[1]) && findDom.attr(type.split("attr")[1]).trim();

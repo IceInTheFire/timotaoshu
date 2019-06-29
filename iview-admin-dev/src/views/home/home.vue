@@ -25,6 +25,7 @@
                     <Select v-model="bookStatus" class="w100" placeholder="全部" label-in-value @on-change="onClickSearch">
                         <Option v-for="item in bookStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                     </Select>
+
                     <Checkbox :value="fromMe" @click.prevent.native="handleCheckAll">来源本站</Checkbox>
                 </Col>
                 <Col span="12" class="tr">
@@ -122,8 +123,8 @@
                         render: (h, params) => {
                             return  h("a", {
                                 attrs: {
-                                    href:"javascript:void(0);",
-                                    target:"_blank"
+                                    href: "javascript:void(0);",
+                                    target: "_blank"
                                 },
                                 on:{
                                     click: (e) =>{
@@ -364,34 +365,34 @@
                 ],
                 isJinList:[
                     {
-                        value:'',
-                        label:'全部'
+                        value: '',
+                        label: '全部'
                     },
                     {
-                        value:'1',
-                        label:'启用'
+                        value: '1',
+                        label: '启用'
                     },
                     {
-                        value:'2',
-                        label:'禁用'
+                        value: '2',
+                        label: '禁用'
                     }
                 ],
-                isJin:'',
-                type:'',
-                bigImg:{
-                    url:'',
-                    right:0,
-                    top:0
+                isJin: '',
+                type: '',
+                bigImg: {
+                    url: '',
+                    right: 0,
+                    top: 0
                 },
-                bookTypeList:[],
-                bookType:'',
-                reptileList:{length:0},
+                bookTypeList: [],
+                bookType: '',
+                reptileList: {length:0},
 
-                editStatus:{
-                    status:false
+                editStatus: {
+                    status: false
                 },
-                selection:[],
-                fromMe:''
+                selection: [],
+                fromMe: '',
             };
         },
         computed: {},
@@ -556,25 +557,25 @@
                 });
             },
             onClickUpdateBookStatus(id, bookStatus, params) {
-                let statusStr = bookStatus == 1 ? "连载" : "完本";
+                let statusStr = (bookStatus == 1 || bookStatus == 3) ? "连载" : "完本";
                 this.$Modal.confirm({
-                    closable:true,//按esc关闭
+                    closable: true, // 按esc关闭
                     title: `${params.row.name}_${params.row.author}`,
                     content: `<p>你确定要转成${statusStr}状态?</p>`,
                     onOk: () => {
                         if(this.loading) return;
                         let obj = {
-                            params:{
-                                bookId:id,
-                                bookStatus:bookStatus
+                            params: {
+                                bookId: id,
+                                bookStatus: bookStatus
                             }
                         };
                         this.loading = true;
                         util.post.books.updateBookStatus(obj).then((data)=> {
-                            this.$Message.success(`已转为${bookStatus == 1 ? "连载" : "完本"}`);
+                            this.$Message.success(`已转为${statusStr}`);
                             this.loading = false;
                             this.getBooks();
-                        }).catch((err)=>{
+                        }).catch((err) => {
                             this.loading = false;
                         });
                     },
@@ -682,7 +683,7 @@
                         inputValue = this.$route.query[value.value]
                     }
                 });
-                if(page !== this.params.page || limit !== this.params.limit || type !== this.type || selectName !== this.selectName || inputValue !== this.inputValue || bookType !== this.bookType || this.bookStatus !== bookStatus || this.isJin !== isJin ||this.fromMe !== fromMe) {
+                if(page !== this.params.page || limit !== this.params.limit || type !== this.type || selectName !== this.selectName || inputValue !== this.inputValue || bookType !== this.bookType || this.bookStatus !== bookStatus || this.isJin !== isJin || this.fromMe !== fromMe) {
 
                     if(this.type !== type) this.type = type;
                     if(this.selectName !== selectName) this.selectName = selectName;
@@ -690,7 +691,6 @@
                     if(this.bookStatus !== bookStatus) this.bookStatus = bookStatus;
                     if(this.isJin !== isJin) this.isJin = isJin;
                     if(this.fromMe !== fromMe) this.handleCheckAll();
-
                     if(this.bookType !== bookType) {
                         if(this.bookTypeList.length <= 0) {
                             this.bookTypeList = [
@@ -740,7 +740,6 @@
             this.start();
         },
         deactivated() {
-
         }
     };
 </script>

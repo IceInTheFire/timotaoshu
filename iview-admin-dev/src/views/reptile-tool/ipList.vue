@@ -42,7 +42,9 @@
     import util from "util";
     import config from '../../libs/config';
     import Cookies from 'js-cookie';
+    import uploadMixins from '@/mixins/uploadMixins';
     export default {
+        mixins:[uploadMixins],
         name: "ip-list",
         data() {
             return {
@@ -57,16 +59,16 @@
                         // type: 'index',
                         // width: 60,
                         // align: 'center'
-                        title:'Index',
-                        key:'index',
+                        title: 'Index',
+                        key: 'index',
                     },
                     {
-                        title:'IP',
-                        key:'IP',
+                        title: 'IP',
+                        key: 'IP',
                         render: (h, params) => {
                             return h('a', {
-                                    attrs:{
-                                        href:"javascript:void(0);"
+                                    attrs: {
+                                        href: "javascript:void(0);"
                                     },
                                     on: {
                                         click: (e) => {
@@ -77,8 +79,8 @@
                         }
                     },
                     {
-                        title:'地址',
-                        key:'address'
+                        title: '地址',
+                        key: 'address'
                     },
                     {
                         title: '类型',
@@ -247,7 +249,7 @@
                     this.loading = false;
                 });
             },
-            onClickExportIp() {    //导出ip xls
+            onClickExportIp() { //导出ip xls
                 let obj = {
                     responseType:'blob',
                     params:{

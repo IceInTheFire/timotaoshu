@@ -25,13 +25,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage});
 
+let mimeTypeArr = ['application/vnd.ms-excel', 'application/octet-stream'];
+
 /*
 *
 * 这里的权限跟ip/index的权限一致
 * */
 router.use('',upload.single('file'), oauth(2006),  async function(req, res, next) {
     if (req.file) {
-        if(req.file.mimetype != 'application/vnd.ms-excel') {
+        if(mimeTypeArr.indexOf(req.file.mimetype) == -1) {
             res.send(tool.toJson(null, '上传文件格式错误', 1002));
             return;
         }
@@ -63,7 +65,7 @@ router.use('',upload.single('file'), oauth(2006),  async function(req, res, next
             }
 
             await tool.redisData.ipList.setIpList(list);
-            res.send(tool.toJson("导入成功", null, 1000));
+            res.send(tool.toJson(null, '导入成功', 1000));
         } catch(err) {
             res.send(tool.toJson(null, '文件不规范', 1002));
         }

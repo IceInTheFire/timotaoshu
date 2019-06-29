@@ -12,7 +12,7 @@ const clean = require("gulp-clean");
 
 // gulp revReplace
 
-// gulp.task('build', ['less','js','concatJs', 'imagemin','lib']);
+gulp.task('build', ['less','js','concatJs', 'imagemin','lib']);
 gulp.task('less', function() {
     gulp.src([
         'src/css/**.less',

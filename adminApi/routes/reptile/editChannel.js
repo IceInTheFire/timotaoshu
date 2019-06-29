@@ -69,6 +69,7 @@ router.use('', oauth(4007),  async function(req, res, next) {
 
     try{
         await db.query(`update reptiletool2 set ${setSqlArr.join(",")} where reptileTypeId = ${config.reptileTypeId}`)
+        await reptileConfig.refreshReptileList();
         res.send(tool.toJson({successMsg:'修改渠道成功'}, null, 1000));
     }catch(err) {
         log.error(`update reptiletool2 set ${setSqlArr.join(",")} where reptileTypeId = ${config.reptileTypeId}`);

@@ -19,6 +19,14 @@ router.use('', oauth(1103),  async function(req, res, next) {
         res.send(tool.toJson(null, 'bookStatus参数不可为空', 1002));
         return;
     }
+    if(bookStatus == 1) {
+        let reptileTypeId = (await db.query(`select reptileType from book where id=${bookId}`))[0].reptileType;
+        let result = (await db.query(`select count(reptileTypeId) from reptiletool2 where reptileTypeId = ${reptileTypeId}`))[0]['count(reptileTypeId)'];
+        if(!result) {
+            res.send(tool.toJson(null, '该来源渠道不存在，故不能转换为连载状态'));
+            return;
+        }
+    }
 
 
     try{
