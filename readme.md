@@ -214,8 +214,12 @@ npm run dev
 cd timotaoshu/adminApi/bin
 pm2 start www
 
-另开一个窗口（部署pc后台管理的前端项目前，请先npm run dist生成vue静态文件）
-cd timotaoshu/iview-admin/server
+另开一个窗口（部署pc后台管理的前端项目前，请先npm run build生成vue静态文件）
+cd timotaoshu/iview-admin/
+npm run build
+生成后 
+// cd timotaoshu/iview-admin/server
+cd server
 pm2 start server
 
 另开一个窗口
@@ -251,13 +255,3 @@ pc端后台管理
 
 QQ群号：831613487    申请时注明：github提莫淘书
 ```
-
-
-
-
-
-
-
-​	
-
-​	
