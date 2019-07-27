@@ -8,7 +8,7 @@ const { oauth, tool, db, log, rp,timoRp, request, cheerio, iconv } = require("..
 async function getIpList(page) {
     return new Promise(async (resolve, reject) => {
         let option = {
-            uri:"http://www.xicidaili.com/wt/" + page,
+            uri:"https://www.xicidaili.com/wt/" + page,
             encoding : null,
             transform: function(body, response, resolveWithFullResponse) {
                 // let body2 = iconv.decode(body, "utf-8");  //用来查看页面
@@ -50,9 +50,15 @@ async function getIpList(page) {
                 allPage
             });
         }).catch(function(err){
+            // console.log("我的西祠");
+            // console.log("error了？");
             log.error(err);
             // resolve(false);
-            reject();
+            // reject(err);
+            resolve({           // 为了promise.all  不进入catch状态
+                ipArr: [],
+                error: true
+            })
         });
     });
 };
@@ -105,7 +111,11 @@ async function getIpList2(page) {
         }).catch(function(err){
             log.error(err);
             // resolve(false);
-            reject();
+            // reject();
+            resolve({           // 为了promise.all  不进入catch状态
+                ipArr: [],
+                error: true
+            })
         });
     });
 };
@@ -156,13 +166,16 @@ async function getIpList3(page) {
         }).catch(function(err){
             log.error(err);
             // resolve(false);
-            reject();
+            resolve({
+                ipArr: [],
+                error: true
+            });
         });
     });
 };
 
 /*
-* 开心代理
+* 老版本开心代理 已经废弃了
 * */
 async function getIpList4(page) {
     return new Promise(async (resolve, reject) => {
@@ -208,7 +221,68 @@ async function getIpList4(page) {
         }).catch(function(err){
             log.error(err);
             // resolve(false);
-            reject()
+            // reject()
+            resolve({           // 为了promise.all  不进入catch状态
+                ipArr: [],
+                error: true
+            })
+        });
+    });
+};
+
+/*
+* 新版本开心代理
+* */
+async function getIpList5(page) {
+    return new Promise(async (resolve, reject) => {
+        let option = {
+            // uri:"http://ip.kxdaili.com/ipList/" + page + ".html#ip",
+            uri:"http://www.kxdaili.com/dailiip/1/" + page + ".html",
+            encoding : null,
+            transform: function(body, response, resolveWithFullResponse) {
+                let body2 = iconv.decode(body, "utf-8");  //用来查看页面
+                return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path, body2];
+            },
+            headers:{
+                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
+            },
+            timeout:20000
+        };
+        // let ip = await tool.redisData.ipList.getRandomIpList();
+        // if(ip) option.proxy = ip;
+
+        rp(option).then(function(data){
+            let $ = data[0];
+            let ipList = $(".active>tbody>tr")
+            let i = 0, length = ipList.length;
+            let ipArr = [];
+            for(i; i<length; i++) {
+                let value = ipList.eq(i);
+                ipArr.push({
+                    ip: value.find("td").eq(0).html(),
+                    port: value.find("td").eq(1).html(),
+                    address: value.find("td").eq(5).html() ? value.find("td").eq(5).html().trim() : "",
+                    status: value.find("td").eq(2).html() ? value.find("td").eq(2).html().trim() : "",
+                    protocol: "http",
+                    from:"开心代理",
+                    fromHref:"http://ip.kxdaili.com",
+                    responseTime:value.find("td").eq(4).html() ? value.find("td").eq(4).html().trim() : ""
+                });
+            }
+
+            let allPage = $("#listnav>ul>li>a").eq(-1).html();
+            resolve({
+                ipArr,
+                allPage
+            });
+        }).catch(function(err){
+            log.error(err);
+            // resolve(false);
+            // reject()
+            resolve({           // 为了promise.all  不进入catch状态
+                ipArr: [],
+                error: true
+            })
         });
     });
 };
@@ -216,11 +290,15 @@ async function getIpList4(page) {
 // module.exports = getIpList2;
 module.exports = async (page) => {
     return new Promise((resolve, reject) => {
-        Promise.all([getIpList(page), getIpList2(page), getIpList4(page)]).then((data) => {
-            let allPage = data[0].allPage;
+        Promise.all([
+            getIpList(page),
+            getIpList2(page),
+            getIpList5(page)
+        ]).then((data) => {
+            let allPage = 100;
             let ipArr = [];
             data.forEach((value, index) => {
-                if(allPage > value.allPage) allPage = value.allPage;
+                if(!value.error && allPage > value.allPage) allPage = value.allPage;
                 ipArr = ipArr.concat(value.ipArr);
             });
 
