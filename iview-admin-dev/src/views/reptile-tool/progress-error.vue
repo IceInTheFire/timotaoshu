@@ -255,7 +255,7 @@
                         let catalog = data.data[0];
                         // this.$router.push(`/bookContainer?bookId=${catalog.bookId}&catalogId=${catalog.id}&num=${catalog.num}`);
                         let a = document.createElement('a');
-                        a.href = `/#/bookContainer?bookId=${catalog.bookId}&catalogId=${catalog.id}&num=${catalog.num}`;
+                        a.href = `/bookContainer?bookId=${catalog.bookId}&catalogId=${catalog.id}&num=${catalog.num}`;
                         a.style.display = "none";
                         a.setAttribute('target', '_blank');
                         a.click();
