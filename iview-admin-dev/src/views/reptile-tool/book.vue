@@ -103,7 +103,7 @@ export default {
                             attrs:{
                                 href:'javascript:void(0);',
                                 // target:"_blank",
-                                id:`${params.row.title}_${params.row.author}`
+                                id:`${params.row.title}_${params.row.author}_${params.index}`
                             },
                             on: {
                                 click: () => {
@@ -198,12 +198,13 @@ export default {
             });
         },
         onClickReptileTool(params) {
-            let spanHtml = document.getElementById(`${params.row.title}_${params.row.author}`).innerHTML;
+            let bookBtnDom = document.getElementById(`${params.row.title}_${params.row.author}_${params.index}`);
+            let spanHtml = bookBtnDom.innerHTML;
             if(spanHtml == "已获取" || spanHtml == "正在获取中") {
                 return;
             }
 
-            document.getElementById(`${params.row.title}_${params.row.author}`).innerHTML = "正在获取中";
+            bookBtnDom.innerHTML = "正在获取中";
             let obj = {
                 params:{
                     bookName:params.row.title,
@@ -213,9 +214,9 @@ export default {
                 }
             }
             util.post.reptile.getBookJson(obj).then((data) => {
-                document.getElementById(`${params.row.title}_${params.row.author}`).innerHTML = "已获取";
+                bookBtnDom.innerHTML = "已获取";
             }).catch((err) => {
-                document.getElementById(`${params.row.title}_${params.row.author}`).innerHTML = "获取失败";
+                bookBtnDom.innerHTML = "获取失败";
             });
             // this.$Modal.confirm({
             //     closable:true,//按esc关闭
@@ -223,7 +224,7 @@ export default {
             //     content: '<p>你确定要获取？获取之后，后台才会根据获取的书json来爬书</p>',
             //     onOk: () => {
             //         // this.loading = true;
-            //         document.getElementById(`${params.row.title}_${params.row.author}`).innerHTML = "正在获取中";
+            //         bookBtnDom.innerHTML = "正在获取中";
             //         let obj = {
             //             params:{
             //                 bookName:params.row.title,
@@ -232,11 +233,11 @@ export default {
             //             }
             //         }
             //         util.post.reptile.getBookJson(obj).then((data) => {
-            //             document.getElementById(`${params.row.title}_${params.row.author}`).innerHTML = "已获取";
+            //             bookBtnDom.innerHTML = "已获取";
             //             // this.loading = false;
             //         }).catch((err) => {
             //             // this.loading = false;
-            //             document.getElementById(`${params.row.title}_${params.row.author}`).innerHTML = "获取失败";
+            //             bookBtnDom.innerHTML = "获取失败";
             //         });
             //     },
             //     onCancel: () => {

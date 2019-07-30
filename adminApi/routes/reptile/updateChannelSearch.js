@@ -11,8 +11,8 @@ const {oauth, tool, db, log, reptileConfig} = require("../../tool/require");
 * */
 router.use('', oauth(4008), async function (req, res, next) {
 
-    if(req.user.name != "冰中焱") {
-        res.send(tool.toJson(null, '只有管理员名为冰中焱的可以操作', 1002));
+    if(req.user.id != 1) {
+        res.send(tool.toJson(null, '只有管理员id为1的可以操作', 1002));
         return;
     }
 

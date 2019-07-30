@@ -184,7 +184,7 @@
                 loading: false,
                 params: {
                     page: 1,
-                    limit: 10
+                    limit: 100
                 },
                 total: 0,
                 reptileList: [],
@@ -200,10 +200,10 @@
         },
         computed: {},
         methods: {
-            getList() {
+            getList(page) {
                 let obj = {
                     params: {
-                        page: this.params.page,
+                        page: page || this.params.page,
                         limit: this.params.limit
                     }
                 };
