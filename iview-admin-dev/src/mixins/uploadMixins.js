@@ -7,6 +7,7 @@
 export default {
     data(){
         return {
+            uploadErrorMsg: '上传失败，失败原因：文件格式不正确，只支持图片后缀的格式',
         }
     },
     created() {
@@ -22,7 +23,7 @@ export default {
                 this.$Message.success(data.msg);
                 this.succesFun && this.succesFun(data);
             } else {
-                this.$Message.error("上传失败，失败原因：文件格式不正确，只支持图片后缀的格式")
+                this.$Message.error(this.uploadErrorMsg);
             }
         },
         uploadError(err, file, fileList){
@@ -36,7 +37,7 @@ export default {
             }
         },
         uploadFormatError(file, fileList){
-            this.$Message.error("上传失败，失败原因：文件格式不正确，只支持图片后缀的格式");
+            this.$Message.error(this.uploadErrorMsg);
         },
     },
     activated(){

@@ -135,7 +135,8 @@
                 token: Cookies.get("token"),
                 uploadParams:{
                     token:Cookies.get("token")
-                }
+                },
+                uploadErrorMsg: '上传失败，失败原因：文件格式不正确，只支持xls后缀的格式'
             }
         },
         computed: {},
