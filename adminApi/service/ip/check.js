@@ -57,7 +57,9 @@ async function check() {
                 }
             }, (err) => {});
         }
-
+        if(length == 0 ){
+            allFinish();
+        }
         async function allFinish(){
             if(indexArr.length > 0 && (allArr.length - successArr.length - indexArr.length) > 0) {
                 // let indexArr = [];      //失败的index索引

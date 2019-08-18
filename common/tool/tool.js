@@ -436,7 +436,7 @@ async function getCatalogNum(catalogId){
 * 获取sql所有的catalogcontent表名
 * */
 async function getCatalogTables(){
-    let tables = await db.query(`SELECT table_name FROM information_schema.TABLES WHERE table_name like "catalogcontent%" and TABLE_SCHEMA = 'timotao';`);
+    let tables = await db.query(`SELECT table_name FROM information_schema.TABLES WHERE table_name like "catalogcontent%" and TABLE_SCHEMA = '${sqlConfig.database}';`);
     let tablesArr = [];
     tables.forEach((value, index) => {
         tablesArr.push(value['table_name']);
