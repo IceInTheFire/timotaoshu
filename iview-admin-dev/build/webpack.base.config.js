@@ -88,5 +88,6 @@ module.exports = {
             'config': path.resolve('src/libs/config'),
             'modal': path.resolve('src/modal')
         }
-    }
+    },
+    devServer: { historyApiFallback: { index: 'index.html' }}
 };
