@@ -293,7 +293,8 @@ module.exports = async (page) => {
         Promise.all([
             getIpList(page),
             getIpList2(page),
-            getIpList5(page)
+            getIpList5(page),
+            getIpList6(page)
         ]).then((data) => {
             let allPage = 100;
             let ipArr = [];
@@ -314,7 +315,60 @@ module.exports = async (page) => {
     });
 };
 
+//免费IP代理
+async function getIpList6(page) {
+    return new Promise(async (resolve, reject) => {
+        let option = {
+            uri:"http://ip.jiangxianli.com/?page=" + page,
+            encoding : null,
+            transform: function(body, response, resolveWithFullResponse) {
+                // let body2 = iconv.decode(body, "utf-8");  //用来查看页面
+                // console.log(body2);
+                return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path];
+            },
+            headers:{
+                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
+            },
+            timeout:20000
+        };
+        // let ip = await tool.redisData.ipList.getRandomIpList();
+        // if(ip) option.proxy = ip;
 
+        rp(option).then(function(data){
+            let $ = data[0];
+            let ipList = $(".table-striped>tbody>tr");
+            let i = 0, length = ipList.length;
+            let ipArr = [];
+            for(i; i<length; i++) {
+                let value = ipList.eq(i);
+                ipArr.push({
+                    ip: value.find("td").eq(1).html(),
+                    port: value.find("td").eq(2).html(),
+                    address: value.find("td").eq(5).html() ? value.find("td").eq(5).html().trim() : "",
+                    status: value.find("td").eq(3).html() ? value.find("td").eq(3).html().trim() : "",
+                    protocol: value.find("td").eq(4).html() ? value.find("td").eq(4).html().toLowerCase() : "",
+                    from:"免费IP代理",
+                    fromHref:"http://ip.jiangxianli.com",
+                    responseTime:value.find("td").eq(7).html() ? value.find("td").eq(7).html().trim() : ""
+                });
+            }
+
+            let allPage = $("#listnav>ul>li").eq(-2).find("a").html();
+            resolve({
+                ipArr,
+                allPage
+            });
+        }).catch(function(err){
+            log.error(err);
+            // resolve(false);
+            // reject();
+            resolve({           // 为了promise.all  不进入catch状态
+                ipArr: [],
+                error: true
+            })
+        });
+    });
+};
 
 
 // 用来检测是什么代理
@@ -327,3 +381,4 @@ module.exports = async (page) => {
 // http://www.xicidaili.com/wn  // 国内高匿代理  https
 // http://www.xicidaili.com/wt  // 国内高匿代理  http
 // https://www.kuaidaili.com/free/inha/2/   快代理
+// http://ip.jiangxianli.com/?page=2//免费IP代理
