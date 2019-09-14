@@ -9,12 +9,17 @@ const storage = multer.diskStorage({
     destination: async function (req, file, cb) {
 
         let result = await oauth(4010)(req);
-        if(result) {        //有权限
+        if(result && req.user.id == 1) {        //有权限
             // 接收到文件后输出的保存路径（若不存在则需要创建）
             // cb(null, 'upload/');
             cb(null, path.join(__dirname, '../../upload/'));
         } else {
-            return cb(result, false);
+            // return cb( new Error(result.msg), false);
+            if(result){
+                return cb(result, false);
+            }else {
+                return cb('只有管理员id为1的可以上传', false);
+            }
         }
 
     },

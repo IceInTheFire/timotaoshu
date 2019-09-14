@@ -5,7 +5,12 @@ const timoRp = function(options) {
     // const printTime = label => () => console.log('%d ms\t%s', Date.now() - started, label);
     return new Promise((resolve, reject) => {
         let chaoshi = true;
-        let reqOptions = Object.assign({}, options);
+        let initOptions = {
+            // followRedirect: true,       // 301重定向跟随
+            // followAllRedirects: true,       // 301重定向一直跟随
+            strictSSL: false
+        };
+        let reqOptions = Object.assign(initOptions, options);
         reqOptions.transform = null;
         var req = request(reqOptions, function (error, response, body) {
             chaoshi = false;

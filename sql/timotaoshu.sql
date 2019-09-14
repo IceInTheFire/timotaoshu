@@ -1,3 +1,18 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : 本地连接
+Source Server Version : 50727
+Source Host           : localhost:3306
+Source Database       : timotest
+
+Target Server Type    : MYSQL
+Target Server Version : 50727
+File Encoding         : 65001
+
+Date: 2019-09-14 15:34:36
+*/
+
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
@@ -142,17 +157,15 @@ CREATE TABLE `reptiletool2` (
   `catalogUrl` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reason` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '原因，多用于禁用原因',
   PRIMARY KEY (`reptileTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Records of reptiletool2
 -- ----------------------------
-INSERT INTO `reptiletool2` VALUES ('1', 'gbk', '笔趣阁小说网', 'http://www.biqugexsw.com/', 'gbk', 'http://www.biqugexsw.com/s.php?ie=gbk&s=2758772450457967865&q=${name}', '.bookbox', '0', '0', '.bookname>a、html', '.bookname>a、attrhref', '.author、html、split、：、1', '.cat、html、split、：、1', '', '.info h2、html', '.small span:nth-child(1)、html、split、：、1', '.small .last、html、split、：、1', '.small span:nth-child(2)、html、split、：、1', '.listmain a', '.listmain>dl>dt:eq(1)、index-1', '', '.info>.cover>img、attrsrc', '.intro、html', '#content、html', '1', '', '、html', '、attrhref、split、/、length-1', '');
-INSERT INTO `reptiletool2` VALUES ('2', 'gbk', '笔趣阁5200', 'https://www.biquge5200.cc/', 'utf-8', 'https://www.biquge5200.cc/modules/article/search.php?searchkey=${name}', '.grid>tbody>tr', '1', '0', 'td>a、html', 'td>a、attrhref', 'td:nth-child(3)、html', 'td:nth-child(6)、html', 'td:nth-child(5)、html', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(4)、html、split、：、1', '.con_top、html、split、>、9、split、<、0', '#list a', '#list>dl>dt:eq(1)、index-2', '', '#fmimg>img、attrsrc', '#intro>p、html', '#content、html', '2', '', '、html', '、attrhref、split、/、length-1', '');
-INSERT INTO `reptiletool2` VALUES ('3', 'utf-8', '笔趣阁备用站', 'https://www.biquge.cc/', 'gbk', 'https://sou.xanbhx.com/search?t=920895234054625192&siteid=biqugecc&q=${name}', '.s2>a', '', '', '、html', '、attrhref', '.s4、html', 'td:nth-child(6)、html', 'td:nth-child(6)、html', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(4)、html、split、：、1', '.con_top、html、split、>、7、split、 > 、2', '#list a', '#list>dl>dt:eq(1)、index-1', '', '#fmimg>img、attrsrc', '#intro、html', '#content、html', '2', '', '、html', '、attrhref、split、/、length-1', '笔趣阁备用站的搜索不可用');
-INSERT INTO `reptiletool2` VALUES ('12', 'gbk', '全书网', 'http://www.quanshuwang.com/', 'gbk', 'http://www.quanshuwang.com/modules/article/search.php?searchkey=+${name}&searchtype=articlename&searchbuttom.x=51&searchbuttom.y=15', '.seeWell>li', '', '', '.stitle、html', 'a、attrhref', 'span>a:nth-child(2)、html', '', '', '.b-info>h1、html', '.bookso>dd、html', '.ulnav>li、html、split、[、1、split、]、0', '.main-index>a:nth-child(2)、html', '.dirconone>li>a', '', '', '.detail>a.mr11>img、attrsrc', '#waa、html、split、介绍:&nbsp;&nbsp;&nbsp;&nbsp;、1', '#content、html', '1', '.reader、attrhref', '、html', '、attrhref', '');
-INSERT INTO `reptiletool2` VALUES ('13', 'gbk', '笔趣阁', 'http://www.biquge.com.tw/', 'gbk', 'http://www.biquge.com.tw/modules/article/soshu.php?searchkey=+${name}', '.grid>tbody>tr', '1', '0', 'a、html', 'a、attrhref', 'td:nth-child(3)、html', 'td:nth-child(6)、html', 'td:nth-child(5)、html', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(4)、html、split、：、1', '.con_top、html、split、>、7、split、 > 、2', '#list a', '', '', '#fmimg>img、attrsrc', '#intro、html', '#content、html', '2', '', '、html', '、attrhref、split、/、length-1', 'pc端不能访问了，手机可以访问，目测是对方服务器崩了');
-INSERT INTO `reptiletool2` VALUES ('14', 'utf-8', '新笔趣岛', 'https://www.biqudao.com', 'utf-8', 'https://www.biqudao.com/searchbook.php?keyword=${name}', '#main ul>li', '1', '0', '.s2>a、html', '.s2>a、attrhref', '.s4、html', '.s7、html', '.s6、html', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(4)、html、split、：、1', '', '#list a', '#list>dl>dt:eq(1)、index-1', '', '#fmimg>img、attrsrc', '#intro、html', '#content、html', '1', '', '、html', '、attrhref、split、/、length-1', '');
+INSERT INTO `reptiletool2` VALUES ('2', 'gbk', '笔趣阁5200', 'https://www.biquge5200.cc/', 'utf-8', 'https://www.biquge5200.cc/modules/article/search.php?searchkey=${name}', '.grid>tbody>tr', '1', '0', 'td>a、html', 'td>a、attrhref', 'td:nth-child(3)、html', 'td:nth-child(6)、html', 'td:nth-child(5)、html', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(4)、html、split、：、1', '.con_top、html、split、>、9、split、<、0', '#list a', '#list>dl>dt:eq(1)、index-2', '', '#fmimg>img、attrsrc', '#intro>p、html', '#content、html', '1', '', '、html', '、attrhref、split、/、length-1', '');
+INSERT INTO `reptiletool2` VALUES ('12', 'gbk', '全书网', 'http://www.quanshuwang.com/', 'gbk', 'http://www.quanshuwang.com/modules/article/search.php?searchkey=+${name}&searchtype=articlename&searchbuttom.x=51&searchbuttom.y=15', '.seeWell>li', '', '', '.stitle、html', 'a、attrhref', 'span>a:nth-child(2)、html', '', '', '.b-info>h1、html', '.bookso>dd、html', '.ulnav>li、html、split、[、1、split、]、0', '.main-index>a:nth-child(2)、html', '.dirconone>li>a', '', '', '.detail>a.mr11>img、attrsrc', '#waa、html、split、介绍:&nbsp;&nbsp;&nbsp;&nbsp;、1', '#content、html', '2', '.reader、attrhref', '、html', '、attrhref', '小说没有分类');
+INSERT INTO `reptiletool2` VALUES ('14', 'utf-8', '新笔趣岛', 'https://www.biqudao.com', 'utf-8', 'https://www.biqudao.com/searchbook.php?keyword=${name}', '#main ul>li', '1', '0', '.s2>a、html', '.s2>a、attrhref', '.s4、html', '.s7、html', '.s6、html', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(4)、html、split、：、1', '.footer_cont p、html、split、文笔俱佳的、1、split、小说，笔趣岛、0', '#list a', '#list>dl>dt:eq(1)、index-1', '', '#fmimg>img、attrsrc', '#intro、html', '#content、html', '1', '', '、html', '、attrhref、split、/、length-1', '');
+INSERT INTO `reptiletool2` VALUES ('18', 'utf-8', '笔趣趣', 'http://www.biququ.info/', 'utf-8', 'http://www.biququ.info/search.php?keyword=${name}', '#search-main ul>li', '1', '0', '.s2>a、allHtml', '.s2>a、attrhref', '.s4、allHtml', '.s7、allHtml', '.s6、allHtml', '#info>h1、html', '#info>p:nth-child(2)、html、split、：、1', '#info>p:nth-child(3)、html、split、：、1', '.footer_cont p、html、split、文笔俱佳的、1、split、小说，笔趣趣、0', '#list a', '#list>dl>dt:eq(1)、index-1', '', '#fmimg>img、attrsrc', '#intro、html', '#content、html', '1', '', '、html', '、attrhref、split、/、length-1', '');
 
 -- ----------------------------
 -- Table structure for role

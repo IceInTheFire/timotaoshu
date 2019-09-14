@@ -126,7 +126,7 @@ async function getBookCatalogJson_common(reptileType, url, callback, errorback) 
                     bookStatus: bookStatus,
                     reptileType: reptileType
                 };
-                let sql = `INSERT INTO book(name, author, description, reptileType, originUrl, imgUrl, type,updateTime,bookType,bookStatus,isJin) VALUES ("${book.title}","${tool.toSql(book.author)}","${tool.toSql(book.description)}", ${book.reptileType},"${book.originUrl}","${book.imgUrl}", 2, date_sub("${book.updateTime}",interval 0 day), "${book.bookType}", ${book.bookStatus},2)`;
+                let sql = `INSERT INTO book(name, author, description, reptileType, originUrl, imgUrl, type,updateTime,bookType,bookStatus,isJin) VALUES ("${book.title}","${tool.toSql(book.author)}","${tool.toSql(book.description)}", ${book.reptileType},"${book.originUrl}","${book.imgUrl}", 2, date_sub("${new Date(book.updateTime).Format('yyyy-MM-dd')}",interval 0 day), "${book.bookType}", ${book.bookStatus},2)`;
                 await db.query(sql);
                 let bookIdSql = `select id from book where name="${tool.toSql(book.title)}" And author="${book.author}"`;
                 let bookId = tool.getData(await db.query(bookIdSql));
