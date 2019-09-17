@@ -1,8 +1,8 @@
-cd adminApi
-start npm run dev
-cd ../iview-admin-dev
-start npm run dev
-cd ../h5
-start npm run dev
+cd ./adminApi/bin
+pm2 start www
+cd ./iview-admin-dev/server
+pm2 start server
+cd ./h5/bin
+pm2 start h5
 
 

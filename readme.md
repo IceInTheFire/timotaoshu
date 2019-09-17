@@ -152,6 +152,11 @@ cd timotaoshu/h5
 yarn install
 ```
 
+#### 1、或者可以直接shell一键下载
+```
+install.sh
+```
+
 #### 2、检查端口号
 
 ```

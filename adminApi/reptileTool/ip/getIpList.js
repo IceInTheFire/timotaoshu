@@ -287,35 +287,10 @@ async function getIpList5(page) {
     });
 };
 
-// module.exports = getIpList2;
-module.exports = async (page) => {
-    return new Promise((resolve, reject) => {
-        Promise.all([
-            getIpList(page),
-            getIpList2(page),
-            getIpList5(page),
-            getIpList6(page)
-        ]).then((data) => {
-            let allPage = 100;
-            let ipArr = [];
-            data.forEach((value, index) => {
-                if(!value.error && allPage > value.allPage) allPage = value.allPage;
-                ipArr = ipArr.concat(value.ipArr);
-            });
 
-            if(!allPage) allPage = 3;
-            resolve({
-                ipArr,
-                allPage
-            });
-        }).catch((err) => {
-            log.error(err);
-            resolve(false);
-        });
-    });
-};
-
-//免费IP代理
+/*
+* 免费IP代理
+* */
 async function getIpList6(page) {
     return new Promise(async (resolve, reject) => {
         let option = {
@@ -369,6 +344,35 @@ async function getIpList6(page) {
         });
     });
 };
+
+// module.exports = getIpList2;
+module.exports = async (page) => {
+    return new Promise((resolve, reject) => {
+        Promise.all([
+            getIpList(page),
+            getIpList2(page),
+            getIpList5(page),
+            getIpList6(page)
+        ]).then((data) => {
+            let allPage = 100;
+            let ipArr = [];
+            data.forEach((value, index) => {
+                if(!value.error && allPage > value.allPage) allPage = value.allPage;
+                ipArr = ipArr.concat(value.ipArr);
+            });
+
+            if(!allPage) allPage = 3;
+            resolve({
+                ipArr,
+                allPage
+            });
+        }).catch((err) => {
+            log.error(err);
+            resolve(false);
+        });
+    });
+};
+
 
 
 // 用来检测是什么代理
