@@ -8,8 +8,6 @@ node_modules
 package-lock.json
 yarn-error.log
 /config
-/config/redis.js
-/config/sql.js
 urlLog.log
 /yarn-error.log
 /adminApi/log
