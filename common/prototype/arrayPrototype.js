@@ -4,16 +4,21 @@ Array.prototype.insert = function(start, value) {
 }
 
 Array.prototype.remove = function(value) {
-    var index = this.indexOf(value);
+    let index = this.indexOf(value);
     if(index != -1) {
         this.splice(index,1);
     }
     return this;
 }
 Array.prototype.removeArr = function(arr) {
-    var i = 0, length = arr.length;
+    let i = 0, length = arr.length;
+    let thisLength = this.length;
     for(i; i<length; i++) {
-        this.remove(arr[i]);
+        let that = this.remove(arr[i]);
+        while(that.length != thisLength) {
+            thisLength--;
+            that = this.remove(arr[i]);
+        }
     }
     return this;
 }

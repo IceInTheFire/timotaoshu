@@ -14,18 +14,18 @@
         <Card shadow :padding="0">
             <Row class="padding16-16-0-16">
                 <Col span="24">
-                    <h1>{{book.name}}</h1>
+                <h1>{{book.name}}</h1>
                 </Col>
             </Row>
             <Row class="padding16-16-0-16">
                 <Col span="18">
-                    <span>{{catalog.name}}</span>
-                    <a class="catalog-href" v-if="lastCatalog" href="javascript:;" @click="replace(true)" :style="{color:lastCatalog.isJin==1?'red':'auto'}">上一章：{{lastCatalog.name}}</a>
-                    <a class="catalog-href" v-if="nextCatalog" href="javascript:;" @click="replace()" :style="{color:nextCatalog.isJin==1?'red':'auto'}">下一章：{{nextCatalog.name}}</a>
+                <span>{{catalog.name}}</span>
+                <a class="catalog-href" v-if="lastCatalog" href="javascript:;" @click="replace(true)" :style="{color:lastCatalog.isJin==1?'red':'auto'}">上一章：{{lastCatalog.name}}</a>
+                <a class="catalog-href" v-if="nextCatalog" href="javascript:;" @click="replace()" :style="{color:nextCatalog.isJin==1?'red':'auto'}">下一章：{{nextCatalog.name}}</a>
                 </Col>
                 <Col span="6" class="tr">
-                    <Button type="primary" @click="onClickUpdate">更新</Button>
-                    <Button type="primary" @click="onClickSave">保存</Button>
+                <Button type="primary" @click="onClickUpdate">更新</Button>
+                <Button type="primary" @click="onClickSave">保存</Button>
                 </Col>
             </Row>
         </Card>
@@ -62,12 +62,12 @@
         methods: {
             initTinymce () {
                 if(tinymce.get('tinymceEditer')) {
-                    if(this.container){
-                        this.loading = false;
-                        let tinymceDom = tinymce.get('tinymceEditer').dom.doc;
-                        tinymceDom.documentElement.scrollTop = tinymceDom.body.scrollTop = 0;
-                        tinymce.get('tinymceEditer').setContent(this.container);
-                    }
+                    // if(this.container){
+                    this.loading = false;
+                    let tinymceDom = tinymce.get('tinymceEditer').dom.doc;
+                    tinymceDom.documentElement.scrollTop = tinymceDom.body.scrollTop = 0;
+                    tinymce.get('tinymceEditer').setContent(this.container);
+                    // }
                 } else {
                     this.$nextTick(() => {
                         let vm = this;
@@ -205,6 +205,7 @@
                     this.catalog = data.catalog;
                     this.nextCatalog = data.nextCatalog || null;
                     this.lastCatalog = data.lastCatalog || null;
+                    console.log("哈哈哈");
                     this.container = this.returnContainerP(data.container);
                     this.initTinymce();
                 }).catch((err) => {

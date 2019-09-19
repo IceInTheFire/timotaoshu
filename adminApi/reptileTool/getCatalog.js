@@ -1,14 +1,14 @@
 const {fs, rp,timoRp, cheerio, iconv, path, tool, wss, log, db} = require("../tool/require");
 // let reptileCommon = require("./common/reptileCommon")
+const reptileCommon2 = require("./common/reptileCommon2")
 
-
-module.exports = async (bookId, reptileType, baseUrl, bookName, catalog, noIsRepeat, timeout,tiType) => {
-    return getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat, parseInt(reptileType), parseInt(timeout), tiType);
+module.exports = async (bookId, reptileType, originUrl, bookName, catalog, noIsRepeat, timeout,tiType) => {
+    return getCatalog_common(bookId, originUrl, bookName, catalog, noIsRepeat, parseInt(reptileType), parseInt(timeout), tiType);
 }
 
-async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat, reptileType, timeout, tiType) {
+async function getCatalog_common(bookId, originUrl, bookName, catalog, noIsRepeat, reptileType, timeout, tiType) {
     return new Promise(async (resolve, reject) => {
-        let reptileCommon2 = require("./common/reptileCommon2")
+
         let reptileCommon = await reptileCommon2(reptileType);
         let start = 0;
         let startTime = new Date().getTime();
@@ -29,18 +29,20 @@ async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat,
                 return new Promise(async (resolve2, reject2) => {
                     start++;
                     let uri = "";
+                    // 用小说目录的url地址做章节url前缀    默认 1
+                    // 用小说主站url地址做章节url前缀   2
+                    // 不使用前缀，3
                     if(catalog.reptileAddress && catalog.reptileAddress.indexOf("http") == 0) {
                         uri = catalog.reptileAddress;
+                    } else if(reptileCommon.originUrlBefore == 2) {
+                        uri = reptileCommon.baseUrl + catalog.reptileAddress;
                     } else {
-                        uri = baseUrl + catalog.reptileAddress;
+                        uri = originUrl + catalog.reptileAddress;
                     }
                     let option = {
                         uri:uri,
+                        userAgent: reptileCommon.userAgent,
                         encoding : null,
-                        headers:{
-                            //模拟谷歌浏览器
-                            "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-                        },
                         transform: function(body, response, resolveWithFullResponse) {
                             // return cheerio.load(iconv.decode(body, "gbk"), {decodeEntities: false});
                             // return [cheerio.load(iconv.decode(body, "utf-8"), {decodeEntities: false}),iconv.decode(body, "utf-8")];
@@ -49,8 +51,6 @@ async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat,
                         },
                         timeout: timeout || 10000
                     };
-                    let ip = await tool.redisData.ipList.getRandomIpList();
-                    if(ip) option.proxy = ip;
                     try{
                         let data = await timoRp(option);
                         let $ = data[0];
@@ -59,7 +59,7 @@ async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat,
                         global.reptileCatalog--;
                         try{
                             content = reptileCommon.getCatalogContent($);
-                            let saveSuccess = await saveContent(baseUrl, bookId, bookName, catalog, noIsRepeat, content,reptileType,uri,tiType);
+                            let saveSuccess = await saveContent(originUrl, bookId, bookName, catalog, noIsRepeat, content,reptileType,uri,tiType);
                             if(saveSuccess){
                                 resolve2();
                             } else{
@@ -69,32 +69,31 @@ async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat,
                             // log.error("我只是看个问题" + bookName + "_" + book.title);
                             // log.error(err);
 
-                            await db.query(`INSERT INTO progresserror (reptileType, originUrl, bookId, catalogId, reptileAddress, bookName, catalogName) VALUES (${reptileType}, "${baseUrl}", "${bookId}", "${catalog.id}", "${catalog.reptileAddress}", "${bookName}", "${catalog.name}")`);
+                            await db.query(`INSERT INTO progresserror (reptileType, originUrl, bookId, catalogId, reptileAddress, bookName, catalogName) VALUES (${reptileType}, "${originUrl}", "${bookId}", "${catalog.id}", "${catalog.reptileAddress}", "${bookName}", "${catalog.name}")`);
 
                             let endTime = new Date().getTime();
                             log.error(`异常失败,开始时间${startTime},结束时间${endTime},耗时${endTime-startTime}毫秒`);
-                            log.error(" 错误地址： " + baseUrl + catalog.reptileAddress + ",代理IP：" + ip);
+                            log.error(" 错误地址： " + originUrl + catalog.reptileAddress + "，代理IP：" + option.proxy);
                             log.error("异常错误（谨慎）：" + err);
                             resolve2("错误：异常错误（谨慎）：" +err);
                             // global.reptileCatalog--;
                             // console.log(`success:现在有${global.reptileCatalog}条章节正在爬取`)
-                            // console.log(baseUrl + catalog.reptileAddress);
-                            // console.log(ip);
+                            // console.log(originUrl + catalog.reptileAddress);
                             // let endTime = new Date().getTime();
                             // console.log(`成功响应，开始时间${startTime},结束时间${endTime},耗时${endTime-startTime}毫秒`);
                         }
                     }catch(err){
-                        if(start >= 5) {
+                        if(start >= 2) {
                             global.reptileCatalog--;
                             // console.log(`catch：现在有${global.reptileCatalog}条章节正在爬取`)
-                            log.error(" 错误地址： " + baseUrl + catalog.reptileAddress + ",代理IP：" + ip);
+                            log.error(" 错误地址： " + originUrl + catalog.reptileAddress + ",代理IP：" + option.proxy);
                             let endTime = new Date().getTime();
                             log.error(`响应失败,开始时间${startTime},结束时间${endTime},耗时${endTime-startTime}毫秒`);
                             // reject(err);
-                            log.error("连接5次都是失败，失败原因：" + err);
+                            log.error("连接2次都是失败，失败原因：" + err);
 
-                            await db.query(`INSERT INTO progresserror (reptileType, originUrl, bookId, catalogId, reptileAddress, bookName, catalogName) VALUES (${reptileType}, "${baseUrl}", ${bookId}, ${catalog.id}, "${catalog.reptileAddress}", "${bookName}", "${catalog.name}")`);
-                            resolve2("错误：连接5次都是失败" + err);  //连接5次都是失败   最好不要改，其他程序是判断这几个字的。
+                            await db.query(`INSERT INTO progresserror (reptileType, originUrl, bookId, catalogId, reptileAddress, bookName, catalogName) VALUES (${reptileType}, "${originUrl}", ${bookId}, ${catalog.id}, "${catalog.reptileAddress}", "${bookName}", "${catalog.name}")`);
+                            resolve2("错误：连接2次都是失败" + err);  //连接5次都是失败   最好不要改，其他程序是判断这几个字的。
                         } else {
                             // log.error("连接" + start + "次都是失败" + err);
                             resolve2(await startRpFn())
@@ -123,7 +122,7 @@ async function getCatalog_common(bookId, baseUrl, bookName, catalog, noIsRepeat,
 //     }
 // }
 
-async function saveContent(baseUrl, bookId, bookName, catalog, noIsRepeat, content,reptileType,uri, tiType) {
+async function saveContent(originUrl, bookId, bookName, catalog, noIsRepeat, content,reptileType,uri, tiType) {
     // let filePath = "";
     try {
         // if (noIsRepeat) {
@@ -140,7 +139,7 @@ async function saveContent(baseUrl, bookId, bookName, catalog, noIsRepeat, conte
             if(type) {  //titype为true且为特殊章节
                 contentSection[0] = `提莫淘书，淘你喜欢。提莫淘书，讨你喜欢。<br>来源地址：<a href="${uri}">${catalog.name}</a>`;
             } else {
-                await db.query(`INSERT INTO progresserror (reptileType, originUrl, bookId, catalogId, reptileAddress, bookName, catalogName) VALUES (${reptileType}, "${baseUrl}", ${bookId}, ${catalog.id}, "${catalog.reptileAddress}", "${bookName}", "${catalog.name}")`);
+                await db.query(`INSERT INTO progresserror (reptileType, originUrl, bookId, catalogId, reptileAddress, bookName, catalogName) VALUES (${reptileType}, "${originUrl}", ${bookId}, ${catalog.id}, "${catalog.reptileAddress}", "${bookName}", "${catalog.name}")`);
 
                 log.error("爬取失败，失败原因：没有内容");
                 return false;

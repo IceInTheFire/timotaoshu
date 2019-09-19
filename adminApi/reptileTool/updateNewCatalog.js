@@ -1,8 +1,9 @@
 const {fs, rp,timoRp, path, tool, db, cheerio, iconv, log} = require("../tool/require");
 
-const getCatalog = require("./getCatalog");
+// const getCatalog = require("./getCatalog");
 // let reptileCommon = require("./common/reptileCommon");
 let reptileCommon2 = require("./common/reptileCommon2");
+let getCatalogList = require("../reptileTool/getCatalogList");
 
 
 module.exports = async (sqlBook) => {
@@ -39,179 +40,58 @@ async function updateBookNewCatalog_common(sqlBook, reptileType, end) {
 
         async function startRp() {
             start++;
-            let option = {
-                uri: sqlBook.originUrl,
-                encoding: null,
-                transform: function (body) {
-                    // let body2 = iconv.decode(body, "gbk");  //用来查看页面
-                    return cheerio.load(iconv.decode(body, reptileCommon.code), {decodeEntities: false, xmlMode: true});
-                },
-                headers: {
-                    //模拟谷歌浏览器
-                    "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-                },
-                timeout:10000
-            };
-            if(global.server) {
-                option.proxy = global.serverProxy;  //轻盈代理
-            }  else {
-                let ip = await tool.redisData.ipList.getRandomIpList();
-                if(ip) option.proxy = ip;
-            }
-            try{
-                let $ = await timoRp(option);
-                let catalogListUrl = reptileCommon.getCatalogListUrl($);
-                let updateTime = new Date(reptileCommon.getUpdateTime($)).getTime();
-                if(catalogListUrl) {        //小说目录
-                    let option2 = {
-                        uri: catalogListUrl,
-                        encoding: null,
-                        transform: function (body) {
-                            // let body2 = iconv.decode(body, "gbk");  //用来查看页面
-                            return cheerio.load(iconv.decode(body, reptileCommon.code), {decodeEntities: false});
-                        },
-                        headers: {
-                            //模拟谷歌浏览器
-                            "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-                        }
-                    }
-                    if(global.server) {
-                        option2.proxy = global.serverProxy
-                    }  else {
-                        let ip = await tool.redisData.ipList.getRandomIpList();
-                        if(ip) option2.proxy = ip;
-                    }
-                    try{
-                        let $2 = await timoRp(option2);
-                        await getCatalogList($2);
-                    }catch(err){
-                        if (start >= 5) {
-                            log.error(`获取${sqlBook.originUrl}5次失败，最后一次失败原因：${err}`);
-                            // reject(err);
-                            end();
-                            reject(`获取${sqlBook.originUrl}5次失败，最后一次失败原因：${err}`);
-                        } else {
-                            await startRp();
-                        }
-                    }
-                } else {        //小说详情页有目录
-                    await getCatalogList($);
-                }
-
-
-
-                async function getCatalogList($){
-                    let firstNum = reptileCommon.getCatalogFirstNum($);
-                    let nowCatalog = reptileCommon.getCatalogList($);
-                    nowCatalog.splice(0, firstNum);    //截去前面几个
-                    /*
-                    * 更新的长度
-                    * */
-                    let upDateLength = nowCatalog.length;
-                    /*
-                    * sql里存储的长度
-                    * */
-                    let nowLength = (await db.query(`select count(*) from catalog where bookId=${sqlBook.id} and isReptileTool=2`))[0]["count(*)"];
-                    let book = Object.assign({},sqlBook);
-
-                    book.updateTime = book.updateTime.getTime();
-                    // let book = {};
-                    // try {
-                    //     book = JSON.parse(fs.readFileSync(path.join(__dirname, `../../book_end/${sqlBook.name}.json`), "utf-8").toString());
-                    // } catch (err) {
-                    //     log.error(err);
-                    //     book = JSON.parse(fs.readFileSync(path.join(__dirname, `../../book_end/${tool.jiami(sqlBook.name)}.json`), "utf-8").toString());
-                    // }
-
-                    /*
-                      * 修改书的更新状态
-                      * */
-                    let date = new Date(reptileCommon.beforeThreeDay()).getTime();
-                    // let updateTimeDate = new Date(updateTime).getTime();  //时间类型的刘改时间
-                    if (book.updateTime != updateTime  || updateTime <= date) {
-                        // if(true) {  //只是暂时的，下次看到就把这行去掉，恢复上面那一行
-                        book.updateTime = updateTime;
-                        if (updateTime <= date) {
-                            book.bookStatus = 2;
-                        } else {
-                            book.bookStatus = 1;
-                        }
-                        let bookSql = `update book set updateTime=date_sub("${new Date(book.updateTime).Format("yyyy-MM-dd hh:mm:ss")}",interval 0 day), bookStatus=${book.bookStatus} where id=${sqlBook.id}`;
-                        await db.query(bookSql);
-                    }
-
-
-                    // log.info(upDateLength - nowLength > 0);
-                    if (upDateLength - nowLength > 0) {
-                        // let i = nowLength, length = nowCatalog.length;
-                        // for (i; i < length; i++) {
-                        //     book.catalog.push(reptileCommon2(reptileType).getCatalog($, nowCatalog, i))
-                        // }
-                        // saveJson(sqlBook.id, book);
-                        let catalogSql = "INSERT INTO catalog (bookId, name, num, type, createTime, reptileAddress) VALUES"
-                        /*
-                        * 本地json存储的长度
-                        * */
-                        // let length2 = upDateLength;
-                        let ii = nowLength;
-                        for (ii; ii < upDateLength; ii++) {
-                            let value = reptileCommon.getCatalog($, nowCatalog, ii);
-                            catalogSql += `(${book.id},"${value.title}",${ii*2},${value.type}, now(),"${value.href}")`;
-                            if (ii == upDateLength - 1) {
-                                // catalogSql += `(${value})`;
-                            } else {
-                                catalogSql += ",";
+            let result = null;
+            let error = null;
+            while(!result && start<=5) {
+                let option = {
+                    uri: sqlBook.originUrl,
+                    userAgent: reptileCommon.userAgent,
+                    encoding: null,
+                    transform: function (body) {
+                        // let body2 = iconv.decode(body, "gbk");  //用来查看页面
+                        return cheerio.load(iconv.decode(body, reptileCommon.code), {decodeEntities: false, xmlMode: true});
+                    },
+                    timeout:10000
+                };
+                let catalogListUrl = null;
+                try{
+                    let $ = await timoRp(option);
+                    catalogListUrl = reptileCommon.getCatalogListUrl($);
+                    let updateTime = new Date(reptileCommon.getUpdateTime($)).getTime();
+                    if(catalogListUrl) {        //小说目录
+                        let option2 = {
+                            uri: catalogListUrl,
+                            userAgent: reptileCommon.userAgent,
+                            encoding: null,
+                            transform: function (body) {
+                                // let body2 = iconv.decode(body, "gbk");  //用来查看页面
+                                return cheerio.load(iconv.decode(body, reptileCommon.code), {decodeEntities: false});
                             }
                         }
-                        await db.query(catalogSql);
-                        book.catalog = await db.query(`select * from catalog where bookId=${book.id}`)
-                        let start = nowLength;
-                        for (start; start < upDateLength; start++) {
-                            let value = book.catalog[start];
-                            // getCatalog(reptileType, book.originUrl, book.title, value, true);
-                            tool.catalogQueue.push({
-                                params: [sqlBook.id, reptileType, book.originUrl, book.title, value, true],
-                                pro: getCatalog,
-                                result: async (data) => {
-                                    // sucCount++;
-                                    // end();
-                                },
-                                error: async (data) => {
-                                    // errCount++;
-                                    // end();
-                                }
-                            });
+                        try{
+                            let $2 = await timoRp(option2);
+                            result = await getCatalogList({$:$2, reptileCommon, book:{}, updateNewCatalog:{sqlBook, updateTime, end, resolve, reptileType}});
+                        }catch(err){
+                            throw new Error(`访问目录页面错误，错误原因：${err}，失败地址：${catalogListUrl},代理地址：${option2.proxy}`);
                         }
-                    } else {
-                        // saveJson(sqlBook.id, book);
+                    } else {        //小说详情页有目录
+                        result = await getCatalogList({$, reptileCommon, book:{}, updateNewCatalog:{sqlBook, updateTime, end, resolve, reptileType}});
                     }
-                    end();
-                    resolve([upDateLength - nowLength]);  //返回更新的数据
+                }catch(err){
+                    start++;
+                    if(err.toString().indexOf('Error: 访问目录页面错误') === 0) {
+                        log.error(err);
+                    } else {
+                        log.error(`第${start}次爬取失败：${err}。失败地址：${catalogListUrl}，body：${bodyTest}`);
+                    }
+                    error = err;
+                    result = null;
                 }
-            }catch(err){
-                if (start >= 5) {
-                    log.error(`获取${sqlBook.originUrl}5次失败，最后一次失败原因：${err}`);
-                    // reject(err);
-                    end();
-                    reject(`获取${sqlBook.originUrl}5次失败，最后一次失败原因：${err}`);
-                } else {
-                    await startRp();
-                }
+            }
+            if(error && !result) {  // 错误就end
+                end();
+                reject(`获取${sqlBook.originUrl}${start}次失败，最后一次失败原因：${error}`);
             }
         }
     });
-}
-
-
-function saveJson(bookId, book) {
-    try {
-        tool.hasDir(fs, path.join(__dirname, "../../book_end"))
-        let filePath = path.join(__dirname, "../../book_end/" + bookId + ".json");
-        fs.writeFileSync(filePath, JSON.stringify(book));
-    } catch (err) {
-        log.error(err);
-        // let title = tool.jiami(book.title);
-        // let filePath = path.join(__dirname, "../../book_end/" + title + ".json")
-        // fs.writeFileSync(filePath, JSON.stringify(book));
-    }
 }

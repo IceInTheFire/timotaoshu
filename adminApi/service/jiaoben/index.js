@@ -17,16 +17,12 @@ async function startRp() {
             // let body2 = iconv.decode(body, "gbk");  //用来查看页面
             return cheerio.load(iconv.decode(body, "gbk"), {decodeEntities: false});
         },
-        headers: {
-            //模拟谷歌浏览器
-            "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-        },
         timeout:20000
         // timeout:500
     }
 
-    let ip = await tool.redisData.ipList.getRandomIpList();
-    if(ip) option.proxy = ip;
+    // let ip = await tool.redisData.ipList.getRandomIpList();
+    // if(ip) option.proxy = ip;
     timoRp(option).then(async ($)=>{
         let aArr = $(".novellist ul li a");
         let length = aArr.length;

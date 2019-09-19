@@ -1,4 +1,4 @@
-const { oauth, tool, db, log, rp, cheerio, iconv,request,reptileConfig } = require("../../tool/require2");
+const {oauth, tool, db, log, rp, cheerio, iconv, request, reptileConfig} = require("../../tool/require2");
 
 /*
 * 兼容cheerio  :eq的写法
@@ -10,8 +10,8 @@ const { oauth, tool, db, log, rp, cheerio, iconv,request,reptileConfig } = requi
 function handleEq(dom, ruleSplit0, $) {
     var findDom = null;
 
-    if(ruleSplit0.indexOf(":eq(") == -1) {  //没有eq的写法
-        if(dom) {
+    if (ruleSplit0.indexOf(":eq(") == -1) {  //没有eq的写法
+        if (dom) {
             findDom = dom.find(ruleSplit0);
         } else {
             findDom = $(ruleSplit0);
@@ -19,23 +19,24 @@ function handleEq(dom, ruleSplit0, $) {
     } else {    //兼容选择器:eq写法
         let rules = ruleSplit0.split(/:eq\(\d\)/);      //这里的数组数量永远比下面多1
         let eqs = ruleSplit0.match(/:eq\(\d\)/g);       //这里的数组数量永远比上面少1
-        if(dom) {
+        if (dom) {
             findDom = dom.find(rules[0]);
         } else {
             findDom = $(rules[0]);
         }
-        findDom = findDom.eq(eqs[0].replace(":eq(","").replace(")",""));
+        findDom = findDom.eq(eqs[0].replace(":eq(", "").replace(")", ""));
         let i = 1, length = rules.length - 1;
-        for(i; i<length; i++) {
+        for (i; i < length; i++) {
             findDom = findDom.find(rules[i]);
-            findDom = findDom.eq(eqs[i].replace(":eq(","").replace(")",""));
+            findDom = findDom.eq(eqs[i].replace(":eq(", "").replace(")", ""));
         }
-        findDom = rules[i] ? findDom.find(rules[i]): findDom;
+        findDom = rules[i] ? findDom.find(rules[i]) : findDom;
     }
 
 
     return findDom;
 }
+
 /*
 * 处理规则
 * ruleSplit   规则数组
@@ -48,27 +49,29 @@ function handleEq(dom, ruleSplit0, $) {
 *
 * */
 function handleRule(ruleSplit, startIndex, result) {
-    switch(ruleSplit[startIndex]) {
+    switch (ruleSplit[startIndex]) {
         case "split":
             let resultArr = result.split(ruleSplit[startIndex + 1]);
             let index = 0;
-            if( ruleSplit[startIndex + 2] && ruleSplit[startIndex + 2].indexOf("length-") == 0) {
+            if (ruleSplit[startIndex + 2] && ruleSplit[startIndex + 2].indexOf("length-") == 0) {
                 let endIndex = parseInt(ruleSplit[startIndex + 2].split("length-")[1]);
                 index = resultArr.length - endIndex;
-            } else{
+            } else {
                 index = ruleSplit[startIndex + 2] || 0;     //默认0
             }
             result = resultArr[index] || result;
-            startIndex+=3;
+            startIndex += 3;
             break;
-        default:break;
+        default:
+            break;
     }
-    if((startIndex+3) <= ruleSplit.length) {
+    if ((startIndex + 3) <= ruleSplit.length) {
         return handleRule(ruleSplit, startIndex, result)
     } else {
         return result && result.trim();
     }
 }
+
 /*
 * 在dom元素下，寻找findDom元素
 * 根据type值获取findDom相对应的数据
@@ -89,12 +92,12 @@ function handleRule(ruleSplit, startIndex, result) {
 *
 *
 * */
-function domCommon(dom, rule, $){
+function domCommon(dom, rule, $) {
     let ruleSplit = rule.split("、");
     // let ruleLength = ruleSplit.length;
     let type = ruleSplit[1];
     let findDom = null;
-    if(ruleSplit[0]) {
+    if (ruleSplit[0]) {
         findDom = handleEq(dom, ruleSplit[0], $);
     } else {
         findDom = dom;
@@ -102,24 +105,25 @@ function domCommon(dom, rule, $){
 
     let result = null;
 
-
-    if(type == "html") {
+    if (type == "html") {
         result = findDom.html() && findDom.html().trim();
-    } else if(type == 'fontHtml') {
+    } else if (type == 'fontHtml') {
         result = findDom.html() && findDom.html().replace(/(<\/?font.*?>)/g, '').trim();        // 过滤标签，保留内容
-    } else if(type == 'spanHtml') {
+    } else if (type == 'spanHtml') {
         result = findDom.html() && findDom.html().replace(/(<\/?span.*?>)/g, '').trim();        // 过滤标签，保留内容
-    } else if(type == 'aHtml') {
+    } else if (type == 'aHtml') {
         result = findDom.html() && findDom.html().replace(/(<\/?a.*?>)/g, '').trim();        // 过滤标签，保留内容
-    } else if(type == 'allHtml') {
+    } else if (type == 'allHtml') {
         result = findDom.html() && findDom.html().replace(/(<\/?font.*?>)|(<\/?span.*?>)|(<\/?a.*?>)/g, '').trim();
-    } else if(type == 'val'){
+    } else if (type == "text") {
+        result = findDom.text() && findDom.text().trim();
+    } else if (type == "val") {
         result = findDom.val() && findDom.val().trim();
-    } else if(type && type.indexOf("attr") == 0) {
+    } else if (type && type.indexOf("attr") == 0) {
         result = findDom.attr(type.split("attr")[1]) && findDom.attr(type.split("attr")[1]).trim();
-    } else if(type && type.indexOf("index") === 0) {
-        let indexCompute = parseInt(type.replace("index","")) || 0;
-        if(indexCompute) {
+    } else if (type && type.indexOf("index") === 0) {
+        let indexCompute = parseInt(type.replace("index", "")) || 0;
+        if (indexCompute) {
             return findDom.index() + indexCompute;
         } else {
             return findDom.index();
@@ -127,7 +131,6 @@ function domCommon(dom, rule, $){
     }
     return handleRule(ruleSplit, 2, result);
 }
-
 
 
 // let rules = {
@@ -258,13 +261,15 @@ async function reptileCommon2(reptileType) {
     let rule = rules[reptileType];
 
     let returnObj = null;
-    if(rule){
+    if (rule) {
         returnObj = {
-            code:rule.code,
-            name:rule.name,
-            baseUrl:rule.baseUrl,
-            codeTransform:rule.codeTransform,
-            searchUrl:(bookName) => {  /*返回搜索地址*/
+            code: rule.code,
+            name: rule.name,
+            baseUrl: rule.baseUrl,
+            codeTransform: rule.codeTransform,
+            originUrlBefore: rule.originUrlBefore,   // url前缀
+            userAgent: rule.userAgent,      // pc或者mobile
+            searchUrl: (bookName) => {  /*返回搜索地址*/
                 let transformName = "";
                 switch (rule.codeTransform) {
                     case "gbk":
@@ -281,33 +286,33 @@ async function reptileCommon2(reptileType) {
             },
             getBookList: ($, url, bookName) => {
                 let list = [];
-                if(bookName && returnObj.searchUrl(bookName).indexOf(url) == -1) {
-                    //被302重定向，进入了书的详情页，多存在于只搜到了一本书
+                if (bookName && returnObj.searchUrl(bookName).indexOf(url) == -1) {
+                    //被302重定向，进入了书的详情页，多存在于只搜到了一本书   目测有问题，以后再改
                     list.push({
-                        title:returnObj.bookTitle($),
+                        title: returnObj.bookTitle($),
                         url: (url.indexOf("http") == -1) ? (rule.baseUrl + url) : url,
-                        author:returnObj.bookAuthor($),
-                        status:returnObj.getUpdateTime($)
+                        author: returnObj.bookAuthor($),
+                        status: returnObj.getUpdateTime($)
                     })
                 } else {
                     let domList = $(rule.searchList);
                     let i = rule.searchListStart, length = domList.length;
-                    for(i; i<length; i++) {
+                    for (i; i < length; i++) {
                         let status = null;
-                        if(rule.searchListLastTime) {
+                        if (rule.searchListLastTime) {
                             status = domCommon(domList.eq(i), rule.searchListLastTime, $) + " ____ 最后更新：" + domCommon(domList.eq(i), rule.searchListStatus, $);
                         } else {
                             status = domCommon(domList.eq(i), rule.searchListStatus, $);
                         }
                         let url = domCommon(domList.eq(i), rule.searchListUrl, $);
-                        if(url.indexOf("http") != 0) {
+                        if (url.indexOf("http") != 0) {
                             url = rule.baseUrl + url;
                         }
                         list.push({
-                            title:domCommon(domList.eq(i), rule.searchListTitle, $),
-                            url:url,
-                            author:domCommon(domList.eq(i), rule.searchListAuthor, $),
-                            status:status
+                            title: domCommon(domList.eq(i), rule.searchListTitle, $),
+                            url: url,
+                            author: domCommon(domList.eq(i), rule.searchListAuthor, $),
+                            status: status
                         });
                     }
                 }
@@ -315,40 +320,77 @@ async function reptileCommon2(reptileType) {
             },
 
             bookTitle: ($) => {
-                return domCommon(null,rule.bookTitle,$);
+                return domCommon(null, rule.bookTitle, $);
             },
             bookAuthor: ($) => {
-                return domCommon(null,rule.bookAuthor,$);
+                return domCommon(null, rule.bookAuthor, $);
             },
             getUpdateTime: ($) => {
-                return domCommon(null,rule.updateTime,$);
+                return domCommon(null, rule.updateTime, $);
             },
-            getCatalogListUrl:($) => {
-                if(rule.catalogListUrl) {
-                    return domCommon(null,rule.catalogListUrl,$);
+            getCatalogListUrl: ($) => {
+                if (rule.catalogListUrl) {
+                    let catalogListUrl = domCommon(null, rule.catalogListUrl, $);
+                    if(catalogListUrl.indexOf('http') !== 0) {
+                        catalogListUrl = rule.baseUrl + catalogListUrl;
+                    }
+                    return catalogListUrl;
                 } else {
                     return null;
                 }
             },
-            getCatalogList:($) => {
+            getIsPage: ($) => { // 获取目录是否是分页
+                if (rule.isPage) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            getNextPage: ($) => { // 获取下一页目录地址
+                if (rule.nextPage) {
+                    let url = domCommon(null, rule.nextPage, $);
+                    if (url.indexOf('http') === 0) {
+                        return url;
+                    } else {
+                        return rule.baseUrl + url;
+                    }
+                } else {
+                    return null;
+                }
+            },
+            getNowPage: ($) => { // 解析并判断当前页数
+                if (rule.nextPage) {
+                    return domCommon(null, rule.nowPage, $);
+                } else {
+                    return null;
+                }
+            },
+            getAllPage: ($) => { // 总目录页数
+                if (rule.nextPage) {
+                    return domCommon(null, rule.allPage, $);
+                } else {
+                    return null;
+                }
+            },
+            getCatalogList: ($) => {
                 return $(rule.catalogList);
             },
             getBookType: ($) => {
-                return domCommon(null,rule.bookType,$);
+                return domCommon(null, rule.bookType, $);
             },
             beforeThreeDay() {
                 var date = new Date();//获取当前时间
                 date.setDate(date.getDate() - 3);//设置天数 -3 天
                 return date;
             },
-            getCatalogFirstNum($){   //暂时为0，以后再找规则
-                if(!rule.firstCatalogList) {
+            getCatalogFirstNum($) {   //暂时为0，以后再找规则
+                if (!rule.firstCatalogList) {
                     return 0
                 } else {
-                    return domCommon(null,rule.firstCatalogList,$);
+                    return domCommon(null, rule.firstCatalogList, $);
                 }
             },
-            getBookImgUrl($){
+            getBookImgUrl($) {
                 return domCommon(null, rule.bookImgUrl, $);
             },
             getDescription: ($) => {
@@ -359,7 +401,7 @@ async function reptileCommon2(reptileType) {
             getCatalog: ($, catalogStr, i) => {     //规则暂时有问题，目前先这样
                 let catalog = $(catalogStr[i]);
                 // let title = catalog.html();
-                let title = domCommon(catalog,rule.catalogTitle);
+                let title = domCommon(catalog, rule.catalogTitle);
                 let type = 1;  //1带章节
                 if (title.indexOf("章") == -1 && title.indexOf("第") == -1) {
                     type = 2;   //2没有章节
@@ -369,7 +411,7 @@ async function reptileCommon2(reptileType) {
                 return {
                     title: title,
                     // href:"/" + domCommon(catalog, "、" + "attrhref、split、/、length-1"),
-                    href:href,
+                    href: href,
                     // href: "/" + catalog.attr("href").split("/")[catalog.attr("href").split("/").length - 1],
                     type: type,
                 };
@@ -377,12 +419,12 @@ async function reptileCommon2(reptileType) {
             getCatalogContent: ($) => {
                 let content = domCommon(null, rule.catalogContent, $) || "";
                 content = content.replace(/\n/g, "").replace(/<p>/g, "<br>").replace(/<\/p>/g, "<br>");
-                content = tool.filterHtmlOrContainer(content|| "");  // 除br之外，其他标签全部过滤
+                content = tool.filterHtmlOrContainer(content || "");  // 除br之外，其他标签全部过滤
                 let contentArr = content.split("<br>");
                 let i = 0, length = contentArr.length;
-                for(i; i<length; i++) {
-                    if(!contentArr[i] || contentArr[i].trim() == "") {
-                        contentArr.splice(i,1);
+                for (i; i < length; i++) {
+                    if (!contentArr[i] || contentArr[i].trim() == "") {
+                        contentArr.splice(i, 1);
                         i--;
                         length--;
                     } else {

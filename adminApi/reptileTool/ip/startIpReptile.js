@@ -12,7 +12,7 @@ const checkIp = require("./checkIp");
 * */
 async function startReptile(startPage, endPage, callback) {
     endPage = parseInt(endPage) || 3;
-    let allPage = parseInt(endPage) || 3;
+    let allPage = endPage || 3;
     let current = parseInt(startPage) || 1;
     let ipList = [];
     for(current; current<=allPage; current++) {
@@ -34,7 +34,7 @@ async function startReptile(startPage, endPage, callback) {
 
     let list = [];
     let overLength = 0;
-    let yu = length > 10 ? Math.ceil(length/20) : (length > 1 ?1:0);   //允许有几个个缺失  默认丢弃最后几个未返回的
+    let yu = length > 10 ? Math.ceil(length/20) : (length > 1 ? 1: 0);   //允许有几个个缺失  默认丢弃最后几个未返回的
     let needCount = length - yu;
     for(i; i<length; i++) {
         tool.ipQueue.push({

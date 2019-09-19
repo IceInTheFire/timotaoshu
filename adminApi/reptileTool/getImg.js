@@ -21,11 +21,9 @@ async function getImg(bookId, imgUrl){
         start++;
         let option = {
             uri: imgUrl,
-            encoding : "binary"
+            encoding : "binary",
+            nochaoshi: true
         };
-        let ip = await tool.redisData.ipList.getRandomIpList();
-        if(ip) option.proxy = ip;
-        // global.server && (option.proxy = global.serverProxy);
         try{
             let imgData = await timoRp(option);
             let filePath = tool.isRepeat(fs, path.join(__dirname, "../../books/"+bookId+".png"));

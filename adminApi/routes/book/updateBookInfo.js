@@ -29,21 +29,21 @@ router.use('', oauth(1202),  async function(req, res, next) {
             try{
                 // obj = JSON.parse(fs.readFileSync(path.join(__dirname, '../../../book_end/' + json)));
                 // if(!obj.updateTime || !obj.bookStatus || !obj.bookType || !obj.imgUrl || obj.imgUrl == "undefined") {
-                    count += 1;
-                    let j = i;
-                    await updateBookInfo(book[j], book[j].id, function(imgUrl){
-                        book[j].isHandle = true;
-                        book[j].imgUrl = imgUrl;
-                        count -=1;
-                        if(!count) {  //coount == 0
-                            res.send(tool.toJson({
-                                book,
-                            }, '', 1000));
-                        }
-                    }, function(err) {
-                        book[j].isHandle = JSON.stringify(err);
-                    });
-                    wss.broadcast(JSON.stringify(book[j]));
+                count += 1;
+                let j = i;
+                await updateBookInfo(book[j], book[j].id, function(imgUrl){
+                    book[j].isHandle = true;
+                    book[j].imgUrl = imgUrl;
+                    count -=1;
+                    if(!count) {  //coount == 0
+                        res.send(tool.toJson({
+                            book,
+                        }, '', 1000));
+                    }
+                }, function(err) {
+                    book[j].isHandle = JSON.stringify(err);
+                });
+                wss.broadcast(JSON.stringify(book[j]));
                 // }
             }catch(err) {
                 // log.error(err);
@@ -69,10 +69,6 @@ module.exports = router;
 //             // let body2 = iconv.decode(body, 'gbk');  //用来查看页面
 //             return cheerio.load(iconv.decode(body, 'gbk'),{decodeEntities: false});
 //         },
-//         headers:{
-//             //模拟谷歌浏览器
-//             "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-//         }
 //     }).then(async function($){
 //         let updateTime2 =  $("#info>p").eq(2).html();
 //         let updateTime = updateTime2.split("：").length <=1? updateTime2: updateTime2.split("：")[1];

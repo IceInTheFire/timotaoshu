@@ -48,23 +48,27 @@
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">网站编码：</span>
-                        <Input v-model="config.code" class="config-input" placeholder="页面编码格式" :maxlength="10"></Input>
+                        <Input v-model="config.code" class="config-input" placeholder="页面编码格式" :maxlength="10"/>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">pc或mobile：</span>
+                        <Input v-model="config.userAgent" class="config-input" placeholder="默认pc端" :maxlength="10"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">备注名称：</span>
-                        <Input v-model="config.name" class="config-input" placeholder="备注名称"></Input>
+                        <Input v-model="config.name" class="config-input" placeholder="备注名称"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">来源地址：</span>
-                        <Input v-model="config.baseUrl" class="config-input" placeholder="来源地址"></Input>
+                        <Input v-model="config.baseUrl" class="config-input" placeholder="来源地址"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">转码格式：</span>
-                        <Input v-model="config.codeTransform" class="config-input" placeholder="页面转码方式，用于搜索转码方式" :maxlength="10"></Input>
+                        <Input v-model="config.codeTransform" class="config-input" placeholder="页面转码方式，用于搜索转码方式" :maxlength="10"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">搜索地址：</span>
-                        <Input v-model="config.searchUrl" class="config-input" placeholder="搜索地址，${name}是书名填充位置"></Input>
+                        <Input v-model="config.searchUrl" class="config-input" placeholder="搜索地址，${name}是书名填充位置"/>
                     </p>
                 </div>
             </Panel>
@@ -73,35 +77,35 @@
                 <div slot="content">
                     <p class="config-kuai">
                         <span class="config-title">搜索列表：</span>
-                        <Input v-model="config.searchList" class="config-input" placeholder="搜索列表"></Input>
+                        <Input v-model="config.searchList" class="config-input" placeholder="搜索列表"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">start索引：</span>
-                        <Input v-model="config.searchListStart" class="config-input" placeholder="基于搜索列表的start索引"></Input>
+                        <Input v-model="config.searchListStart" class="config-input" placeholder="基于搜索列表的start索引"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">end索引：</span>
-                        <Input v-model="config.searchListEnd" class="config-input" placeholder="基于搜索列表的end索引"></Input>
+                        <Input v-model="config.searchListEnd" class="config-input" placeholder="基于搜索列表的end索引"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">小说名称：</span>
-                        <Input v-model="config.searchListTitle" class="config-input" placeholder="基于搜索列表的小说名称"></Input>
+                        <Input v-model="config.searchListTitle" class="config-input" placeholder="基于搜索列表的小说名称"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">小说地址：</span>
-                        <Input v-model="config.searchListUrl" class="config-input" placeholder="基于搜索列表的小说地址"></Input>
+                        <Input v-model="config.searchListUrl" class="config-input" placeholder="基于搜索列表的小说地址"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">小说作者：</span>
-                        <Input v-model="config.searchListAuthor" class="config-input" placeholder="基于搜索列表的小说足总和"></Input>
+                        <Input v-model="config.searchListAuthor" class="config-input" placeholder="基于搜索列表的小说足总和"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">小说状态：</span>
-                        <Input v-model="config.searchListStatus" class="config-input" placeholder="基于搜索列表的小说状态"></Input>
+                        <Input v-model="config.searchListStatus" class="config-input" placeholder="基于搜索列表的小说状态"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">最后更新时间：</span>
-                        <Input v-model="config.searchListLastTime" class="config-input" placeholder="基于搜索列表的最后更新时间"></Input>
+                        <Input v-model="config.searchListLastTime" class="config-input" placeholder="基于搜索列表的最后更新时间"/>
                     </p>
                 </div>
             </Panel>
@@ -110,51 +114,71 @@
                 <div slot="content">
                     <p class="config-kuai">
                         <span class="config-title">小说名称：</span>
-                        <Input v-model="config.bookTitle" class="config-input" placeholder="基于小说详情的小说名称"></Input>
+                        <Input v-model="config.bookTitle" class="config-input" placeholder="基于小说详情的小说名称"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">小说作者：</span>
-                        <Input v-model="config.bookAuthor" class="config-input" placeholder="基于小说详情的小说作者"></Input>
+                        <Input v-model="config.bookAuthor" class="config-input" placeholder="基于小说详情的小说作者"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">最后更新时间：</span>
-                        <Input v-model="config.updateTime" class="config-input" placeholder="基于小说详情的最后更新时间"></Input>
+                        <Input v-model="config.updateTime" class="config-input" placeholder="基于小说详情的最后更新时间"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">小说分类：</span>
-                        <Input v-model="config.bookType" class="config-input" placeholder="基于小说详情的小说分类"></Input>
+                        <Input v-model="config.bookType" class="config-input" placeholder="基于小说详情的小说分类"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">小说封面：</span>
-                        <Input v-model="config.bookImgUrl" class="config-input" placeholder="基于小说详情页的小说封面"></Input>
+                        <Input v-model="config.bookImgUrl" class="config-input" placeholder="基于小说详情页的小说封面"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">小说描述：</span>
-                        <Input v-model="config.bookDescription" class="config-input" placeholder="基于小说详情页的小说封描述"></Input>
+                        <Input v-model="config.bookDescription" class="config-input" placeholder="基于小说详情页的小说封描述"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">章节目录地址：</span>
-                        <Input v-model="config.catalogListUrl" class="config-input" placeholder="小说章节目录地址，从小说详情页获取，目录详情一个页面则是空"></Input>
+                        <Input v-model="config.catalogListUrl" class="config-input" placeholder="小说章节目录地址，从小说详情页获取，目录详情一个页面则是空"/>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">目录是否分页：</span>
+                        <Input v-model="config.isPage" class="config-input" placeholder="目录是否有分页"/>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">下一页目录：</span>
+                        <Input v-model="config.nextPage" class="config-input" placeholder="下一页目录"/>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">当前目录页数：</span>
+                        <Input v-model="config.nowPage" class="config-input" placeholder="当前目录页数"/>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">总页数标识：</span>
+                        <Input v-model="config.allPage" class="config-input" placeholder="总页数标识"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">章节目录：</span>
-                        <Input v-model="config.catalogList" class="config-input" placeholder="小说章节目录列表"></Input>
+                        <Input v-model="config.catalogList" class="config-input" placeholder="小说章节目录列表"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">start索引：</span>
-                        <Input v-model="config.firstCatalogList" class="config-input" placeholder="基于章节目录的start索引"></Input>
+                        <Input v-model="config.firstCatalogList" class="config-input" placeholder="基于章节目录的start索引"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">end索引：</span>
-                        <Input v-model="config.endCatalogList" class="config-input" placeholder="基于章节目录的end索引"></Input>
+                        <Input v-model="config.endCatalogList" class="config-input" placeholder="基于章节目录的end索引"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">章节名称：</span>
-                        <Input v-model="config.catalogTitle" class="config-input" placeholder="章节名称"></Input>
+                        <Input v-model="config.catalogTitle" class="config-input" placeholder="章节名称"/>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">章节Url地址：</span>
-                        <Input v-model="config.catalogUrl" class="config-input" placeholder="章节Url地址"></Input>
+                        <Input v-model="config.catalogUrl" class="config-input" placeholder="章节Url地址"/>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">章节Url前缀：</span>
+                        <Input v-model="config.originUrlBefore" class="config-input" placeholder="默认1，以目录页地址做url前缀，填写2，以首页地址做url前缀，填写3不添加前缀" />
                     </p>
                 </div>
             </Panel>
@@ -163,7 +187,7 @@
                 <div slot="content">
                     <p class="config-kuai">
                         <span class="config-title">小说详情：</span>
-                        <Input v-model="config.catalogContent" class="config-input" placeholder="小说详情"></Input>
+                        <Input v-model="config.catalogContent" class="config-input" placeholder="小说详情"/>
                     </p>
                 </div>
             </Panel>
@@ -179,6 +203,10 @@
                     <p class="config-kuai">
                         <span class="config-title">网站编码：</span>
                         <span class="config-content">{{config.code}}</span>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">pc或mobile：</span>
+                        <span class="config-content">{{config.userAgent}}</span>
                     </p>
                     <p class="config-kuai">
                         <span class="config-title">备注名称：</span>
@@ -267,6 +295,26 @@
                         <span class="config-content">{{config.catalogListUrl}}</span>
                     </p>
                     <p class="config-kuai">
+                        <span class="config-title">目录是否分页：</span>
+                        <span class="config-content">{{config.isPage}}</span>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">下一页目录：</span>
+                        <span class="config-content">{{config.nextPage}}</span>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">当前目录页数：</span>
+                        <span class="config-content">{{config.nowPage}}</span>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">总页数标识：</span>
+                        <span class="config-content">{{config.allPage}}</span>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">章节Url前缀：</span>
+                        <span class="config-content">{{config.originUrlBefore}}</span>
+                    </p>
+                    <p class="config-kuai">
                         <span class="config-title">章节目录：</span>
                         <span class="config-content">{{config.catalogList}}</span>
                     </p>
@@ -285,6 +333,10 @@
                     <p class="config-kuai">
                         <span class="config-title">章节Url地址：</span>
                         <span class="config-content">{{config.catalogUrl}}</span>
+                    </p>
+                    <p class="config-kuai">
+                        <span class="config-title">章节Url前缀：</span>
+                        <span class="config-content">{{config.originUrlBefore}}</span>
                     </p>
                 </div>
             </Panel>
@@ -322,23 +374,23 @@
                 Collapse:"0",
                 initConfig:{
                     reptileTypeId:'',
-                    code:'',                 //页面编码格式
-                    name:'',              //备注名称
-                    baseUrl:'',    //来源地址
-                    codeTransform:'',            //页面转码方式，用于搜索转码方式
-                    searchUrl:'', //搜索地址前缀
+                    code:'',                    // 页面编码格式
+                    name:'',                    // 备注名称
+                    baseUrl:'',                 // 来源地址
+                    codeTransform:'',           // 页面转码方式，用于搜索转码方式
+                    searchUrl:'',               // 搜索地址前缀
 
                     /*
                     * 搜索列表start
                     * */
-                    searchList:'',        //搜索到的列表
-                    searchListStart:'',                  //搜索到的列表页   第一本小说从哪里开始      索引值从0开始
-                    searchListEnd:'',                    //搜索到的列表页   最后几条不是小说
-                    searchListTitle:'',           //搜索到的列表页  小说标题
-                    searchListUrl:'',         //搜索到的列表页  小说详情url地址
-                    searchListAuthor:'',    //搜索到的列表页  小说作者
-                    searchListStatus:'',                  //搜索到的列表页   小说状态
-                    searchListLastTime:'',                       //搜索到的列表页   小说最后更新时间
+                    searchList:'',              // 搜索到的列表
+                    searchListStart:'',         // 搜索到的列表页  第一本小说从哪里开始      索引值从0开始
+                    searchListEnd:'',           // 搜索到的列表页  最后几条不是小说
+                    searchListTitle:'',         // 搜索到的列表页  小说标题
+                    searchListUrl:'',           // 搜索到的列表页  小说详情url地址
+                    searchListAuthor:'',        // 搜索到的列表页  小说作者
+                    searchListStatus:'',        // 搜索到的列表页  小说状态
+                    searchListLastTime:'',      // 搜索到的列表页  小说最后更新时间
                     /*
                     * 搜索列表end
                     * */
@@ -350,14 +402,20 @@
                     bookAuthor:'',
                     updateTime:'',
                     bookType:'',
-                    bookImgUrl:'',                            //小说封面
-                    bookDescription:'',                                   //小说描述
-                    catalogListUrl:'',                      //章节目录地址
-                    catalogList:'',                                  //目录列表
-                    firstCatalogList:'',              //第一个索引值
-                    endCatalogList:'',                                          //最后一个索引值
-                    catalogTitle:'',                    //小说名称
-                    catalogUrl:'',                      //小说章节地址
+                    bookImgUrl:'',                          // 小说封面
+                    bookDescription:'',                     // 小说描述
+                    catalogListUrl:'',                      // 章节目录地址
+                    isPage: '',                             // 是否是分页
+                    nextPage: '',                           // 下一页目录
+                    nextPageTemplate: '',                           // 下一页目录模板
+                    nowPage: '',                            // 当前目录页数
+                    allPage: '',                            // 总目录页数
+                    originUrlBefore: 1,                     // 章节url前缀
+                    catalogList:'',                         // 目录列表
+                    firstCatalogList:'',                    // 第一个索引值
+                    endCatalogList:'',                      // 最后一个索引值
+                    catalogTitle:'',                        // 小说名称
+                    catalogUrl:'',                          // 小说章节地址
                     /*
                     * 小说目录页、详情页  end
                     * */
@@ -377,7 +435,7 @@
                 if(this.loading) return;
                 let obj = {
                     params: {
-                        config:JSON.stringify(this.config)
+                        config: JSON.stringify(this.config)
                     }
                 };
                 if(this.type == 'edit') {

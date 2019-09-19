@@ -14,13 +14,7 @@ async function getIpList(page) {
                 // let body2 = iconv.decode(body, "utf-8");  //用来查看页面
                 // console.log(body2);
                 return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path];
-            },
-            headers:{
-                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36",
-                // "X-Forwarded-For":"61.135.217.7",
-                // "x-real-ip":"61.135.217.7"
-            },
-            timeout:20000
+            }
         };
         // let ip = await tool.redisData.ipList.getRandomIpList();
         // if(ip) option.proxy = ip;
@@ -75,11 +69,7 @@ async function getIpList2(page) {
                 // let body2 = iconv.decode(body, "utf-8");  //用来查看页面
                 // console.log(body2);
                 return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path];
-            },
-            headers:{
-                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-            },
-            timeout:20000
+            }
         };
         // let ip = await tool.redisData.ipList.getRandomIpList();
         // if(ip) option.proxy = ip;
@@ -132,11 +122,7 @@ async function getIpList3(page) {
                 // let body2 = iconv.decode(body, "utf-8");  //用来查看页面
                 // console.log(body2);
                 return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path];
-            },
-            headers:{
-                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-            },
-            timeout:20000
+            }
         };
         // let ip = await tool.redisData.ipList.getRandomIpList();
         // if(ip) option.proxy = ip;
@@ -185,11 +171,7 @@ async function getIpList4(page) {
             transform: function(body, response, resolveWithFullResponse) {
                 // let body2 = iconv.decode(body, "utf-8");  //用来查看页面
                 return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path];
-            },
-            headers:{
-                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-            },
-            timeout:20000
+            }
         };
         // let ip = await tool.redisData.ipList.getRandomIpList();
         // if(ip) option.proxy = ip;
@@ -243,10 +225,6 @@ async function getIpList5(page) {
                 let body2 = iconv.decode(body, "utf-8");  //用来查看页面
                 return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path, body2];
             },
-            headers:{
-                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-            },
-            timeout:20000
         };
         // let ip = await tool.redisData.ipList.getRandomIpList();
         // if(ip) option.proxy = ip;
@@ -301,10 +279,6 @@ async function getIpList6(page) {
                 // console.log(body2);
                 return [cheerio.load(iconv.decode(body, "utf-8"),{decodeEntities: false}), response.req.path];
             },
-            headers:{
-                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-            },
-            timeout:20000
         };
         // let ip = await tool.redisData.ipList.getRandomIpList();
         // if(ip) option.proxy = ip;

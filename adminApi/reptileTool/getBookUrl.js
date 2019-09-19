@@ -15,24 +15,16 @@ async function getBookUrl_common(reptileType, bookName, isProxy){
             return;
         }
         let option = {
-            // uri:"https://www.biquge5200.cc/modules/article/search.php?searchkey=" + tool.url_encode(bookName),
-            uri:reptileCommon.searchUrl(bookName),
+            uri: reptileCommon.searchUrl(bookName),
+            userAgent: reptileCommon.userAgent,
             encoding : null,
             transform: function(body, response) {
+                let body2 = iconv.decode(body, "gbk");  //用来查看页面
                 return [cheerio.load(iconv.decode(body, reptileCommon.code),{decodeEntities: false}), response.req.path];
             },
-            timeout: 5000,
-            headers:{
-                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-            }
+            timeout: 10000,
+            noProxy: true,
         };
-
-        // if(isProxy && global.server) {
-        //     option.proxy = global.serverProxy
-        // } else {
-        //     let ip = await tool.redisData.ipList.getRandomIpList();
-        //     if(ip) option.proxy = ip;
-        // }
 
         try{
             let data = await timoRp(option);

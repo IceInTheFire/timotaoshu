@@ -52,6 +52,7 @@ async function getBook(obj, callback) {
     let reptileType = obj.reptileType;
     let reptileCommon = await reptileCommon2(reptileType);
     let baseUrl = reptileCommon.baseUrl;
+    let originUrlBefore = reptileCommon.originUrlBefore;
     let imgUrl = "";
     if (obj.imgUrl.indexOf("http") === 0) {
         imgUrl = obj.imgUrl;
@@ -75,7 +76,7 @@ async function getBook(obj, callback) {
     //     fubenCount--;
     // }
     getImg(bookId, imgUrl);
-    await startBook(bookId, author, reptileType, catalog, originUrl, bookName, callback)
+    await startBook(bookId, author, reptileType, catalog, originUrlBefore == 2 ? baseUrl:originUrl, bookName, callback)
 }
 
 async function startBook(bookId, author, reptileType, catalog, originUrl, bookName, callback) {

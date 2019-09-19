@@ -27,25 +27,14 @@ async function updateBookInfo_common(reptileType, book, bookId, callback, errorb
         start++;
         let option = {
             uri:book.originUrl,
+            userAgent: reptileCommon.userAgent,
             encoding : null,
             transform: function(body) {
                 // let body2 = iconv.decode(body, "utf-8");  //用来查看页面
                 return cheerio.load(iconv.decode(body, reptileCommon.code),{decodeEntities: false});
             },
-            headers:{
-                //模拟谷歌浏览器
-                "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36"
-            }
+            nochaoshi: true
         };
-        // let ip = await tool.redisData.ipList.getRandomIpList();
-        // if(ip) option.proxy = ip;
-        // global.server && (option.proxy = global.serverProxy);
-        if(global.server) {
-            option.proxy = global.serverProxy
-        }  else {
-            let ip = await tool.redisData.ipList.getRandomIpList();
-            if(ip) option.proxy = ip;
-        }
 
         try{
             let $ = await timoRp(option);

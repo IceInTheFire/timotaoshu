@@ -14,13 +14,15 @@ router.use('', oauth(4006), async function (req, res, next) {
         return;
     }
 
-    let insertSql = `code, name, baseUrl, codeTransform, searchUrl, searchList, searchListStart, searchListEnd, searchListTitle, searchListUrl, searchListAuthor, searchListStatus, searchListLastTime, bookTitle, bookAuthor, updateTime, bookType, catalogList, firstCatalogList, endCatalogList, bookImgUrl, bookDescription, catalogContent,catalogListUrl,catalogTitle,catalogUrl`;
+    let insertSql = `code, name, baseUrl, codeTransform, searchUrl, searchList, searchListStart, searchListEnd, searchListTitle, searchListUrl, searchListAuthor, searchListStatus, searchListLastTime, bookTitle, bookAuthor, updateTime, bookType, isPage, nextPage, nowPage, allPage, originUrlBefore, userAgent, catalogList, firstCatalogList, endCatalogList, bookImgUrl, bookDescription, catalogContent,catalogListUrl,catalogTitle,catalogUrl`;
+
+    let { code, name, baseUrl, codeTransform, searchUrl, searchList, searchListStart, searchListEnd, searchListTitle, searchListUrl, searchListAuthor, searchListStatus, searchListLastTime, bookTitle, bookAuthor, updateTime, bookType, isPage, nextPage, nowPage, allPage, originUrlBefore, userAgent, catalogList, firstCatalogList, endCatalogList, bookImgUrl, bookDescription, catalogContent,catalogListUrl,catalogTitle,catalogUrl } = config;
 
     let insertSqlArr = [
-        config.code, config.name, config.baseUrl, config.codeTransform, config.searchUrl, config.searchList, config.searchListStart, config.searchListEnd, config.searchListTitle, config.searchListUrl, config.searchListAuthor, config.searchListStatus, config.searchListLastTime, config.bookTitle, config.bookAuthor, config.updateTime, config.bookType, config.catalogList, config.firstCatalogList, config.endCatalogList, config.bookImgUrl, config.bookDescription, config.catalogContent,config.catalogListUrl,config.catalogTitle, config.catalogUrl
+        code, name, baseUrl, codeTransform, searchUrl, searchList, searchListStart, searchListEnd, searchListTitle, searchListUrl, searchListAuthor, searchListStatus, searchListLastTime, bookTitle, bookAuthor, updateTime, bookType, isPage, nextPage, nowPage, allPage, originUrlBefore, userAgent, catalogList, firstCatalogList, endCatalogList, bookImgUrl, bookDescription, catalogContent,catalogListUrl,catalogTitle,catalogUrl
     ];
     insertSqlArr.forEach((value, index) => {
-        insertSqlArr[index] = `"${value?value.replace(/"/g,`'`):value}"`;
+        insertSqlArr[index] = `"${value?(value+'').replace(/"/g,`'`):value}"`;
     })
 
     // console.log(`insert into reptiletool2 (${insertSql})Values(${insertSqlArr.join(',')})`);

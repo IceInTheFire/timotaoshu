@@ -1,17 +1,61 @@
-const request = global.timotaoApi? global.timotaoApi.request : require("request");
+const request = require("request");
+const userAgents = require('./user-agent.js');
+const Agent = require("http").Agent;
+const agent = new Agent({
+    keepAlive: true,
+    keepAliveMsecs:60000,
+    maxSockets:5,
+    maxFreeSockets:5,
+});
+const redisData = require('./redisData');
 
 const timoRp = function(options) {
-    // let started = Date.now();
-    // const printTime = label => () => console.log('%d ms\t%s', Date.now() - started, label);
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let chaoshi = true;
         let initOptions = {
-            // followRedirect: true,       // 301重定向跟随
-            // followAllRedirects: true,       // 301重定向一直跟随
-            strictSSL: false
+            rejectUnauthorized: false,
+            strictSSL:false,
+            // followRedirect : true,
+            headers: {
+            //     //模拟谷歌浏览器
+            //     // "User-Agent": userAgents[Math.floor(Math.random()*userAgents.length)], // 随机
+            //     "User-Agent": 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36', // 谷歌浏览器
+            },
+            // agent,   // 不支持https
+            timeout:20000,      // 默认20秒超时
         };
         let reqOptions = Object.assign(initOptions, options);
-        reqOptions.transform = null;
+
+        /*
+        * 代理ip start
+        * */
+        if(!options.noProxy && !options.proxy) {
+            if(global.server) {
+                initOptions.proxy = global.serverProxy
+            }  else {
+                let ip = await redisData.ipList.getRandomIpList();
+                if(ip) initOptions.proxy = ip;
+            }
+        }
+        options.proxy = initOptions.proxy;  // 借用js的对象特性，把proxy传递出去
+        /*
+        * 代理ip end
+        * */
+
+        /*
+        * user-agent start
+        * */
+        if( options.userAgent == 'mobile') {        // mobile 的user-agent
+            reqOptions.headers['User-Agent'] = userAgents.m[Math.floor(Math.random()*userAgents.m.length)];
+        } else { // pc 的user-agent
+            reqOptions.headers['User-Agent'] = userAgents.pc[Math.floor(Math.random()*userAgents.pc.length)];
+        }
+        /*
+        * user-agent end
+        * */
+
+        delete reqOptions.userAgent;        // 请求之前，删除多余的东西
+        delete reqOptions.transform;        // 请求之前，删除多余的东西
         var req = request(reqOptions, function (error, response, body) {
             chaoshi = false;
             if (!error && response.statusCode == 200) {
@@ -28,17 +72,17 @@ const timoRp = function(options) {
                     reject(error);
                 }
             }
-        }, time(options.timeout,options.timeout2));
+        }, time(options.timeout,options.nochaoshi));
         /*
         * 设置超时
         * */
-        function time(timeout,timeout2) {
-            if(timeout2) return;
+        function time(timeout, nochaoshi) {
+            if(nochaoshi) return;       // 设置了这个，则timeout无效
             if(parseInt(timeout) > 0) {
                 let setTime = setTimeout(() => {
                     if(chaoshi) {
-                        req.abort();
                         reject(`访问超时${timeout}ms`);
+                        req.abort(`访问超时${timeout}ms`);
                     }
                     clearTimeout(setTime);
                     setTime = null;

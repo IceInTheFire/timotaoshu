@@ -4,24 +4,12 @@ const ipQueue = require("./ipQueue.js");
 const catalogQueue = require("./catalogQueue.js");
 const queue = require("./queue.js");
 const permissionList = require("./permissionList.js");
-let iconv = require("iconv-lite");
-let db = require("./mysql.js");
-let sqlConfig = require('../../config/sql');
-const toJson = function(data, msg, code) {
-    return JSON.stringify({
-        code: code || 1000,
-        data: data,
-        msg: msg || ''
-    });
+const iconv = require("iconv-lite");
+const db = require("./mysql.js");
+const sqlConfig = require('../../config/sql');
+const toJson = require("./toJson");
 
-    /*
-    * code
-    * 1000   请求接口成功
-    * 1002   代码错误，前端直接显示报错信息
-    * 1003   token验证失败，前端直接跳转到登录页
-    * 1004   权限不够，前端直接跳转到首页
-    * */
-}
+const getParams = require("./getParams");
 
 function encodeURIComponent_GBK(str) {
     if(str==null || typeof(str)=='undefined' || str=='')
@@ -313,8 +301,7 @@ function filterHtmlOrContainer(str,isbool) {
         '\ud83d[\udc00-\ude4f]',
         '\ud83d[\ude80-\udeff]'
     ];
-    //目前的mysql数据库不可能转成utf8mb4字符集，以后新项目的数据库会转成这种字符集，所以这里先过滤
-    result = result.replace(new RegExp(ranges.join('|'), 'g'), ''); //过滤字符集
+    result = result.replace(new RegExp(ranges.join('|'), 'g'), '');//目前的mysql数据库不可能转成utf8mb4字符集，以后新项目的数据库会转成这种字符集
     // result = result.replace(/[\x{10000}-\x{10FFFF}]/g,'');  //目前的mysql数据库不可能转成utf8mb4字符集，以后新项目的数据库会转成这种字符集
     result = result.replace(/<font>/g,'<br>').replace(/<\/font>/g,'<br>');
     result = result.replace(/<b>/g,'<br>').replace(/<\/b>/g,'<br>');
@@ -325,28 +312,6 @@ function filterHtmlOrContainer(str,isbool) {
     }else {
         return result;
     }
-}
-
-/*
-* 统一获取接口参数，
-*
-* 同时也为了防止sql注入
-*
-* 把英文双引号改成了转义的英文双引号,遇到转义符号，先处理转义符号，再处理英文双引号(以前是把英文双引号改成了英文单引号)
-*
-* sql语法尽量用双引号
-*
-* notrans 默认false 如果不想转义的话，则设为true ，，一般
-* */
-function getParams(req, name, notrans){
-    let body = (req.query[name] || req.body[name] || '');
-    if(!notrans){
-        // return body.replace(/"/g,"'");
-        return body
-            .replace(/\\/g,"\\\\")
-            .replace(/"/g,"\\\"");
-    }
-    return body;
 }
 
 /*
@@ -456,6 +421,7 @@ function rangeFn(num,rangeNum){
     return Math.floor(num/(rangeNum || 500));
 }
 
+
 function filter(str) { // 特殊字符转义
     str += ''; // 隐式转换
     str = str.replace(/%/g, '%25');
@@ -478,8 +444,6 @@ function urlEncode(paramObj) {
     }
     return sdata.join('&');
 };
-
-
 
 
 
@@ -518,5 +482,6 @@ module.exports = {
 
     getCatalogNum,
     getCatalogTables,
+
     urlEncode
 }
