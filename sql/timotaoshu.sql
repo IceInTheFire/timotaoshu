@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50727
 File Encoding         : 65001
 
-Date: 2019-09-19 23:10:48
+Date: 2019-09-19 23:36:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -145,7 +145,7 @@ CREATE TABLE `reptiletool2` (
   `bookAuthor` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '小说作者',
   `updateTime` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '最后更新时间',
   `bookType` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '小说分类',
-  `isPage` varchar(60) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '目录是否是分页标识',
+  `isPage` varchar(60) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '目录是否是分页标识',
   `nextPage` varchar(60) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '目录下一页标识',
   `nowPage` varchar(60) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '当前页数',
   `allPage` varchar(60) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '总页数',
