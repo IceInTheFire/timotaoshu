@@ -30,7 +30,8 @@ client3.auth(RDS_PWD,function(){
 client.on('error', function (err) {
     // client.set('author', 'Wilson',redis.print);
     // client.get('author', redis.print);
-    console.log('Error ' + err);
+    // console.log('Error ' + err);
+    console.log('redis 连接失败，失败原因：' + err);
 });
 client.on('ready', function(){
     console.log("redis ok")
