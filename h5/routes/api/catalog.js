@@ -53,21 +53,29 @@ router.use('',  async function(req, res, next) {
         return;
     }
 
-    catalogName = catalog.name;
-    bookName = book.name;
-
-    let container = "";
-    try{
-        container = fs.readFileSync(path.join(__dirname, '../../../books/' + bookName + "/" + catalogName + ".txt"),'utf-8').toString();
-    }catch(err) {
-        try {
-            container = fs.readFileSync(path.join(__dirname, '../../../books/' + bookName + "/" + tool.jiami(catalogName) + ".txt"),'utf-8').toString();
-        } catch(err) {
-            // res.send(tool.toJson(null, '没有该文本', 1002));
-            // return;
-        }
-
-    }
+    // catalogName = catalog.name;
+    // let bookName = book.name;
+    //
+    // let container = "";
+    // try{
+    //     container = fs.readFileSync(path.join(__dirname, '../../../books/' + bookName + "/" + catalogName + ".txt"),'utf-8').toString();
+    // }catch(err) {
+    //     try {
+    //         container = fs.readFileSync(path.join(__dirname, '../../../books/' + bookName + "/" + tool.jiami(catalogName) + ".txt"),'utf-8').toString();
+    //     } catch(err) {
+    //         // res.send(tool.toJson(null, '没有该文本', 1002));
+    //         // return;
+    //     }
+    //
+    // }
+    let oldContainer = "";
+    let catalogArr = await db.query(`select * from catalogcontent${await tool.getCatalogNum(catalog.id)} where catalogId =${catalogId} ORDER BY num ASC;`);
+    catalogArr.forEach((value, index) => {
+        oldContainer += value.content;
+    })
+    let container = "<p>";
+    container += oldContainer.replace("<br/>","<br>").split("<br>").join("</p><p>");
+    container += "</p>";
 
 
     let bookListJson = {
