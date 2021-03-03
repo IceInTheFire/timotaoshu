@@ -28,7 +28,7 @@
     "http-errors": "~1.6.2",
     "less-middleware": "~2.2.1",
     "morgan": "~1.9.0",
-    "pug": "2.0.0-beta11",
+    "pug": "3.0.1",
     "vconsole": "^3.2.0"
   },
   "devDependencies": {}
